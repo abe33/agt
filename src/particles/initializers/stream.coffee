@@ -1,10 +1,11 @@
-Randomizable = agt.particles.Randomizable
-Point = agt.geom.Point
 
+# Public:
 class agt.particles.initializers.Stream
-  @include Randomizable
+  @include agt.particles.Randomizable
 
-  constructor: (@direction=new Point(1,1),
+  ### Public ###
+
+  constructor: (@direction=new agt.geom.Point(1,1),
                 @velocityMin=0,
                 @velocityMax=1,
                 @angleRandom=0,

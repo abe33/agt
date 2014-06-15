@@ -1,7 +1,9 @@
-Randomizable = agt.particles.Randomizable
 
+# Public:
 class agt.particles.emitters.Surface
-  @include Randomizable
+  @include agt.particles.Randomizable
+
+  ### Public ###
 
   constructor: (@surface, @random) -> @initRandom()
 

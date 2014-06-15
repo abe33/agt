@@ -3,7 +3,11 @@ Impulse = agt.Impulse
 NullInitializer = agt.particles.initializers.NullInitializer
 NullAction = agt.particles.actions.NullAction
 
+# Public:
 class agt.particles.System
+
+  ### Public ###
+
   constructor: (@initializer=new NullInitializer,
                 @action= new NullAction, @subSystem) ->
     @particlesCreated = new Signal

@@ -1,7 +1,9 @@
-Randomizable = agt.particles.Randomizable
 
+# Public:
 class agt.particles.emitters.Path
-  @include Randomizable
+  @include agt.particles.Randomizable
+
+  ### Public ###
 
   constructor: (@path, @random) -> @initRandom()
 

@@ -1,7 +1,11 @@
-Point = agt.geom.Point
 
+# Public:
 class agt.particles.actions.Force extends agt.particles.actions.BaseAction
-  constructor: (@vector=new Point) ->
+
+  ### Public ###
+
+  constructor: (@vector=new agt.geom.Point) ->
+
   process: (particle) ->
     particle.velocity.x += @vector.x * @biasInSeconds
     particle.velocity.y += @vector.y * @biasInSeconds

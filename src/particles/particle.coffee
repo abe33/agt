@@ -1,10 +1,12 @@
 Point = agt.geom.Point
 
+# Public:
 class agt.particles.Particle
   @concern agt.mixins.Poolable
 
-  init: (options={}) ->
+  ### Public ###
 
+  init: (options={}) ->
     @dead = false
     @life = 0
     @maxLife = 0

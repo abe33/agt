@@ -1,5 +1,9 @@
 
+# Public:
 class agt.particles.counters.ByRate
+
+  ### Public ###
+  
   constructor: (@rate=1) ->
     @count = 0
     @rest = 0

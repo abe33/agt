@@ -1,5 +1,9 @@
-Point = agt.geom.Point
 
+# Public:
 class agt.particles.emitters.Ponctual
-  constructor: (@point=new Point) ->
+
+  ### Public ###
+
+  constructor: (@point=new agt.geom.Point) ->
+
   get: -> @point.clone()

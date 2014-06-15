@@ -1,7 +1,9 @@
-Randomizable = agt.particles.Randomizable
 
+# Public:
 class agt.particles.initializers.Explosion
-  @include Randomizable
+  @include agt.particles.Randomizable
+
+  ### Public ###
 
   constructor: (@velocityMin=0,
                 @velocityMax=1,

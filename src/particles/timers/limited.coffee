@@ -1,5 +1,9 @@
 
+# Public:
 class agt.particles.timers.Limited
+
+  ### Public ###
+
   constructor: (@duration=1000, @since=0) ->
     @time = 0
     @nextTime = 0

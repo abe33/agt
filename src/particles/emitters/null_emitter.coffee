@@ -1,4 +1,7 @@
-Point = agt.geom.Point
 
+# Public:
 class agt.particles.emitters.NullEmitter
-  get: -> new Point
+
+  ### Public ###
+  
+  get: -> new agt.geom.Point

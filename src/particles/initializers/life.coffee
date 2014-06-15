@@ -1,7 +1,9 @@
-Randomizable = agt.particles.Randomizable
 
+# Public:
 class agt.particles.initializers.Life
-  @include Randomizable
+  @include agt.particles.Randomizable
+
+  ### Public ###
 
   constructor: (@lifeMin, @lifeMax, @random) ->
     @lifeMax = @lifeMin unless @lifeMax?
