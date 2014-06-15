@@ -59,7 +59,7 @@ class agt.geom.Circle
   iterators['Circle'] = Circle.eachIntersections
   iterators['CircleCircle'] = Circle.eachCircleCircleIntersections
 
-  ### Public: Instances Methods ###
+  ### Public ###
 
   constructor: (radiusOrCircle, x, y, segments) ->
     {@radius,@x,@y,@segments} = @circleFrom radiusOrCircle, x, y, segments

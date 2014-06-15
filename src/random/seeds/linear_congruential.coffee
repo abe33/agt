@@ -4,7 +4,7 @@ class agt.random.LinearCongruential
   @include mixins.Sourcable('chancejs.LinearCongruential','seed')
   @include mixins.Formattable('LinearCongruential','seed')
 
-  ### Public: Instances Methods ###
+  ### Public ###
 
   constructor: (@seed=1) ->
   plantSeed: (@seed=1) ->

@@ -4,7 +4,7 @@ class agt.random.Linear
   @include mixins.Sourcable('chancejs.Linear','step')
   @include mixins.Formattable('Linear','step')
 
-  ### Public: Instances Methods ###
+  ### Public ###
 
   constructor: (@step=1000000000) ->
     @iterator = 0

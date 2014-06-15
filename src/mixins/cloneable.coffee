@@ -57,7 +57,15 @@ agt.mixins.Cloneable = (properties...) ->
   # Public: The concrete cloneable mixin as created by the
   # [Cloneable](../files/mixins/cloneable.coffee.html) generator.
   class ConcreteCloneable
-    if properties.length is 0
-      @included: (klass) -> klass::clone = -> new klass this
-    else
-      @included: (klass) -> klass::clone = -> build klass, properties.map (p) => @[ p ]
+
+    # Public: Returns a copy of this instance.
+    #
+    # When the mixin is configurated without any `properties` the cloned
+    # instance is passed directly as argument at the creation of the new
+    # instance.
+    #
+    # Returns an {Object}.
+    clone: -> new @constructor this
+
+    if properties.length > 0
+      ConcreteCloneable::clone = -> build @constructor, properties.map (p) => @[ p ]

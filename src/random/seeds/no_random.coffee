@@ -4,6 +4,6 @@ class agt.random.NoRandom
   @include mixins.Sourcable('chancejs.NoRandom','seed')
   @include mixins.Formattable('NoRandom','seed')
 
-  ### Public: Instances Methods ###
+  ### Public ###
   constructor: (@seed=0) ->
   get: -> @seed

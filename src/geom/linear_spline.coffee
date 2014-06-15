@@ -10,7 +10,7 @@ class agt.geom.LinearSpline
   @include Intersections
   @include Spline(1)
 
-  ### Public: Instances Methods ###
+  ### Public ###
 
   constructor: (vertices, bias) ->
     @initSpline vertices, bias

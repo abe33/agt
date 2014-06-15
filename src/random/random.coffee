@@ -14,7 +14,7 @@ class agt.random.Random
   @include mixins.Sourcable('agt.random.Random','generator')
   @include mixins.Formattable('Random','generator')
 
-  ### Public: Instances methods ###
+  ### Public ###
 
   constructor: (@generator) ->
 

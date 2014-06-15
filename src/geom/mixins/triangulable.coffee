@@ -1,8 +1,9 @@
-# Public:
+# Public: 
 class agt.geom.Triangulable
   @include mixins.Memoizable
 
-  ### Public: Instances Methods ###
+  ### Public ###
+
   triangles: ->
     return @memoFor 'triangles' if @memoized 'triangles'
 

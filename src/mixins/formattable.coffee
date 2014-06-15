@@ -29,13 +29,23 @@ agt.mixins.Formattable = (classname, properties...) ->
   # Public: The concrete class as returned by the
   # [Formattable](../files/mixins/formattable.coffee.html) generator.
   class ConcreteFormattable
-    if properties.length is 0
-      ConcreteFormattable::toString = ->
-        "[#{ classname }]"
-    else
-      ConcreteFormattable::toString = ->
+    ### Public ###
+
+    # Returns the object representation as a {String}.
+    # By default the object representation looks like `[ClassName]`.
+    # If the mixin was configurated using at least on property the
+    # object representation will now looks like
+    # `[ClassName(property=value)]`
+    #
+    # Returns a {String}.
+    toString: -> "[#{ classname }]"
+
+    if properties.length > 0
+      @::toString = ->
         formattedProperties = ("#{ p }=#{ @[ p ] }" for p in properties)
         "[#{ classname }(#{ formattedProperties.join ', ' })]"
 
-    # Public: Returns the class name {String} of this instance.
+    # Returns the class name {String} of this instance.
+    #
+    # Returns a {String}
     classname: -> classname

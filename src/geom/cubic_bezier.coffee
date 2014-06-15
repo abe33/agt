@@ -10,7 +10,7 @@ class agt.geom.CubicBezier
   @include Intersections
   @include Spline(3)
 
-  ### Public: Instances Methods ###
+  ### Public ###
 
   constructor: (vertices, bias=20) ->
     @initSpline vertices, bias

@@ -1,8 +1,9 @@
-# Public:
+# Public: 
 class agt.geom.Intersections
   @iterators: {}
-  
-  ### Public: Instances Methods ###
+
+  ### Public ###
+
   intersects: (geometry) ->
     return false if geometry.bounds? and not @boundsCollide geometry
     output = false
@@ -99,6 +100,8 @@ class agt.geom.Intersections
 
           return if block.call this, cross, context
           lastIntersection = cross
+
+  ### Internal ###
 
   perCrossing: (start1, dir1, start2, dir2) ->
     v3bx = start2.x - start1.x

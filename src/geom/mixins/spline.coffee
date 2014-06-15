@@ -1,10 +1,11 @@
 # Public:
 agt.geom.Spline = (segmentSize) ->
+
   # Public:
   class ConcretSpline
     @include mixins.Memoizable
 
-    ### Public: Instances Methods ###
+    ### Public ###
 
     @included: (klass) ->
       klass::clone = ->

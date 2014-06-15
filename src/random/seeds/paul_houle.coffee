@@ -9,7 +9,7 @@ class agt.random.PaulHoule
   @include mixins.Sourcable('chancejs.PaulHoule','seed')
   @include mixins.Formattable('PaulHoule','seed')
 
-  ### Public: Instances Methods ###
+  ### Public ###
   constructor: (@seed) ->
   get: ->
     @seed = (@seed * 9301 + 49297) % 233280

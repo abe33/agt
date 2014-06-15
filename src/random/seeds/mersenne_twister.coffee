@@ -4,7 +4,7 @@ class agt.random.MersenneTwister
   @include mixins.Sourcable('chancejs.MersenneTwister','seed')
   @include mixins.Formattable('MersenneTwister','seed')
 
-  ### Public: Instances Methods ###
+  ### Public ###
   constructor: (seed=0) ->
     @mt = Array 623
     @z = 0

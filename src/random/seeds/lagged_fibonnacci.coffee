@@ -4,7 +4,7 @@ class agt.random.LaggedFibonnacci
   @include mixins.Sourcable('chancejs.LaggedFibonnacci','seed')
   @include mixins.Formattable('LaggedFibonnacci','seed')
 
-  ### Public: Instances Methods ###
+  ### Public ###
   constructor: (seed=0) ->
     @plantSeed seed
 

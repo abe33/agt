@@ -136,7 +136,7 @@ class agt.geom.Point
   @notAPoint: (args) ->
     throw new Error "#{args} is not a point"
 
-  ### Public: Instances methods ###
+  ### Public ###
 
   # Whatever is passed to the `Point` constructor, a valid point
   # is always returned. All invalid properties will be default to `0`.

@@ -23,7 +23,7 @@ class agt.geom.Ellipsis
   @include Path
   @include Intersections
 
-  ### Public: Instances Methods ###
+  ### Public ###
 
   constructor: (r1, r2, x, y, rot, segments) ->
     {@radius1,@radius2,@x,@y,@rotation,@segments} = @ellipsisFrom r1, r2,

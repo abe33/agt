@@ -23,7 +23,7 @@ class agt.geom.Diamond
   @include Path
   @include Intersections
 
-  ### Public: Instances Methods ###
+  ### Public ###
 
   constructor: (topLength, rightLength, bottomLength, leftLength, x, y, rotation) ->
     args = @diamondFrom topLength, rightLength, bottomLength, leftLength, x, y, rotation

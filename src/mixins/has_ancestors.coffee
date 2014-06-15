@@ -24,6 +24,8 @@ agt.mixins.HasAncestors = (options={}) ->
     # Public: Returns an array of all the ancestors of the current object.
     # The ancestors are ordered such as the first element is the direct
     # parent of the current object.
+    #
+    # Returns an {Array}
     @getter 'ancestors', ->
       ancestors = []
       parent = @[ through ]
