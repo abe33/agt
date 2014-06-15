@@ -1,0 +1,42 @@
+{
+  "name": "agt",
+  "version": "0.0.0",
+  "author": "Cédric Néhémie <cedric.nehemie@gmail.com>",
+  "description": "Some game tools",
+  "keywords": ["mixins","random","geometry","particles"],
+  "repository": {
+    "url": "https://github.com/abe33/agt.git"
+  },
+  "engine": {
+    "node": "~0.10.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node --coffee specs/"
+  },
+  "testling": {
+    "browsers": {
+      "ie": [ 9, 10, 11 ],
+      "ff": [ 20, 21, 22, 23, 24, 25, "nightly" ],
+      "chrome": [ 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0, 31.0, "canary" ],
+      "opera": [ 12, 15, 16, 17, "next" ],
+      "safari": [ 5.1, 6 ],
+      "iphone": [ 6 ],
+      "ipad": [ 6 ],
+      "android-browser": [ 4.2 ]
+    },
+    "html": "specs/TapeRunner.html"
+  },
+  "dependencies": {},
+  "main": "./lib/index",
+  "devDependencies": {
+    "grunt": "0.x",
+    "grunt-contrib-jshint": "0.x",
+    "grunt-contrib-nodeunit": "0.x",
+    "grunt-contrib-uglify": "0.x",
+    "grunt-contrib-coffee": "0.x",
+    "grunt-contrib-watch": "0.x",
+    "jasmine-node": "2.x",
+    "q": "~0.9.7",
+    "grunt-growl": "~0.1.5"
+  }
+}

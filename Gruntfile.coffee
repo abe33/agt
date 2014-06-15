@@ -1,0 +1,109 @@
+{spawn} = require 'child_process'
+{print} = require 'util'
+Q = require 'q'
+
+run = (command) ->
+  defer = Q.defer()
+  [command, args...] = command.split(/\s+/g)
+  exe = spawn command, args
+  exe.stdout.on 'data', (data) -> print data
+  exe.stderr.on 'data', (data) -> print data
+  exe.on 'exit', (status) ->
+    if status is 0 then defer.resolve(status) else defer.reject(status)
+  defer.promise
+
+module.exports = (grunt) ->
+  grunt.initConfig
+    coffee:
+      compile:
+        options:
+          join: true
+
+        files:
+          'lib/agt.js': [
+            'src/index.coffee'
+            'src/object.coffee'
+            'src/function.coffee'
+            'src/inheritance.coffee'
+            'src/math.coffee'
+            'src/signal.coffee'
+            'src/impulse.coffee'
+            'src/mixins/*.coffee'
+            'src/random/**/*.coffee'
+            'src/geom/mixins/**/*.coffee'
+            'src/geom/point.coffee'
+            'src/geom/triangle.coffee'
+            'src/geom/rectangle.coffee'
+            'src/geom/circle.coffee'
+            'src/geom/**/*.coffee'
+            'src/particles/particle.coffee'
+            'src/particles/emission.coffee'
+            'src/particles/system.coffee'
+            'src/particles/sub_system.coffee'
+            'src/particles/mixins/*.coffee'
+            'src/particles/**/*.coffee'
+          ]
+
+          'lib/agt.spec.js': [
+            'specs/support/spec_helper.coffee'
+            'specs/support/**/*.coffee'
+            'specs/units/**/*.coffee'
+          ]
+
+    uglify:
+      all:
+        files:
+          'lib/agt.min.js': ['lib/agt.js']
+
+    watch:
+      scripts:
+        files: ['src/**/*.coffee', 'specs/**/*.coffee']
+        tasks: ['coffee', 'uglify', 'test', 'biscotto']
+        options:
+          livereload: true
+          livereloadOnError: true
+
+      config:
+        files: ['Gruntfile.coffee']
+        options:
+          reload: true
+
+    growl:
+      jasmine_success:
+        title: 'Jasmine Tests'
+        message: 'All test passed'
+
+      jasmine_failure:
+        title: 'Jasmine Tests'
+        message: 'Some tests failed'
+
+      biscotto_success:
+        title: 'Biscotto Documentation'
+        message: 'Documentation generated'
+
+  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks('grunt-contrib-coffee')
+  grunt.loadNpmTasks('grunt-growl')
+
+  grunt.registerTask 'biscotto', 'Generates the documentation', ->
+    done = @async()
+    run('biscotto src')
+    .then ->
+      grunt.task.run 'growl:biscotto_success'
+      done()
+    .fail ->
+      done()
+
+  grunt.registerTask 'test', 'Run npm tests', ->
+    done = @async()
+    run('npm test')
+    .then ->
+      grunt.task.run 'growl:jasmine_success'
+      done true
+    .fail ->
+      console.log 'in fail'
+      grunt.task.run 'growl:jasmine_failure'
+      done false
+
+  grunt.registerTask('default', ['test'])
