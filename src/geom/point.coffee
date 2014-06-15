@@ -39,7 +39,7 @@ class agt.geom.Point
   #
   # pt - The point {Object} that will be tested.
   #
-  # Returns a {Boolean}
+  # Returns a {Boolean}.
   @isPoint: (pt) -> pt? and pt.x? and pt.y?
 
   # Returns a point according to the provided arguments:
@@ -47,7 +47,6 @@ class agt.geom.Point
   # ```coffeescript
   # translate = (xOrPt, y) ->
   #   point = Point.pointFrom xOrPt, y
-  #   # ...
   # ```
   #
   # The first argument can be either an {Object} or a {Number}.
@@ -77,7 +76,7 @@ class agt.geom.Point
   # strict - A {Boolean} of whether the method raises an exception
   #          on type mismatch.
   #
-  # Returns a {agt.geom.Point} instance
+  # Returns a [Point]{agt.geom.Point} instance.
   @pointFrom: (xOrPt, y, strict=false) ->
     x = xOrPt
     {x,y} = xOrPt if xOrPt? and typeof xOrPt is 'object'
@@ -86,7 +85,14 @@ class agt.geom.Point
 
   # Converts polar coordinates in cartesian coordinates.
   #
-  #     Point.polar 90, 10 # [Point(x=0,y=10)]
+  # ```coffeescript
+  # Point.polar 90, 10 # [Point(x=0,y=10)]
+  # ```
+  #
+  # angle - A {Number} of the angle in radians.
+  # length - A {Number} of the vector length in pixels.
+  #
+  # Returns a [Point]{agt.geom.Point} instance.
   @polar: (angle, length=1) -> new Point Math.sin(angle) * length,
                                          Math.cos(angle) * length
 
@@ -94,10 +100,25 @@ class agt.geom.Point
   #
   # The `Point.interpolate` method supports all the following forms:
   #
-  #     Point.interpolate pt1, pt2, pos
-  #     Point.interpolate x1, y1, pt2, pos
-  #     Point.interpolate pt1, x2, y2, pos
-  #     Point.interpolate x1, x2, x2, y2, pos
+  # ```coffeescript
+  # # Two points:
+  # Point.interpolate pt1, pt2, pos
+  #
+  # # Two numbers and a Point:
+  # Point.interpolate x1, y1, pt2, pos
+  #
+  # # A Point and then two numbers:
+  # Point.interpolate pt1, x2, y2, pos
+  #
+  # # Four numbers:
+  # Point.interpolate x1, x2, x2, y2, pos
+  # ```
+  #
+  # pt1 - The starting [Point]{agt.geom.Point} of the interpolation.
+  # pt2 - The ending [Point]{agt.geom.Point} of the interpolation.
+  # pos - The amount {Number} of the interpolation.
+  #
+  # Returns a [Point]{agt.geom.Point} instance.
   @interpolate: (pt1, pt2, pos) ->
     args = []; args[i] = v for v,i in arguments
 
@@ -143,9 +164,16 @@ class agt.geom.Point
   #
   # A point be constructed with the following forms:
   #
-  #     new Point
-  #     new Point 0, 0
-  #     new Point x: 0, y: 0
+  # ```coffeescript
+  # new Point
+  # new Point 0, 0
+  # new Point x: 0, y: 0
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
   constructor: (x, y) ->
     y = x.y or y if x?; y = 0 if isNaN y
     x = x.x or x if x?; x = 0 if isNaN x
@@ -154,12 +182,20 @@ class agt.geom.Point
 
   # Returns the length of the current vector represented by this point.
   #
-  #     length = point.length()
+  # ```coffeescript
+  # length = point.length()
+  # ```
+  #
+  # Returns a {Number}.
   length: -> Math.sqrt (@x * @x) + (@y * @y)
 
   # Returns the angle in degrees formed by the vector.
   #
-  #     angle = point.angle()
+  # ```coffeescript
+  # angle = point.angle()
+  # ```
+  #
+  # Returns a {Number}.
   angle: -> Math.atan2 @y, @x
 
   # Given a triangle formed by this point, the passed-in point
@@ -167,10 +203,19 @@ class agt.geom.Point
   # return the angle in degrees formed by the two vectors at
   # the origin.
   #
-  #     point1 = new Point 10, 0
-  #     point2 = new Point 10, 10
-  #     angle = point1.angleWith point2
-  #     # angle = 45
+  # ```coffeescript
+  # point1 = new Point 10, 0
+  # point2 = new Point 10, 10
+  # angle = point1.angleWith point2
+  # # angle = 45
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a {Number}.
   angleWith: (x, y) ->
     @noPoint 'dot' if not x? and not y?
     isPoint = @isPoint x
@@ -184,11 +229,17 @@ class agt.geom.Point
 
   # Returns a new point of length `length`.
   #
-  #     normalized = point.normalize()
-  #     normalized.length() # 1
+  # ```coffeescript
+  # normalized = point.normalize()
+  # normalized.length() # 1
   #
-  #     normalized = point.normalize(6)
-  #     normalized.length() # 6
+  # normalized = point.normalize(6)
+  # normalized.length() # 6
+  # ```
+  #
+  # length - The {Number} for the new length.
+  #
+  # Returns a [Point]{agt.geom.Point}
   normalize: (length=1) ->
     @invalidLength length unless Math.isFloat length
     l = @length()
@@ -197,24 +248,42 @@ class agt.geom.Point
   # Returns a new point resulting of the addition of the
   # passed-in point to this point.
   #
-  #     point = new Point 4, 4
-  #     inc = point.add 1, 5
-  #     inc = point.add x: 0.2
-  #     inc = point.add new Point 1.8, 8
-  #     # inc = [Point(x=7,y=17)]
+  # ```coffeescript
+  # point = new Point 4, 4
+  # inc = point.add 1, 5
+  # inc = point.add x: 0.2
+  # inc = point.add new Point 1.8, 8
+  # # inc = [Point(x=7,y=17)]
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a new [Point]{agt.geom.Point}.
   add: (x, y) ->
     y = x.y or y if x?; y = 0 if isNaN y
     x = x.x or x if x?; x = 0 if isNaN x
     new Point @x + x, @y + y
 
-  # Returns a new point resulting of the subtraction of the
+  # Returns a new point that results of the subtraction of the
   # passed-in point to this point.
   #
-  #     point = new Point 4, 4
-  #     inc = point.subtract 1, 5
-  #     inc = point.subtract x: 0.2
-  #     inc = point.subtract new Point 1.8, 8
-  #     # inc = [Point(x=2,y=-9)]
+  # ```coffeescript
+  # point = new Point 4, 4
+  # inc = point.subtract 1, 5
+  # inc = point.subtract x: 0.2
+  # inc = point.subtract new Point 1.8, 8
+  # # inc = [Point(x=2,y=-9)]
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a new [Point]{agt.geom.Point}.
   subtract: (x, y) ->
     y = x.y or y if x?; y = 0 if isNaN y
     x = x.x or x if x?; x = 0 if isNaN x
@@ -222,8 +291,17 @@ class agt.geom.Point
 
   # Returns the dot product of this point and the passed-in point.
   #
-  #     dot = new Point(5,6).dot(7,8)
-  #     # dot = 83
+  # ```coffeescript
+  # dot = new Point(5,6).dot(7,8)
+  # # dot = 83
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a {Number}.
   dot: (x, y) ->
     @noPoint 'dot' if not x? and not y?
     isPoint = @isPoint x
@@ -234,8 +312,17 @@ class agt.geom.Point
 
   # Returns the distance between this point and the passed-in point.
   #
-  #     distance = new Point(0,2).distance(2,2)
-  #     # distance = 2
+  # ```coffeescript
+  # distance = new Point(0,2).distance(2,2)
+  # # distance = 2
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a {Number}.
   distance: (x, y) ->
     @noPoint 'distance' if not x? and not y?
     isPoint = @isPoint x
@@ -246,9 +333,15 @@ class agt.geom.Point
 
   # Returns a new point which is a scaled copy of the current point.
   #
-  #     point = new Point 1, 1
-  #     scaled = point.scale 2
-  #     # scaled = [Point(x=2,y=2)]
+  # ```coffeescript
+  # point = new Point 1, 1
+  # scaled = point.scale 2
+  # # scaled = [Point(x=2,y=2)]
+  # ```
+  #
+  # n - The {Number} scale factor for the transformation.
+  #
+  # Returns a new [Point]{agt.geom.Point}.
   scale: (n) ->
     @invalidScale n unless Math.isFloat n
     new Point @x * n, @y * n
@@ -256,9 +349,15 @@ class agt.geom.Point
   # Returns a new point which is the result of rotating the
   # current point around the origin (0,0).
   #
-  #     point = new Point 10, 0
-  #     rotated = point.rotate 90
-  #     # rotated = [Point(x=0,y=10)]
+  # ```coffeescript
+  # point = new Point 10, 0
+  # rotated = point.rotate 90
+  # # rotated = [Point(x=0,y=10)]
+  # ```
+  #
+  # n - The {Number} amount of rotation to apply to the point.
+  #
+  # Returns a new [Point]{agt.geom.Point}.
   rotate: (n) ->
     @invalidRotation n unless Math.isFloat n
     l = @length()
@@ -270,10 +369,21 @@ class agt.geom.Point
   # Returns a new point which is the result of rotating the
   # current point around the passed-in point.
   #
-  #     point = new Point 10, 0
-  #     origin = new Point 20, 0
-  #     rotated = point.rotateAround origin, 90
-  #     # rotated = [Point(x=20,y=-10)]
+  # ```coffeescript
+  # point = new Point 10, 0
+  # origin = new Point 20, 0
+  # rotated = point.rotateAround origin, 90
+  # # rotated = [Point(x=20,y=-10)]
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number or the {Number} for the angle otherwise.
+  # a - A {Number} for the rotation angle only if the `x` and `y`
+  #     arguments are [Numbers]{Number}.
+  #
+  # Returns a new [Point]{agt.geom.Point}.
   rotateAround: (x, y, a) ->
     isPoint = @isPoint x
     a = y if isPoint
@@ -288,21 +398,35 @@ class agt.geom.Point
   # Alias the `Point.pointFrom` method in instances.
   pointFrom: Point.pointFrom
 
-  # Returns the two arguments x and y in an array where arguments
+  # Internal: Returns the two arguments x and y in an array where arguments
   # that were `NaN` are replaced by `0`.
+  #
+  # x - A {Number} for the x coordinate.
+  # y - A {Number} for the y coordinate.
+  #
+  # Returns an {Array}.
   defaultToZero: (x, y) ->
     x = if isNaN x then 0 else x
     y = if isNaN y then 0 else y
     [x,y]
 
-  # Copy the values of the passed-in point into this point.
+  # Copies the values of the passed-in point into this point.
   #
-  #     point = new Point
-  #     point.paste 1, 7
-  #     # point = [Point(x=5,y=7)]
+  # ```coffeescript
+  # point = new Point
+  # point.paste 1, 7
+  # # point = [Point(x=5,y=7)]
   #
-  #     point.paste new Point 4, 4
-  #     # point = [Point(x=4,y=4)]
+  # point.paste new Point 4, 4
+  # # point = [Point(x=4,y=4)]
+  # ```
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}
+  #     to initialize the point.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns the current [Point]{agt.geom.Point}
   paste: (x, y) ->
     return this if not x? and not y?
     isObject = x? and typeof x is 'object'
