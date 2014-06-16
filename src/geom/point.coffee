@@ -210,8 +210,7 @@ class agt.geom.Point
   # # angle = 45
   # ```
   #
-  # x - A {Number} for the x coordinate or a point-like {Object}
-  #     to initialize the point.
+  # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
   #
@@ -256,8 +255,7 @@ class agt.geom.Point
   # # inc = [Point(x=7,y=17)]
   # ```
   #
-  # x - A {Number} for the x coordinate or a point-like {Object}
-  #     to initialize the point.
+  # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
   #
@@ -278,8 +276,7 @@ class agt.geom.Point
   # # inc = [Point(x=2,y=-9)]
   # ```
   #
-  # x - A {Number} for the x coordinate or a point-like {Object}
-  #     to initialize the point.
+  # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
   #
@@ -296,8 +293,7 @@ class agt.geom.Point
   # # dot = 83
   # ```
   #
-  # x - A {Number} for the x coordinate or a point-like {Object}
-  #     to initialize the point.
+  # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
   #
@@ -317,8 +313,7 @@ class agt.geom.Point
   # # distance = 2
   # ```
   #
-  # x - A {Number} for the x coordinate or a point-like {Object}
-  #     to initialize the point.
+  # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
   #
@@ -355,7 +350,7 @@ class agt.geom.Point
   # # rotated = [Point(x=0,y=10)]
   # ```
   #
-  # n - The {Number} amount of rotation to apply to the point.
+  # n - The {Number} amount of rotation to apply to the point in radians.
   #
   # Returns a new [Point]{agt.geom.Point}.
   rotate: (n) ->
@@ -376,11 +371,10 @@ class agt.geom.Point
   # # rotated = [Point(x=20,y=-10)]
   # ```
   #
-  # x - A {Number} for the x coordinate or a point-like {Object}
-  #     to initialize the point.
+  # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number or the {Number} for the angle otherwise.
-  # a - A {Number} for the rotation angle only if the `x` and `y`
+  # a - A {Number} for the rotation angle in radians only if the `x` and `y`
   #     arguments are [Numbers]{Number}.
   #
   # Returns a new [Point]{agt.geom.Point}.
@@ -421,8 +415,7 @@ class agt.geom.Point
   # # point = [Point(x=4,y=4)]
   # ```
   #
-  # x - A {Number} for the x coordinate or a point-like {Object}
-  #     to initialize the point.
+  # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
   #
