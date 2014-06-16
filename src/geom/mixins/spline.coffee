@@ -146,9 +146,9 @@ agt.geom.Spline = (segmentSize) ->
       if index < @segments()
         k = "segment#{index}"
         return @memoFor k if @memoized k
-        @memoize k, @vertices
-          .concat()
-          .slice(index * segmentSize, (index + 1) * segmentSize + 1)
+
+        [start, end] = [index * segmentSize, (index + 1) * segmentSize + 1]
+        @memoize k, @vertices[start..end]
       else
         null
 
@@ -256,11 +256,11 @@ agt.geom.Spline = (segmentSize) ->
       context.moveTo(start.x,start.y)
       context.lineTo(p.x,p.y) for p in points
 
-    drawVertices: (context, color) ->
     # Draws the spline vertices onto the passed-in canvas context.
     #
     # context - The canvas context to draw in.
     # color - The color {String} to use for the vertices.
+    drawVertices: (context, color=agt.COLORS.VERTICES) ->
       context.fillStyle = color
       for vertex in @vertices
         context.beginPath()
@@ -268,11 +268,11 @@ agt.geom.Spline = (segmentSize) ->
         context.fill()
         context.closePath()
 
-    drawVerticesConnections: (context, color) ->
     # Draws the segments between each vertex onto the passed-in canvas context.
     #
     # context - The canvas context to draw in.
     # color - The color {String} to use for the vertices connections.
+    drawVerticesConnections: (context, color=agt.COLORS.VERTICES_CONNECTIONS) ->
       context.strokeStyle = color
       for i in [1..@vertices.length-1]
         vertexStart = @vertices[i-1]

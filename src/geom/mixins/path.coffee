@@ -29,7 +29,7 @@ class agt.geom.Path
 
   ### Public ###
 
-  # **Abstract** - Returns the length of the path in pixels.
+  # Returns the length of the path in pixels.
   #
   # Returns a {Number}.
   length: ->
@@ -40,7 +40,8 @@ class agt.geom.Path
         sum += points[i-1].distance(points[i])
     sum
 
-  # Returns the coordinates on the path at the given {Number} position.
+  # Returns the coordinates on the path at the given
+  # {Number} position.
   #
   # pos - The {Number} between `0` and `1` at which get the path coordinates.
   # pathBasedOnLength - A {Boolean} of whether the position on the path
@@ -65,7 +66,8 @@ class agt.geom.Path
     else
       @walkPathBasedOnSegments pos, points
 
-  # Returns the orientation on the path at the given {Number} position.
+  # Returns the orientation on the path at the given
+  # {Number} position.
   #
   # pos - The {Number} between `0` and `1` at which get the path coordinates.
   # pathBasedOnLength - A {Boolean} of whether the position on the path

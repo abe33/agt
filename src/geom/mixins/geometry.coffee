@@ -109,7 +109,7 @@ class agt.geom.Geometry
   #
   # context - The canvas context into which draw the geometry.
   # color - The {String} color of the stroke.
-  stroke: (context, color='#ff0000') ->
+  stroke: (context, color=agt.COLORS.STROKE) ->
     return unless context?
 
     context.strokeStyle = color
@@ -121,7 +121,7 @@ class agt.geom.Geometry
   #
   # context - The canvas context into which draw the geometry.
   # color - The {String} color of the fill.
-  fill: (context, color='#ff0000') ->
+  fill: (context, color=agt.COLORS.FILL) ->
     return unless context?
 
     context.fillStyle = color
@@ -130,7 +130,7 @@ class agt.geom.Geometry
 
   # Draws the current geometry into the passed-in canvas `context`.
   # That method only implements creating the geometry path using
-  # canvas methods. 
+  # canvas methods.
   #
   # context - The canvas context into which draw the geometry.
   drawPath: (context) ->
