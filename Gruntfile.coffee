@@ -1,4 +1,4 @@
-{spawn} = require 'child_process'
+{spawn, exec} = require 'child_process'
 {print} = require 'util'
 Q = require 'q'
 
@@ -14,8 +14,16 @@ run = (command) ->
 
 module.exports = (grunt) ->
   grunt.initConfig
+
+    ####     ######   #######  ######## ######## ######## ########
+    ####    ##    ## ##     ## ##       ##       ##       ##
+    ####    ##       ##     ## ##       ##       ##       ##
+    ####    ##       ##     ## ######   ######   ######   ######
+    ####    ##       ##     ## ##       ##       ##       ##
+    ####    ##    ## ##     ## ##       ##       ##       ##
+    ####     ######   #######  ##       ##       ######## ########
     coffee:
-      compile:
+      sources:
         options:
           join: true
 
@@ -49,19 +57,40 @@ module.exports = (grunt) ->
             'specs/support/**/*.coffee'
             'specs/units/**/*.coffee'
           ]
+      demos:
+        options:
+          join: true
+
+        files:
+          'doc/assets/customs.js': [
+            'demos/geometry_renderer.coffee'
+            'demos/customs.coffee'
+          ]
 
     uglify:
       all:
         files:
           'lib/agt.min.js': ['lib/agt.js']
 
+    ####    ##      ##    ###    ########  ######  ##     ##
+    ####    ##  ##  ##   ## ##      ##    ##    ## ##     ##
+    ####    ##  ##  ##  ##   ##     ##    ##       ##     ##
+    ####    ##  ##  ## ##     ##    ##    ##       #########
+    ####    ##  ##  ## #########    ##    ##       ##     ##
+    ####    ##  ##  ## ##     ##    ##    ##    ## ##     ##
+    ####     ###  ###  ##     ##    ##     ######  ##     ##
+
     watch:
       scripts:
         files: ['src/**/*.coffee', 'specs/**/*.coffee']
-        tasks: ['coffee', 'uglify', 'test', 'biscotto']
+        tasks: ['all']
         options:
           livereload: true
           livereloadOnError: true
+
+      demos:
+        files: ['demos/**/*.coffee']
+        tasks: ['biscotto', 'coffee:demos', 'extend:biscotto']
 
       config:
         files: ['Gruntfile.coffee']
@@ -81,16 +110,31 @@ module.exports = (grunt) ->
         title: 'Biscotto Documentation'
         message: 'Documentation generated'
 
+  ####    ########    ###     ######  ##    ##  ######
+  ####       ##      ## ##   ##    ## ##   ##  ##    ## 
+  ####       ##     ##   ##  ##       ##  ##   ##
+  ####       ##    ##     ##  ######  #####     ######
+  ####       ##    #########       ## ##  ##         ##
+  ####       ##    ##     ## ##    ## ##   ##  ##    ##
+  ####       ##    ##     ##  ######  ##    ##  ######
+
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-growl')
 
+  grunt.registerTask 'extend:biscotto', 'Generates the documentation', ->
+    done = @async()
+    exec 'cat lib/agt.min.js doc/assets/customs.js >> doc/assets/biscotto.js', (err, stdin, stderr) ->
+      console.log stdin
+      console.log stderr
+      grunt.task.run 'growl:biscotto_success'
+      done()
+
   grunt.registerTask 'biscotto', 'Generates the documentation', ->
     done = @async()
     run('biscotto src')
     .then ->
-      grunt.task.run 'growl:biscotto_success'
       done()
     .fail ->
       done()
@@ -106,4 +150,5 @@ module.exports = (grunt) ->
       grunt.task.run 'growl:jasmine_failure'
       done false
 
-  grunt.registerTask('default', ['test'])
+  grunt.registerTask('all', ['coffee:sources', 'uglify', 'test', 'biscotto', 'coffee:demos', 'extend:biscotto'])
+  grunt.registerTask('default', ['all'])
