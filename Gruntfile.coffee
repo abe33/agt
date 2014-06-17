@@ -79,7 +79,6 @@ module.exports = (grunt) ->
     ####    ##  ##  ## #########    ##    ##       ##     ##
     ####    ##  ##  ## ##     ##    ##    ##    ## ##     ##
     ####     ###  ###  ##     ##    ##     ######  ##     ##
-
     watch:
       scripts:
         files: ['src/**/*.coffee', 'specs/**/*.coffee']
@@ -111,13 +110,12 @@ module.exports = (grunt) ->
         message: 'Documentation generated'
 
   ####    ########    ###     ######  ##    ##  ######
-  ####       ##      ## ##   ##    ## ##   ##  ##    ## 
+  ####       ##      ## ##   ##    ## ##   ##  ##    ##
   ####       ##     ##   ##  ##       ##  ##   ##
   ####       ##    ##     ##  ######  #####     ######
   ####       ##    #########       ## ##  ##         ##
   ####       ##    ##     ## ##    ## ##   ##  ##    ##
   ####       ##    ##     ##  ######  ##    ##  ######
-
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-coffee')
