@@ -13,12 +13,12 @@
 # class. For more details about how to achieve the same behavior in your own
 # functions please refer to the {.pointFrom} method.
 #
-# ### Includes
+# ### Included Mixins
 #
+# - [agt.mixins.Cloneable](../../../files/mixins/cloneable.coffee.html)
 # - [agt.mixins.Equatable](../../../files/mixins/equatable.coffee.html)
 # - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
-# - [agt.mixins.Cloneable](../../../files/mixins/cloneable.coffee.html)
 class agt.geom.Point
   @include mixins.Equatable('x', 'y')
   @include mixins.Formattable('Point','x', 'y')

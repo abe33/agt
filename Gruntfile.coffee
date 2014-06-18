@@ -88,7 +88,7 @@ module.exports = (grunt) ->
           livereloadOnError: true
 
       demos:
-        files: ['demos/**/*.coffee']
+        files: ['demos/**/*.coffee', 'demos/**/*.css']
         tasks: ['biscotto', 'coffee:demos', 'extend:biscotto']
 
       config:
@@ -126,12 +126,16 @@ module.exports = (grunt) ->
     exec 'cat lib/agt.min.js doc/assets/customs.js >> doc/assets/biscotto.js', (err, stdin, stderr) ->
       console.log stdin
       console.log stderr
-      grunt.task.run 'growl:biscotto_success'
-      done()
+      exec 'cat demos/customs.css >> doc/assets/biscotto.css', (err, stdin, stderr) ->
+        console.log stdin
+        console.log stderr
+        grunt.task.run 'growl:biscotto_success'
+        done()
 
   grunt.registerTask 'biscotto', 'Generates the documentation', ->
     done = @async()
-    run('biscotto src')
+    # run('biscotto src')
+    run('/Users/cedric/Development/coffeescript/biscotto/bin/biscotto src')
     .then ->
       done()
     .fail ->

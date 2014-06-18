@@ -8,7 +8,7 @@ describe 'Circle', ->
 
   eachPair circleFactories, (k,v) ->
     {args, test} = v
-    [radius, x, y, segments] = test
+    [radius, x, y, rotation, segments] = test
     source = 'circle'
     data = circleData.apply global, test
 
@@ -19,7 +19,7 @@ describe 'Circle', ->
         expect(@circle).toBeDefined()
 
       it 'has defined the ad hoc properties', ->
-        expect(@circle).toBeCircle(radius, x, y, segments)
+        expect(@circle).toBeCircle(radius, x, y, rotation, segments)
 
       describe 'its center method', ->
         it 'returns the circle coordinates', ->
@@ -134,4 +134,5 @@ describe 'Circle', ->
             @circle.radius,
             @circle.x,
             @circle.y,
+            @circle.rotation,
             @circle.segments)
