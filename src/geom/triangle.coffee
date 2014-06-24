@@ -2,6 +2,20 @@
 {Point,Path,Surface,Geometry,Intersections} = agt.geom
 
 # Public:
+#
+# <script>drawGeometry('triangle', {highlight: true})</script>
+#
+# ### Included Mixins
+#
+# - {agt.geom.Geometry}
+# - {agt.geom.Intersections}
+# - {agt.geom.Path}
+# - {agt.geom.Surface}
+# - [agt.mixins.Cloneable](../../../files/mixins/cloneable.coffee.html)
+# - [agt.mixins.Equatable](../../../files/mixins/equatable.coffee.html)
+# - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
+# - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
+# - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
 class agt.geom.Triangle
   @include mixins.Equatable('a','b','c')
   @include mixins.Formattable('Triangle','a','b','c')
@@ -15,6 +29,16 @@ class agt.geom.Triangle
 
   ### Public ###
 
+  # Returns a triangle-like {Object} using the given arguments.
+  #
+  # a - Either a [Point]{agt.geom.Point} or a triangle-like {Object}.
+  # b - A [Point]{agt.geom.Point} when the first parameter is also a point.
+  # c - A [Point]{agt.geom.Point} when the first parameter is also a point.
+  #
+  # Returns an {Object} with the following properties:
+  #   :a - A [Point]{agt.geom.Point} for the first vertex of the triangle.
+  #   :b - A [Point]{agt.geom.Point} for the second vertex of the triangle.
+  #   :c - A [Point]{agt.geom.Point} for the mast vertex of the triangle.
   @triangleFrom: (a, b, c) ->
     {a,b,c} = a if a? and typeof a is 'object' and not Point.isPoint a
 
@@ -28,74 +52,158 @@ class agt.geom.Triangle
       c: new Point(c)
     }
 
+  # Creates a new `Triangle` instance.
+  #
+  # a - Either a [Point]{agt.geom.Point} or a triangle-like {Object}.
+  # b - A [Point]{agt.geom.Point} when the first parameter is also a point.
+  # c - A [Point]{agt.geom.Point} when the first parameter is also a point.
   constructor: (a, b, c) ->
     {@a,@b,@c} = @triangleFrom a, b, c
-    @__cache__ = {}
 
+  # Returns the center of the triangle.
+  #
+  # <script>drawGeometry('triangle', {center: true})</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
   center: -> new Point (@a.x + @b.x + @c.x) / 3,
                        (@a.y + @b.y + @c.y) / 3
 
-  abCenter: ->
+  # Returns the center of the `ab` edge of the triangle.
+  #
+  # <script>drawGeometryPoints('triangle', 'abCenter')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  abCenter: -> @a.add @ab().scale(0.5)
 
-  acCenter: ->
+  # Returns the center of the `ac` edge of the triangle.
+  #
+  # <script>drawGeometryPoints('triangle', 'acCenter')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  acCenter: -> @a.add @ac().scale(0.5)
 
-  adCenter: ->
+  # Returns the center of the `bc` edge of the triangle.
+  #
+  # <script>drawGeometryPoints('triangle', 'bcCenter')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  bcCenter: -> @b.add @bc().scale(0.5)
 
-  ['abCenter', 'acCenter', 'bcCenter'].forEach (k) ->
-    [p1,p2] = k.split ''
-    Triangle::[k] = -> @[p1].add @["#{p1}#{p2}"]().scale(0.5)
-
+  # Returns an {Array} with the triangle's edges vectors.
+  #
+  # Returns an {Array}.
   edges: -> [@ab(), @bc(), @ca()]
 
-  ab: ->
+  # Returns the triangle's `ab` edge vector.
+  #
+  # <script>drawGeometryEdge('triangle', 'a', 'ab')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  ab: -> @b.subtract @a
 
-  ac: ->
+  # Returns the triangle's `ab` edge vector.
+  #
+  # <script>drawGeometryEdge('triangle', 'a', 'ac')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  ac: -> @c.subtract @a
 
-  ba: ->
+  # Returns the triangle's `ba` edge vector.
+  #
+  # <script>drawGeometryEdge('triangle', 'b', 'ba')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  ba: -> @a.subtract @b
 
-  bc: ->
+  # Returns the triangle's `bc` edge vector.
+  #
+  # <script>drawGeometryEdge('triangle', 'b', 'bc')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  bc: -> @c.subtract @b
 
-  ca: ->
+  # Returns the triangle's `ca` edge vector.
+  #
+  # <script>drawGeometryEdge('triangle', 'c', 'ca')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  ca: -> @a.subtract @c
 
-  cb: ->
+  # Returns the triangle's `cb` edge vector.
+  #
+  # <script>drawGeometryEdge('triangle', 'c', 'cb')</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
+  cb: -> @b.subtract @c
 
+  # Returns the angle formed by the {::ba} and {::bc} vectors.
+  #
+  # Returns a {Number}.
+  abc: -> @ba().angleWith @bc()
 
-  ['ab','ac','ba', 'bc', 'ca', 'cb'].forEach (k) ->
-    [p1,p2] = k.split ''
-    Triangle::[k] = -> @[p2].subtract @[p1]
+  # Returns the angle formed by the {::ab} and {::ac} vectors.
+  #
+  # Returns a {Number}.
+  bac: -> @ab().angleWith @ac()
 
-  abc: ->
+  # Returns the angle formed by the {::ca} and {::cb} vectors.
+  #
+  # Returns a {Number}.
+  acb: -> @ca().angleWith @cb()
 
-  bac: ->
-
-  acb: ->
-
-  ['abc', 'bac', 'acb'].forEach (k) ->
-    [p1,p2,p3] = k.split ''
-    Triangle::[k] = -> @["#{p2}#{p1}"]().angleWith @["#{p2}#{p3}"]()
-
+  # Returns the top-most coordinate of the triangle shape.
+  #
+  # <script>drawGeometryBound('triangle', 'top')</script>
+  #
+  # Returns a {Number}.
   top: -> Math.min @a.y, @b.y, @c.y
 
+  # Returns the bottom-most coordinate of the triangle shape.
+  #
+  # <script>drawGeometryBound('triangle', 'bottom')</script>
+  #
+  # Returns a {Number}.
   bottom: -> Math.max @a.y, @b.y, @c.y
 
+  # Returns the left-most coordinate of the triangle shape.
+  #
+  # <script>drawGeometryBound('triangle', 'left')</script>
+  #
+  # Returns a {Number}.
   left: -> Math.min @a.x, @b.x, @c.x
 
+  # Returns the right-most coordinate of the triangle shape.
+  #
+  # <script>drawGeometryBound('triangle', 'right')</script>
+  #
+  # Returns a {Number}.
   right: -> Math.max @a.x, @b.x, @c.x
 
+  # Returns `true` if the triangle's edge have the same length.
+  #
+  # Returns a {Boolean}.
   equilateral: ->
     Math.deltaBelowRatio(@ab().length(), @bc().length()) and
     Math.deltaBelowRatio(@ab().length(), @ac().length())
 
+  # Returns `true` if two edges of the triangle have the same length.
+  #
+  # Returns a {Boolean}.
   isosceles: ->
     Math.deltaBelowRatio(@ab().length(), @bc().length()) or
     Math.deltaBelowRatio(@ab().length(), @ac().length()) or
     Math.deltaBelowRatio(@bc().length(), @ac().length())
 
+  # Returns `true` if one angle of the triangle has a value of `Math.PI / 2`
+  # radians (90 degrees).
+  #
+  # Returns a {Boolean}.
   rectangle: ->
     sqr = Math.PI / 2
     Math.deltaBelowRatio(Math.abs(@abc()), sqr) or
     Math.deltaBelowRatio(Math.abs(@bac()), sqr) or
     Math.deltaBelowRatio(Math.abs(@acb()), sqr)
+
 
   translate: (x,y) ->
     pt = Point.pointFrom x,y
@@ -138,8 +246,8 @@ class agt.geom.Triangle
                         @bc().length() *
                         Math.abs(Math.sin(@abc())) / 2
 
-  contains: (xOrPt, y) ->
-    p = new Point xOrPt, y
+  contains: (x, y) ->
+    p = new Point x, y
 
     v0 = @ac()
     v1 = @ab()

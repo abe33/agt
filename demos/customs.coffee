@@ -36,6 +36,24 @@ defaults =
     intersectionInstance: ->
       new @class 60, 35, 80, 30
 
+  triangle:
+    class: agt.geom.Triangle
+    defaults:
+      a: new agt.geom.Point 40, 10
+      b: new agt.geom.Point 10, 70
+      c: new agt.geom.Point 90, 85
+
+    instance: (triangle={}) ->
+      triangle[k] = v for k,v of @defaults when not triangle[k]?
+
+      new @class triangle
+
+    intersectionInstance: ->
+      new @class
+        a: new agt.geom.Point 40, 60
+        b: new agt.geom.Point 130, 20
+        c: new agt.geom.Point 120, 70
+
   render:
     angle: false
     paths: false
@@ -142,7 +160,10 @@ window.drawShapeIntersections = (keyA, keyB, options={}) ->
 window.drawGeometryEdge = (key, start, edge, options={}) ->
   {renderer, geometry, context, canvas} = drawGeometry(key, options)
 
-  s = geometry[start]()
+  s = if typeof geometry[start] is 'function'
+    geometry[start]()
+  else
+    geometry[start]
   v = geometry[edge]()
 
   context.strokeStyle = renderer.colorPalette.stroke.highlight
