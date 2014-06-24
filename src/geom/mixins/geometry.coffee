@@ -45,6 +45,9 @@ class agt.geom.Geometry
   # **Abstract** - Returns an {Array} of [Points]{agt.geom.Point}
   # constituting the geometry.
   #
+  # Closed geometry should always returns an array where the start and end
+  # values are equals.
+  #
   # Returns an {Array} of [Points]{agt.geom.Point}.
   points: ->
 
