@@ -4,10 +4,15 @@
 # and a rotation.
 #
 # ```coffeescript
-# circle = new Circle 80, 100, 100
+# circle = new Circle 80, 100, 100, 0
+# circle = new Circle radius: 80, x: 100, y: 100, rotation: 0
 # ```
 #
 # <script>drawGeometry('circle', {highlight: true})</script>
+#
+# When conforming to the [Geometry]{agt.geom.Geometry} interface such as the
+# [points]{agt.geom.Geometry::points} method the `Circle` class
+# use approximations based on the number of `segments` defined on the circle.
 #
 # ### Included Mixins
 #
@@ -33,8 +38,12 @@ class agt.geom.Circle
   @include Path
   @include Intersections
 
-  # Internal: The general intersections algorithm for circles with non-circle
+  ### Public ###
+
+  # The general intersections algorithm for circles with non-circle
   # geometries.
+  #
+  # <script>drawShapeIntersections('circle', 'rectangle')</script>
   #
   # geom1 - The first [Geometry]{agt.geom.Geometry}.
   # geom2 - The second [Geometry]{agt.geom.Geometry}.
@@ -51,7 +60,9 @@ class agt.geom.Circle
 
       return if geom1.eachLineIntersections sv, ev, block
 
-  # Internal: The specific algorithm for circle with circle intersections.
+  # The specific algorithm for circle with circle intersections.
+  #
+  # <script>drawShapeIntersections('circle', 'circle')</script>
   #
   # geom1 - The first `Circle`.
   # geom2 - The second `Circle`.
@@ -87,8 +98,6 @@ class agt.geom.Circle
   iterators = Intersections.iterators
   iterators['Circle'] = Circle.eachIntersections
   iterators['CircleCircle'] = Circle.eachCircleCircleIntersections
-
-  ### Public ###
 
   # Creates a new circle instance.
   #
@@ -138,6 +147,8 @@ class agt.geom.Circle
   # Adds the passed-in [Point]{agt.geom.Point} to the position
   # of this circle.
   #
+  # <script>drawTransform('circle', {type: 'translate', args: [50, 0], width: 150})</script>
+  #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
@@ -152,6 +163,12 @@ class agt.geom.Circle
 
   # Adds the passed-in rotation to the current circle rotation.
   #
+  # The rotation of a circle defines at which angle the circle perimeter
+  # starts. In consequences it affects its triangulation, its path properties
+  # and in general every methods that deals with position on the perimeter.
+  #
+  # <script>drawTransform('circle', {type: 'rotate', args: [Math.PI/ 3]})</script>
+  #
   # rotation - The rotation {Number}.
   #
   # Returns this {Circle}.
@@ -160,6 +177,8 @@ class agt.geom.Circle
     this
 
   # Scales the circle by multiplying its radius by the passed-in `scale`.
+  #
+  # <script>drawTransform('circle', {type: 'scale', args: [0.6]})</script>
   #
   # scale - The scale {Number} to apply to the circle.
   #
@@ -183,7 +202,7 @@ class agt.geom.Circle
   #
   # <script>drawGeometry('circle', {triangles: true})</script>
   #
-  # Returns an {Array}.
+  # Returns an {Array} of [Triangles]{agt.geom.Triangle}.
   triangles: ->
     return @memoFor 'triangles' if @memoized 'triangles'
 
@@ -245,14 +264,36 @@ class agt.geom.Circle
     new Point @x + Math.cos(@rotation + angle) * @radius,
               @y + Math.sin(@rotation + angle) * @radius
 
-
+  # Returns the surface {Number} of this circle.
+  #
+  # Returns a {Number}.
   acreage: -> @radius * @radius * Math.PI
 
-  contains: (xOrPt, y) ->
-    pt = Point.pointFrom xOrPt, y, true
+  # Returns `true` when the given point is contained in the circle.
+  #
+  # In the example below all the green points on the screen represents
+  # coordinates that are contained in the circle.
+  #
+  # <script>drawGeometry('circle', {contains: true})</script>
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a {Boolean}.
+  contains: (x, y) ->
+    pt = Point.pointFrom x, y, true
 
     @center().subtract(pt).length() <= @radius
 
+  # Returns a randomly generated point within the circle perimeter.
+  #
+  # <script>drawGeometry('circle', {surface: true})</script>
+  #
+  # random - An optional [Random]{agt.random.Random} instance to use instead
+  #          of the default `Math` random method.
+  #
+  # Returns a [Point]{agt.geom.Point}.
   randomPointInSurface: (random) ->
     unless random?
       random = new random.Random new random.MathRandom
@@ -262,12 +303,35 @@ class agt.geom.Circle
     dif = pt.subtract center
     center.add dif.scale Math.sqrt random.random()
 
+  # Returns the length {Number} of the circle perimeter.
+  #
+  # Returns a {Number}.
   length: -> @radius * Math.PI * 2
 
+  # Returns a [Point]{agt.geom.Point} on the circle perimeter using
+  # a {Number} between `0` and `1`.
+  #
+  # <script>drawGeometry('circle', {paths: [0, 1/3, 2/3]})</script>
+  #
+  # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
+  #
+  # Returns a [Point]{agt.geom.Point}.
   pathPointAt: (n) -> @pointAtAngle n * Math.PI * 2
 
+  # {Delegates to: agt.geom.Geometry.drawPath}
   drawPath: (context) ->
     context.beginPath()
     context.arc @x, @y, @radius, 0, Math.PI * 2
 
+  # Generates the memoization key for this instance's state.
+  #
+  # For a circle, a memoized value will be invalidated whenever one of the
+  # following properties changes:
+  # - x
+  # - y
+  # - radius
+  # - rotation
+  # - segments
+  #
+  # Returns a {String}.
   memoizationKey: -> "#{@radius};#{@x};#{@y};#{@rotation};#{@segments}"
