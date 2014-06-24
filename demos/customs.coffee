@@ -6,16 +6,41 @@ defaults =
   height: 100
 
   circle:
-    klass: agt.geom.Circle
-    instance: new agt.geom.Circle 40, 50, 50
+    class: agt.geom.Circle
+    defaults:
+      radius: 40
+      x: 50
+      y: 50
+
+    instance: (circle={}) ->
+      circle[k] = v for k,v of @defaults when not circle[k]?
+
+      new @class circle
+
+    intersectionInstance: -> new @class 40, 100, 50
 
   rectangle:
-    klass: agt.geom.Rectangle
-    instance: new agt.geom.Rectangle 10, 30, 80, 40
+    class: agt.geom.Rectangle
+    defaults:
+      x: 20
+      y: 20
+      width: 75
+      height: 40
+      rotation: Math.PI * 0.1
+
+    instance: (rect={}) ->
+      rect[k] = v for k,v of @defaults when not rect[k]?
+
+      new @class rect
+
+    intersectionInstance: ->
+      new @class 60, 35, 80, 30
 
   render:
     angle: false
-    path: false
+    paths: false
+    contains: false
+    center: false
     bounds: false
     center: false
     surface: false
@@ -36,9 +61,9 @@ createCanvas = (width=defaults.width, height=defaults.height)->
 
 window.drawGeometry = (key, options={}) ->
   lastScript = getCurrentScriptNode()
-  geometry = defaults[key].instance
+  geometry = defaults[key].instance(options.params)
 
-  canvas = createCanvas()
+  canvas = createCanvas(options.width, options.height)
   context = canvas.getContext('2d')
 
   renderer = new GeometryRenderer geometry, merge(defaults.render, options)
@@ -49,29 +74,52 @@ window.drawGeometry = (key, options={}) ->
 
   {geometry, canvas, context, renderer}
 
+window.drawIntersectionsGeometries = (keyA, keyB, options={}) ->
+  options.width ||= 150
+
+  lastScript = getCurrentScriptNode()
+  geometryA = defaults[keyA].instance(options.paramsA)
+  geometryB = defaults[keyB].intersectionInstance()
+
+  canvas = createCanvas(options.width, options.height)
+  context = canvas.getContext('2d')
+
+  rendererA = new GeometryRenderer geometryA, merge(defaults.render, options)
+  rendererB = new GeometryRenderer geometryB, merge(defaults.render, options)
+
+  rendererA.render(context)
+  rendererB.render(context)
+
+  lastScript.after(canvas)
+
+  {geometryA, geometryB, canvas, context, rendererA, rendererB}
+
 window.drawGeometryPoints = (key, methods..., options={}) ->
   [methods, options] = [methods.concat([options]), {}] if typeof options is 'string'
   {renderer, geometry, context} = drawGeometry(key, options)
 
   for method in methods
     pts = geometry[method]()
-
     pts = [pts] unless pts.push?
-
-    console.log pts
 
     for pt in pts
       renderer.renderSquarePoint(context, pt, 4, renderer.colorPalette.fill.highlight, renderer.colorPalette.stroke.highlight)
 
 window.drawGeometryBound = (key, bound, options={}) ->
-  {renderer, geometry, context} = drawGeometry(key, options)
+  {renderer, geometry, context, canvas} = drawGeometry(key, options)
 
+  context.strokeStyle = renderer.colorPalette.bounds
+  context.beginPath()
   if bound is 'top' or bound is 'bottom'
-    pt = new agt.geom.Point geometry.center().x, geometry[bound]()
+    y = geometry[bound]()
+    context.moveTo(0, y)
+    context.lineTo(canvas.width, y)
   else
-    pt = new agt.geom.Point geometry[bound](), geometry.center().y
+    x = geometry[bound]()
+    context.moveTo(x, 0)
+    context.lineTo(x, canvas.height)
 
-  renderer.renderSquarePoint(context, pt, 4, renderer.colorPalette.fill.highlight, renderer.colorPalette.stroke.highlight)
+  context.stroke()
 
 window.drawLineIntersections = (key, options={}) ->
   {renderer, geometry, context, canvas} = drawGeometry(key, options)
@@ -82,3 +130,30 @@ window.drawLineIntersections = (key, options={}) ->
   renderer.renderLine(context, a, b, renderer.colorPalette.intersections)
   geometry.eachLineIntersections a, b, (pt) ->
     renderer.renderSquarePoint(context, pt, 4, renderer.colorPalette.fill.highlight, renderer.colorPalette.stroke.highlight)
+
+window.drawShapeIntersections = (keyA, keyB, options={}) ->
+  {geometryA, geometryB, canvas, context, rendererA, rendererB} = drawIntersectionsGeometries(keyA, keyB, options)
+
+  intersections = geometryA.intersections(geometryB)
+
+  for pt in intersections
+    rendererA.renderSquarePoint(context, pt, 4, rendererA.colorPalette.fill.highlight, rendererA.colorPalette.stroke.highlight)
+
+window.drawGeometryEdge = (key, start, edge, options={}) ->
+  {renderer, geometry, context, canvas} = drawGeometry(key, options)
+
+  s = geometry[start]()
+  v = geometry[edge]()
+
+  context.strokeStyle = renderer.colorPalette.stroke.highlight
+  context.beginPath()
+  context.moveTo(s.x, s.y)
+  context.lineTo(s.x + v.x, s.y + v.y)
+  context.stroke()
+
+window.drawTransform = (key, options={}) ->
+  {renderer, geometry, context, canvas} = drawGeometry(key, options)
+
+  geometry[options.type](options.args...)
+  geometry.fill(context, renderer.colorPalette.fill.highlight)
+  geometry.stroke(context, renderer.colorPalette.stroke.highlight)

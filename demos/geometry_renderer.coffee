@@ -7,11 +7,11 @@ class GeometryRenderer
       over: '#859900'
 
     fill:
-      base: 'rgba(245,245,245,0.2)'
-      highlight: 'rgba(255,0,0,0.2)'
-      over: 'rgba(133, 153, 0, 0.2)'
+      base: 'rgba(245,245,245,0.3)'
+      highlight: 'rgba(255,0,0,0.3)'
+      over: 'rgba(133, 153, 0, 0.3)'
 
-    bounds: 'rgba(133, 153, 0, 0.3)'
+    bounds: 'rgba(133, 153, 0, 0.5)'
     intersections: '#268bd2'
     text: '#93a1a1'
     mobile: '#b58900'
@@ -28,37 +28,39 @@ class GeometryRenderer
     @angle = 0
     @angleSpeed = @random.in(1,3) * @random.sign()
 
-  isOver: (mouseX, mouseY) ->
-    if @geometry.contains? and @geometry.contains mouseX, mouseY
-      @state = 'over'
-    else
-      @state = @baseState
-
-  animate: (t) ->
-    @pathPosition += t / 5
-    @pathPosition -= 1 if @pathPosition > 1
-    @angle += t * @angleSpeed
-    @geometry.rotate -(t * @angleSpeed / 10)
-    @geometry.translate Math.sin(@angle), Math.cos(@angle)
-    @geometry.scale 1 + Math.cos(@angle * 3) / 100
-
   renderShape: (context) ->
     @geometry.fill(context, colorPalette.fill[@state])
     @geometry.stroke(context, colorPalette.stroke[@state])
 
-  renderPath: (context) ->
-    pt = @geometry.pathPointAt(@pathPosition, false)
-    tan = @geometry.pathOrientationAt(@pathPosition, false)
+  renderPaths: (context) ->
+    for path in @options.paths
+      pt = @geometry.pathPointAt(path, false)
+      tan = @geometry.pathOrientationAt(path, false)
 
-    if pt? and tan?
-      tr = new agt.geom.Rectangle(pt.x,pt.y,6,6,tan)
-      tr.stroke(context, colorPalette.mobile)
+      if pt? and tan?
+        tr = new agt.geom.Rectangle(pt.x,pt.y,6,6,tan)
+        tr.stroke(context, colorPalette.mobile)
 
   renderSurface: (context) ->
     context.fillStyle = colorPalette.stroke.highlight
-    for i in [0..50]
+    for i in [0..200]
       pt = @geometry.randomPointInSurface @random
-      context.fillRect(pt.x, pt.y, 1, 1) if pt?
+      context.beginPath()
+      context.arc(pt.x, pt.y, 1, 0, Math.PI * 2) if pt?
+      context.fill()
+
+  renderContains: (context) ->
+    for i in [0..200]
+      pt = x: @random.random(100), y: @random.random(100)
+
+      if @geometry.contains(pt)
+        context.fillStyle = colorPalette.stroke.over
+      else
+        context.fillStyle = colorPalette.stroke.highlight
+
+      context.beginPath()
+      context.arc(pt.x, pt.y, 1, 0, Math.PI * 2)
+      context.fill()
 
   renderTriangles: (context) ->
     triangles = @geometry.triangles()
@@ -132,8 +134,8 @@ class GeometryRenderer
     if @options.bounds and @geometry.bounds?
       @renderBounds context
 
-    if @options.path and @geometry.pathPointAt? and @geometry.pathOrientationAt?
-      @renderPath context
+    if @options.paths and @geometry.pathPointAt? and @geometry.pathOrientationAt?
+      @renderPaths context
 
     if @options.surface and @geometry.randomPointInSurface?
       @renderSurface context
@@ -149,3 +151,6 @@ class GeometryRenderer
 
     if @options.center and @geometry.center?
       @renderCenter context
+
+    if @options.contains and @geometry.contains?
+      @renderContains context
