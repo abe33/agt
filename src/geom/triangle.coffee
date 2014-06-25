@@ -11,12 +11,15 @@
 # - {agt.geom.Intersections}
 # - {agt.geom.Path}
 # - {agt.geom.Surface}
+# - [agt.mixins.Aliasable](../../../classes/agt/mixins/aliasable.coffee.html)
 # - [agt.mixins.Cloneable](../../../files/mixins/cloneable.coffee.html)
 # - [agt.mixins.Equatable](../../../files/mixins/equatable.coffee.html)
 # - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
 # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
 class agt.geom.Triangle
+  @extend mixins.Aliasable
+
   @include mixins.Equatable('a','b','c')
   @include mixins.Formattable('Triangle','a','b','c')
   @include mixins.Sourcable('agt.geom.Triangle','a','b','c')
@@ -204,7 +207,16 @@ class agt.geom.Triangle
     Math.deltaBelowRatio(Math.abs(@bac()), sqr) or
     Math.deltaBelowRatio(Math.abs(@acb()), sqr)
 
-
+  # Adds the passed-in [Point]{agt.geom.Point} to the position
+  # of this triangle.
+  #
+  # <script>drawTransform('triangle', {type: 'translate', args: [50, 0], width: 150})</script>
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns this [Triangle]{agt.geom.Triangle}.
   translate: (x,y) ->
     pt = Point.pointFrom x,y
     @a.x += pt.x; @a.y += pt.y
@@ -212,6 +224,13 @@ class agt.geom.Triangle
     @c.x += pt.x; @c.y += pt.y
     this
 
+  # Adds the passed-in rotation to the current triangle rotation.
+  #
+  # <script>drawTransform('triangle', {type: 'rotate', args: [Math.PI/ 3]})</script>
+  #
+  # rotation - The rotation {Number}.
+  #
+  # Returns this [Triangle]{agt.geom.Triangle}.
   rotate: (rotation) ->
     center = @center()
     @a = @a.rotateAround center, rotation
@@ -219,6 +238,15 @@ class agt.geom.Triangle
     @c = @c.rotateAround center, rotation
     this
 
+  @alias 'rotate', 'rotateAroundCenter'
+
+  # Scales the triangle around its center.
+  #
+  # <script>drawTransform('triangle', {type: 'scale', args: [0.6]})</script>
+  #
+  # scale - The scale {Number} to apply to the triangle.
+  #
+  # Returns this [Triangle]{agt.geom.Triangle}.
   scale: (scale) ->
     center = @center()
     @a = center.add @a.subtract(center).scale(scale)
@@ -226,26 +254,55 @@ class agt.geom.Triangle
     @c = center.add @c.subtract(center).scale(scale)
     this
 
-  rotateAroundCenter: Triangle::rotate
+  @alias 'scale', 'scaleAroundCenter'
 
-  scaleAroundCenter: Triangle::scale
-
+  # Always returns `true`.
+  #
+  # Returns a {Boolean}.
   closedGeometry: -> true
 
+  # Returns the triangle points.
+  #
+  # <script>drawGeometryPoints('triangle', 'points')</script>
+  #
+  # Returns an {Array}.
   points: -> [@a.clone(), @b.clone(), @c.clone(), @a.clone()]
 
+  # Returns the [Point]{agt.geom.Point} on the perimeter of the triangle
+  # at the given `angle`.
+  #
+  # angle - The angle {Number}.
+  #
+  # <script>drawGeometry('triangle', {angle: true})</script>
+  #
+  # Returns a [Point]{agt.geom.Point}.
   pointAtAngle: (angle) ->
     center = @center()
     vec = center.add Math.cos(angle)*10000,
                      Math.sin(angle)*10000
     @intersections(points: -> [center, vec])?[0]
 
+  # Returns the surface {Number} of this triangle.
+  #
+  # Returns a {Number}.
   acreage: ->
     return @memoFor 'acreage' if @memoized 'acreage'
     @memoize 'acreage', @ab().length() *
                         @bc().length() *
                         Math.abs(Math.sin(@abc())) / 2
 
+  # Returns `true` when the given point is contained in the triangle.
+  #
+  # In the example below all the green points on the screen represents
+  # coordinates that are contained in the triangle.
+  #
+  # <script>drawGeometry('triangle', {contains: true})</script>
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a {Boolean}.
   contains: (x, y) ->
     p = new Point x, y
 
@@ -265,6 +322,14 @@ class agt.geom.Triangle
 
     u > 0 and v > 0 and u + v < 1
 
+  # Returns a randomly generated point within the triangle perimeter.
+  #
+  # <script>drawGeometry('triangle', {surface: true})</script>
+  #
+  # random - An optional [Random]{agt.random.Random} instance to use instead
+  #          of the default `Math` random method.
+  #
+  # Returns a [Point]{agt.geom.Point}.
   randomPointInSurface: (random) ->
     unless random?
       random = new chancejs.Random new chancejs.MathRandom
@@ -279,8 +344,26 @@ class agt.geom.Triangle
     else
       p.add @bcCenter().subtract(p).scale(2)
 
+  # Returns the length {Number} of the triangle perimeter.
+  #
+  # Returns a {Number}.
   length: -> @ab().length() + @bc().length() + @ca().length()
 
+  # Returns a [Point]{agt.geom.Point} on the triangle perimeter using
+  # a {Number} between `0` and `1`.
+  #
+  # <script>drawGeometry('triangle', {paths: [0, 1/3, 2/3]})</script>
+  #
+  # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
+  # pathBasedOnLength - A {Boolean} of whether the position on the path
+  #                     consider the length of the path segments or not.
+  #                     When true, each segment will only weight as much
+  #                     as their own length.
+  #                     When false, every segment have the same weight,
+  #                     resulting in a difference in speed when animating
+  #                     an object along a path.
+  #
+  # Returns a [Point]{agt.geom.Point}.
   pathPointAt: (n, pathBasedOnLength=true) ->
     [l1, l2] = @pathSteps pathBasedOnLength
 
@@ -291,6 +374,20 @@ class agt.geom.Triangle
     else
       @c.add @ca().scale Math.map n, l2, 1, 0, 1
 
+  # Returns the orientation of the path at the given position.
+  #
+  # <script>drawGeometry('triangle', {paths: [0, 1/3, 2/3]})</script>
+  #
+  # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
+  # pathBasedOnLength - A {Boolean} of whether the position on the path
+  #                     consider the length of the path segments or not.
+  #                     When true, each segment will only weight as much
+  #                     as their own length.
+  #                     When false, every segment have the same weight,
+  #                     resulting in a difference in speed when animating
+  #                     an object along a path.
+  #
+  # Returns a [Point]{agt.geom.Point}.
   pathOrientationAt: (n, pathBasedOnLength=true) ->
     [l1, l2] = @pathSteps pathBasedOnLength
 
@@ -301,6 +398,9 @@ class agt.geom.Triangle
     else
       @ca().angle()
 
+  # Internal: Calculates the proportions of each step of the triangle path.
+  #
+  # Returns an {Array}.
   pathSteps: (pathBasedOnLength) ->
     if pathBasedOnLength
       l = @length()
@@ -312,6 +412,7 @@ class agt.geom.Triangle
 
     [l1,l2]
 
+  # {Delegates to: agt.geom.Geometry.drawPath}
   drawPath: (context) ->
     context.beginPath()
     context.moveTo @a.x, @a.y
@@ -320,6 +421,15 @@ class agt.geom.Triangle
     context.lineTo @a.x, @a.y
     context.closePath()
 
+  # Generates the memoization key for this instance's state.
+  #
+  # For a circle, a memoized value will be invalidated whenever one of the
+  # following properties changes:
+  # - a
+  # - b
+  # - c
+  #
+  # Returns a {String}.
   memoizationKey: -> "#{@a.x};#{@a.y};#{@b.x};#{@b.y};#{@c.x};#{@c.y}"
 
   triangleFrom: Triangle.triangleFrom

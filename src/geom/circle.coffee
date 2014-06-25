@@ -153,7 +153,7 @@ class agt.geom.Circle
   # y - A {Number} for the y coordinate if the first argument
   #     was also a number.
   #
-  # Returns this {Circle}.
+  # Returns this [Circle]{agt.geomCircle}.
   translate: (x, y) ->
     {x,y} = Point.pointFrom x, y
 
@@ -171,7 +171,7 @@ class agt.geom.Circle
   #
   # rotation - The rotation {Number}.
   #
-  # Returns this {Circle}.
+  # Returns this [Circle]{agt.geomCircle}.
   rotate: (rotation) ->
     @rotation += rotation
     this
@@ -182,7 +182,7 @@ class agt.geom.Circle
   #
   # scale - The scale {Number} to apply to the circle.
   #
-  # Returns this {Circle}.
+  # Returns this [Circle]{agt.geomCircle}.
   scale: (scale) ->
     @radius *= scale
     this
