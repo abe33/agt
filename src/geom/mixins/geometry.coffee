@@ -11,12 +11,17 @@
 #
 # ### Shape
 #
-# A geometry has a shape constituted by an {Array} of [Points]{agt.geom.Point}. # These points can be accessed using the {::points} method
+# <script>drawGeometryPoints('geometry', 'points')</script>
+#
+# A geometry has a shape constituted by an {Array} of [Points]{agt.geom.Point}.
+# These points can be accessed using the {::points} method
 #
 # A geometry can be either opened or closed. It can be retrieved using
 # the {::closedGeometry} method.
 #
 # ### Bounds
+#
+# <script>drawGeometry('geometry', {bounds: true})</script>
 #
 # A geometry has bounds, represented by the {::left}, {::right}, {::top}
 # and {::bottom} methods. An object with the bounds value can be retrieved
@@ -31,7 +36,9 @@
 #
 # ### Drawing API
 #
-# Every geometries provide basic methods to draw themselves on a canvas,
+# <script>drawGeometry('geometry', {highlight: true})</script>
+#
+# Every geometry provides basic methods to draw themselves on a canvas,
 # {::stroke} and {::fill}, the latter renders a line when the former
 # renders a plain shape.
 #
@@ -65,25 +72,35 @@ class agt.geom.Geometry
 
   # Returns the top-most coordinate of the geometry shape.
   #
+  # <script>drawGeometryBound('geometry', 'top')</script>
+  #
   # Returns a {Number}.
   top: -> pointsBounds @points(), 'min', 'y'
 
   # Returns the bottom-most coordinate of the geometry shape.
+  #
+  # <script>drawGeometryBound('geometry', 'bottom')</script>
   #
   # Returns a {Number}.
   bottom: -> pointsBounds @points(), 'max', 'y'
 
   # Returns the left-most coordinate of the geometry shape.
   #
+  # <script>drawGeometryBound('geometry', 'left')</script>
+  #
   # Returns a {Number}.
   left: -> pointsBounds @points(), 'min', 'x'
 
   # Returns the right-most coordinate of the geometry shape.
   #
+  # <script>drawGeometryBound('geometry', 'right')</script>
+  #
   # Returns a {Number}.
   right: -> pointsBounds @points(), 'max', 'x'
 
   # Returns an {Object} containing the bounds of the object.
+  #
+  # <script>drawGeometry('geometry', {bounds: true})</script>
   #
   # Returns an {Object} with the following properties:
   # :top - The {Number} for the shape upper bound.
@@ -98,6 +115,8 @@ class agt.geom.Geometry
 
   # Returns a [Rectangle]{agt.geom.Rectangle} corresponding to the bounds
   # of the current geometry.
+  #
+  # <script>drawGeometry('geometry', {bounds: true})</script>
   #
   # Returns a [Rectangle]{agt.geom.Rectangle}.
   boundingBox: ->

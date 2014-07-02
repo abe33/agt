@@ -1,7 +1,9 @@
 
 {Point,Path,Surface,Geometry,Intersections} = agt.geom
 
-# Public:
+# Public: A `Triangle` is only defined using three [Points]{agt.geom.Point}.
+# It is the simplest geometry you can find in the `geom` package, every other
+# surface geometries can be reduced to a set of triangles.
 #
 # <script>drawGeometry('triangle', {highlight: true})</script>
 #

@@ -28,6 +28,34 @@ class GeometryRenderer
     @angle = 0
     @angleSpeed = @random.in(1,3) * @random.sign()
 
+  render: (context) ->
+    if @geometry.stroke? and @geometry.fill?
+      @renderShape context
+
+    if @options.bounds and @geometry.bounds?
+      @renderBounds context
+
+    if @options.paths and @geometry.pathPointAt? and @geometry.pathOrientationAt?
+      @renderPaths context
+
+    if @options.surface and @geometry.randomPointInSurface?
+      @renderSurface context
+
+    if @options.triangles and @geometry.triangles?
+      @renderTriangles context
+
+    if @options.angle and @geometry.center? and @geometry.pointAtAngle?
+      @renderAngle context
+
+    if @options.vertices and @geometry.drawVertices?
+      @renderVertices context
+
+    if @options.center and @geometry.center?
+      @renderCenter context
+
+    if @options.contains and @geometry.contains?
+      @renderContains context
+
   renderShape: (context) ->
     @geometry.fill(context, colorPalette.fill[@state])
     @geometry.stroke(context, colorPalette.stroke[@state])
@@ -126,31 +154,3 @@ class GeometryRenderer
   renderVertices: (context) ->
     @geometry.drawVertices context, colorPalette.vertices
     @geometry.drawVerticesConnections context, colorPalette.verticesConnections
-
-  render: (context) ->
-    if @geometry.stroke? and @geometry.fill?
-      @renderShape context
-
-    if @options.bounds and @geometry.bounds?
-      @renderBounds context
-
-    if @options.paths and @geometry.pathPointAt? and @geometry.pathOrientationAt?
-      @renderPaths context
-
-    if @options.surface and @geometry.randomPointInSurface?
-      @renderSurface context
-
-    if @options.triangles and @geometry.triangles?
-      @renderTriangles context
-
-    if @options.angle and @geometry.center? and @geometry.pointAtAngle?
-      @renderAngle context
-
-    if @options.vertices and @geometry.drawVertices?
-      @renderVertices context
-
-    if @options.center and @geometry.center?
-      @renderCenter context
-
-    if @options.contains and @geometry.contains?
-      @renderContains context

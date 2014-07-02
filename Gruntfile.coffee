@@ -64,6 +64,7 @@ module.exports = (grunt) ->
         files:
           'doc/assets/customs.js': [
             'demos/geometry_renderer.coffee'
+            'demos/defaults.coffee'
             'demos/customs.coffee'
           ]
 

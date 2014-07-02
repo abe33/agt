@@ -1,26 +1,37 @@
 # Public: Use a `Signal` object wherever you need to dispatch an event.
 # A `Signal` is a dispatcher that have only one channel.
-# @toc
 #
 # Signals are generally defined as property of an object. And
 # their name generally end with a past tense verb, such as in:
 #
-#     myObject.somethingChanged = new Signal
+# ```coffeescript
+# myObject.somethingChanged = new Signal
+# ```
 class agt.Signal
 
-  # Public: Optionally, a signal can have a specific signature.
+  ### Public ###
+
+  # Creates a new `Signal` instance.
+  # Optionally, a signal can have a specific signature.
   # A signature is a collection of argument names such:
   #
-  #     positionChanged = new Signal 'target', 'position'
+  # ```coffeescript
+  # positionChanged = new Signal 'target', 'position'
+  # ```
   #
   # If a signature is passed to a signal, every listener
   # added to the signal must then match the signature.
   #
-  #     positionChanged.add (target, position) ->
-  #       # will be registered
-  #     positionChanged.add (target, position, callback) ->
-  #       # will be registered too
-  #     positionChanged.add () -> # will throw an error
+  # ```coffeescript
+  # # will be registered
+  # positionChanged.add (target, position) ->
+  #
+  # # will be registered too
+  # positionChanged.add (target, position, callback) ->
+  #
+  # # will not be registered
+  # positionChanged.add () -> # will throw an error
+  # ```
   #
   # In the case of an asynchronous listener, the callback argument
   # is not considered as being part of the signature.
@@ -30,7 +41,8 @@ class agt.Signal
     # listeners to use a synchronous dispatch when equal to 0.
     @asyncListeners = 0
 
-  # Public: You can register a listener with or without a context.
+  # Registers a listener for this signal to be called with
+  # the provided context.
   # The context is the object that can be accessed through `this`
   # inside the listener function body.
   #
@@ -42,31 +54,38 @@ class agt.Signal
   # listener blocks the dispatch loop until the callback function
   # passed to the listener is triggered.
   #
-  #     # sync listener
-  #     signal.add (a, b, c) ->
+  # ```coffeescript
+  # # sync listener
+  # signal.add (a, b, c) ->
   #
-  #     # async listener
-  #     signal.add (a, b, c, callback) -> callback()
+  # # async listener
+  # signal.add (a, b, c, callback) -> callback()
+  # ```
   #
   # A listener can be registered several times, but only
   # if the context object is different each time.
   #
   # In other words, the following is possible:
   #
-  #     listener = ->
-  #     context = {}
-  #     myObject.signal.add listener
-  #     myObject.signal.add listener, context
+  # ```coffeescript
+  # listener = ->
+  # context = {}
+  # myObject.signal.add listener
+  # myObject.signal.add listener, context
+  # ```
   #
   # When the following is not:
   #
-  #     listener = ->
-  #     myObject.signal.add listener
-  #     myObject.signal.add listener
+  # ```coffeescript
+  # listener = ->
+  # myObject.signal.add listener
+  # myObject.signal.add listener
+  # ```
   #
-  # listener - foo
-  # context - bar
-  # priority - baz
+  # listener - The {Function} to call when a signal is emitted.
+  # context - The `this` {Object} to call the function with.
+  # priority - A priority {Number}, the higher the priority the sooner
+  #            the listener will be called in the dispatch loop.
   add: (listener, context, priority=0) ->
     @validate listener
 
@@ -78,10 +97,15 @@ class agt.Signal
       # a new listener is added.
       @sortListeners()
 
-  # Public: Listeners can be registered for only one call.
+  # Registers a listener for only one call.
   #
   # All the others rules are the same. So you can't add
   # the same listener/context couple twice through the two methods.
+  #
+  # listener - The {Function} to call when a signal is emitted.
+  # context - The `this` {Object} to call the function with.
+  # priority - A priority {Number}, the higher the priority the sooner
+  #            the listener will be called in the dispatch loop.
   addOnce: (listener, context, priority = 0) ->
     @validate listener
     if not @registered listener, context
@@ -89,70 +113,70 @@ class agt.Signal
       @asyncListeners++ if @isAsync listener
       @sortListeners()
 
-  ##### Signal::remove
-
-  # Listeners can be removed, but only with the context with which
-  # they was added to the signal.
+  # Removes a listener from this signal, but only with the context that
+  # was registered with it.
   #
   # In this regards, avoid to register listeners without a context.
   # If later in the application a context is forgotten or invalid
   # when removing a listener from this signal, the listener
   # without context will end up being removed.
+  #
+  # listener - The {Function} to remove from this signal.
+  # context - The `this` {Object} that was registered with the listener.
   remove: (listener, context) ->
     if @registered listener, context
       @asyncListeners-- if @isAsync listener
       @listeners.splice @indexOf(listener, context), 1
 
-  ##### Signal::removeAll
-
-  # All listeners can be removed at once if needed.
+  # Removes all listeners at once.
   #
-  #     signal.removeAll()
+  # ```coffeescript
+  # signal.removeAll()
+  # ```
   removeAll: ->
     @listeners = []
     @asyncListeners = 0
 
-  ##### Signal::indexOf
-
-  # `indexOf` returns the position of the listener/context couple
+  # Internal: `indexOf` returns the position of the listener/context couple
   # in the listeners array.
   indexOf: (listener, context) ->
     return i for [l,c],i in @listeners when listener is l and context is c
     -1
 
-  ##### Signal::registered
-
-  # Use the `registered` method to test whether a listener/context couple
-  # have been registered in this signal.
+  # Returns true if the passed-in listener have been registered with the
+  # specified context in this signal.
+  #
+  # listener - The listener {Function} to verify.
+  # context - The context {Object} registered with the listener.
+  #
+  # Returns a {Boolean}.
   registered: (listener, context) ->
     @indexOf(listener, context) isnt -1
 
-  ##### Signal::hasListeners
-
   # Returns true if the signal has listeners.
+  #
+  # Returns a {Boolean}.
   hasListeners: -> @listeners.length isnt 0
 
-  ##### Signal::sortListeners
-
-  # The listeners are sorted according to their `priority`.
+  # Internal: The listeners are sorted according to their `priority`.
   # The higher the priority the lower the listener will be
   # in the call order.
   sortListeners: ->
     return if @listeners.length <= 1
     @listeners.sort (a, b) ->
-      [pA, pB ] = [ a[3], b[3]]
+      [pA, pB] = [a[3], b[3]]
 
       if pA < pB then 1 else if pB < pA then -1 else 0
 
-  ##### Signal::validate
-
-  # Throws an error if the passed-in listener's signature
+  # Internal: Throws an error if the passed-in listener's signature
   # doesn't match the signal's one.
   #
-  #     signal = new Signal 'a', 'b', 'c'
-  #     signal.validate () -> # false
-  #     signal.validate (a,b,c) -> # true
-  #     signal.validate (a,b,c,callback) -> # true
+  # ```coffeescript
+  # signal = new Signal 'a', 'b', 'c'
+  # signal.validate () -> # false
+  # signal.validate (a,b,c) -> # true
+  # signal.validate (a,b,c,callback) -> # true
+  # ```
   validate: (listener) ->
     if @signature.length > 0
       re = /[^(]+\(([^)]+)\).*$/m
@@ -169,23 +193,26 @@ class agt.Signal
       m = "The listener #{listener} doesn't match the signal's signature #{s1}"
       throw new Error m if s2 isnt s1
 
-  ##### Signal::isAsync
-
   # Returns `true` if the passed-in `listener` is asynchronous.
   #
-  #     signal.isAsync -> # false
-  #     signal.isAsync (callback) -> # true
+  # ```coffeescript
+  # signal.isAsync(->) # false
+  # signal.isAsync((callback) ->) # true
+  # ```
+  #
+  # listener - The listner {Function} to test.
+  #
+  # Returns a {Boolean}.
   isAsync: (listener) ->
     Function::toString.call(listener).indexOf('callback)') != -1
 
-  #### Signal Dispatch
-
-  ##### Signal::dispatch
-
+  # Dispatch a signal to the signal listeners.
   # Signals are dispatched to all the listeners. All the arguments
   # passed to the dispatch become the signal's message.
   #
-  #     signal.dispatch this, true
+  # ```coffeescript
+  # signal.dispatch this, true
+  # ```
   #
   # Listeners registered for only one call will be removed after
   # the call.
@@ -196,14 +223,19 @@ class agt.Signal
   # of the dispatch, allowing to execute code after all listeners,
   # even asynchronous, have been triggered.
   #
-  #     signal.dispatch this, true, ->
-  #       # all listeners have finish their execution
+  # ```coffeescript
+  # signal.dispatch this, true, ->
+  #     # all listeners have finish their execution
+  # ```
   #
   # **Note:** As the dispatch function will automatically consider
   # the last argument as the callback if its type is `function`, you should
   # avoid using function as the sole argument or as the last argument
   # for a listener. If that case occurs, consider either re-arranging the
   # arguments order or using a value object to carry the function.
+  #
+  # args - The arguments to dispatch with the signal.
+  # callback - A {Function} to callback when all listeners have been notified.
   dispatch: (args..., callback)->
     unless typeof callback is 'function'
       args.push callback
