@@ -63,6 +63,14 @@ class agt.geom.Matrix
     true
 
   # Creates a new Matrix instance.
+  #
+  # a  - The {Number} of the `a` property of the matrix
+  #      or a Matrix-like {Object}.
+  # b  - The {Number} of the `b` property of the matrix.
+  # c  - The {Number} of the `c` property of the matrix.
+  # d  - The {Number} of the `d` property of the matrix.
+  # tx - The {Number} of the `tx` property of the matrix.
+  # ty - The {Number} of the `ty` property of the matrix.
   constructor: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
     {@a, @b, @c, @d, @tx, @ty} = @matrixFrom a, b, c, d, tx, ty, true
 
@@ -77,25 +85,43 @@ class agt.geom.Matrix
   # projected = matrix.transformPoint point
   # # projected = [object Point(0,20)]
   # ```
-  transformPoint: (xOrPt, y) ->
-    if not xOrPt? and not y?
+  #
+  # x - A {Number} for the x coordinate or a point-like {Object}.
+  # y - A {Number} for the y coordinate if the first argument
+  #     was also a number.
+  #
+  # Returns a new transformed [Point]{agt.geom.Point}.
+  transformPoint: (x, y) ->
+    if not x? and not y?
       throw new Error "transformPoint was called without arguments"
 
-    {x,y} = Point.pointFrom xOrPt, y, true
+    {x,y} = Point.pointFrom x, y, true
     new Point x*@a + y*@c + @tx,
               x*@b + y*@d + @ty
 
   # Translates the matrix by the amount of the passed-in point.
-  translate: (xOrPt=0, y=0) ->
-    {x,y} = Point.pointFrom xOrPt, y
+  #
+  # x - A {Number} for the x translation or a point-like {Object}.
+  # y - A {Number} for the y translation if the first argument
+  #     was also a number.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
+  translate: (x=0, y=0) ->
+    {x,y} = Point.pointFrom x, y
 
     @tx += x
     @ty += y
     this
 
   # Scales the matrix by the amount of the passed-in point.
-  scale: (xOrPt=1, y=1) ->
-    {x,y} = Point.pointFrom xOrPt, y
+  #
+  # x - A {Number} for the x scale or a point-like {Object}.
+  # y - A {Number} for the y scale if the first argument
+  #     was also a number.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
+  scale: (x=1, y=1) ->
+    {x,y} = Point.pointFrom x, y
 
     @a *= x
     @d *= y
@@ -104,6 +130,10 @@ class agt.geom.Matrix
     this
 
   # Rotates the matrix by the amount of the passed-in angle in degrees.
+  #
+  # angle - The angle {Number} in radians.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
   rotate: (angle=0) ->
     cos = Math.cos angle
     sin = Math.sin angle
@@ -118,14 +148,31 @@ class agt.geom.Matrix
     this
 
   # Skews the matrix by the amount of the passed-in point.
-  skew: (xOrPt, y) ->
-    pt = Point.pointFrom(xOrPt, y, 0)
+  #
+  # x - A {Number} for the x skew or a point-like {Object}.
+  # y - A {Number} for the y skew if the first argument
+  #     was also a number.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
+  skew: (x, y) ->
+    pt = Point.pointFrom(x, y, 0)
     @append Math.cos(pt.y),
             Math.sin(pt.y),
             -Math.sin(pt.x),
             Math.cos(pt.x)
+    this
 
   # Append the passed-in matrix to this matrix.
+  #
+  # a  - The {Number} of the `a` property of the matrix to append
+  #      or a Matrix-like {Object}.
+  # b  - The {Number} of the `b` property of the matrix to append.
+  # c  - The {Number} of the `c` property of the matrix to append.
+  # d  - The {Number} of the `d` property of the matrix to append.
+  # tx - The {Number} of the `tx` property of the matrix to append.
+  # ty - The {Number} of the `ty` property of the matrix to append.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
   append: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
     {a, b, c, d, tx, ty} = @matrixFrom a, b, c, d, tx, ty, true
     [@a, @b, @c, @d, @tx, @ty] = [
@@ -139,6 +186,16 @@ class agt.geom.Matrix
     this
 
   # Prepend the passed-in matrix with this matrix.
+  #
+  # a  - The {Number} of the `a` property of the matrix to prepend
+  #      or a Matrix-like {Object}.
+  # b  - The {Number} of the `b` property of the matrix to prepend.
+  # c  - The {Number} of the `c` property of the matrix to prepend.
+  # d  - The {Number} of the `d` property of the matrix to prepend.
+  # tx - The {Number} of the `tx` property of the matrix to prepend.
+  # ty - The {Number} of the `ty` property of the matrix to prepend.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
   prepend: (a=1, b=0, c=0, d=1, tx=0, ty=0) ->
     {a, b, c, d, tx, ty} = @matrixFrom a, b, c, d, tx, ty, true
     if a isnt 1 or b isnt 0 or c isnt 0 or d isnt 1
@@ -156,9 +213,13 @@ class agt.geom.Matrix
     this
 
   # Converts this matrix into an identity matrix.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
   identity: -> [@a, @b, @c, @d, @tx, @ty] = [1, 0, 0, 1, 0, 0]; this
 
   # Converts this matrix into its inverse.
+  #
+  # Returns this [Matrix]{agt.geom.Matrix}.
   inverse: ->
     n = @a * @d - @b * @c
     [@a, @b, @c, @d, @tx, @ty] = [
@@ -172,4 +233,8 @@ class agt.geom.Matrix
     this
 
   # Alias the `Matrix.isMatrix` method in instances.
+  #
+  # m - An {Object} to test for matrix properties.
+  #
+  # Returns a {Boolean}.
   isMatrix: (m) -> Matrix.isMatrix m
