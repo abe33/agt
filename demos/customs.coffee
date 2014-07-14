@@ -113,3 +113,14 @@ window.drawTransform = (key, options={}) ->
   geometry[options.type](options.args...)
   geometry.fill(context, renderer.colorPalette.fill.highlight)
   geometry.stroke(context, renderer.colorPalette.stroke.highlight)
+
+window.drawContainsGeometry = (key, options={}) ->
+  {renderer, geometry, context, canvas} = drawGeometry(key, options)
+
+  for g in defaults[key].contains
+    if geometry.containsGeometry(g)
+      g.fill(context, renderer.colorPalette.fill.over)
+      g.stroke(context, renderer.colorPalette.stroke.over)
+    else
+      g.fill(context, renderer.colorPalette.fill.highlight)
+      g.stroke(context, renderer.colorPalette.stroke.highlight)

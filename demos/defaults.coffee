@@ -15,10 +15,14 @@ defaults =
         new agt.geom.Point(50, 25)
         new agt.geom.Point(55, 15)
         new agt.geom.Point(85, 75)
-        new agt.geom.Point(45, 50)
+        new agt.geom.Point(45, 70)
         new agt.geom.Point(10, 85)
       ]
     instance: instanciate
+    contains: [
+      new agt.geom.Circle(15,50,50)
+      new agt.geom.Circle(15,75,70)
+    ]
 
   circle:
     class: agt.geom.Circle

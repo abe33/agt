@@ -25,20 +25,26 @@ class agt.geom.Surface
   # **Abstract** - Returns a random [Point]{agt.geom.Point} with coordinates
   # inside the geometry shape.
   #
+  # <script>drawGeometry('geometry', {surface: true})</script>
+  #
   # Returns a [Point]{agt.geom.Point}.
   randomPointInSurface: -> null
 
-  # Tests if the passed-in coordinates are inside the geometry shape.
+  # **Abstract** - Tests if the passed-in coordinates are inside the geometry shape.
   #
-  # xOrPt - Either a {Number} for the x coordinate or a [Point]{agt.geom.Point}.
+  # <script>drawGeometry('geometry', {contains: true})</script>
+  #
+  # x - Either a {Number} for the x coordinate or a [Point]{agt.geom.Point}.
   # y - A {Number} for the y coordinate, used when a {Number} was passed for
   #     the x coordinate as well.
   #
   # Returns a {Boolean}.
-  contains: (xOrPt, y) -> null
+  contains: (x, y) -> null
 
   # Tests if the passed-in geometry is completely contained inside the
   # current geometry shape.
+  #
+  # <script>drawContainsGeometry('geometry')</script>
   #
   # geometry - The [Geometry]{agt.geom.Geometry} to test.
   #
