@@ -43,6 +43,8 @@ class agt.geom.Path
   # Returns the coordinates on the path at the given
   # {Number} position.
   #
+  # <script>drawGeometry('geometry', {paths: [0.1, 0.45, 0.73]})</script>
+  #
   # pos - The {Number} between `0` and `1` at which get the path coordinates.
   # pathBasedOnLength - A {Boolean} of whether the position on the path
   #                     consider the length of the path segments or not.
@@ -69,6 +71,8 @@ class agt.geom.Path
   # Returns the orientation on the path at the given
   # {Number} position.
   #
+  # <script>drawGeometry('geometry', {paths: [0.1, 0.45, 0.73]})</script>
+  #
   # pos - The {Number} between `0` and `1` at which get the path coordinates.
   # pathBasedOnLength - A {Boolean} of whether the position on the path
   #                     consider the length of the path segments or not.
@@ -87,6 +91,8 @@ class agt.geom.Path
     return d.angle()
 
   # Returns the tangent vector at the given {Number} position.
+  #
+  # <script>drawGeometry('geometry', {paths: [0.1, 0.45, 0.73]})</script>
   #
   # pos - The {Number} between `0` and `1` at which get the path coordinates.
   # accuracy - A {Number} giving the distance, relatively to the path length,
