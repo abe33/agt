@@ -55,6 +55,8 @@ class agt.geom.Geometry
   # Closed geometry should always returns an array where the start and end
   # values are equals.
   #
+  # <script>drawGeometryPoints('geometry', 'points')</script>
+  #
   # Returns an {Array} of [Points]{agt.geom.Point}.
   points: ->
 
