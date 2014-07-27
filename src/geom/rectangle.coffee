@@ -9,7 +9,8 @@
 # rectangle = new Rectangle x: 20, y: 20, width: 80, height: 40, rotation: Math.PI * 0.1
 # ```
 #
-# <script>drawGeometry('rectangle', {highlight: true})</script>
+# <script>window.exampleKey = 'rectangle'</script>
+# <script>drawGeometry(exampleKey, {highlight: true})</script>
 #
 # ### Included Mixins
 #
@@ -51,7 +52,7 @@ class agt.geom.Rectangle
 
   # A specific intersection algorithm when confronting two rectangles.
   #
-  # <script>drawShapeIntersections('rectangle', 'rectangle')</script>
+  # <script>drawShapeIntersections(exampleKey, exampleKey)</script>
   #
   # geom1 - The first rectangle.
   # geom2 - The second rectangle.
@@ -82,70 +83,70 @@ class agt.geom.Rectangle
 
   # Returns the coordinates of the rectangle's corners in an {Array}.
   #
-  # <script>drawGeometryPoints('rectangle', 'corners')</script>
+  # <script>drawGeometryPoints(exampleKey, 'corners')</script>
   #
   # Returns an {Array}.
   corners: -> [@topLeft(), @topRight(), @bottomRight(), @bottomLeft()]
 
   # Returns the coordinates of the top left corner of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'topLeft')</script>
+  # <script>drawGeometryPoints(exampleKey, 'topLeft')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   topLeft: -> new Point(@x, @y)
 
   # Returns the coordinates of the top right corner of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'topRight')</script>
+  # <script>drawGeometryPoints(exampleKey, 'topRight')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   topRight: -> @topLeft().add(@topEdge())
 
   # Returns the coordinates of the bottom left corner of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'bottomLeft')</script>
+  # <script>drawGeometryPoints(exampleKey, 'bottomLeft')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   bottomLeft: -> @topLeft().add(@leftEdge())
 
   # Returns the coordinates of the bottom right corner of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'bottomRight')</script>
+  # <script>drawGeometryPoints(exampleKey, 'bottomRight')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   bottomRight: -> @topLeft().add(@topEdge()).add(@leftEdge())
 
   # Returns the coordinates of the center of the rectangle.
   #
-  # <script>drawGeometry('rectangle', {center: true})</script>
+  # <script>drawGeometry(exampleKey, {center: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}
   center: -> @topLeft().add(@diagonal().scale(0.5))
 
   # Returns the coordinates of the center of the upper edge of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'topEdgeCenter')</script>
+  # <script>drawGeometryPoints(exampleKey, 'topEdgeCenter')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   topEdgeCenter: -> @topLeft().add(@topEdge().scale(0.5))
 
   # Returns the coordinates of the center of the bottom edge of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'bottomEdgeCenter')</script>
+  # <script>drawGeometryPoints(exampleKey, 'bottomEdgeCenter')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   bottomEdgeCenter: -> @bottomLeft().add(@topEdge().scale(0.5))
 
   # Returns the coordinates of the center of the left edge of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'leftEdgeCenter')</script>
+  # <script>drawGeometryPoints(exampleKey, 'leftEdgeCenter')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   leftEdgeCenter: -> @topLeft().add(@leftEdge().scale(0.5))
 
   # Returns the coordinates of the center of the right edge of the rectangle.
   #
-  # <script>drawGeometryPoints('rectangle', 'rightEdgeCenter')</script>
+  # <script>drawGeometryPoints(exampleKey, 'rightEdgeCenter')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   rightEdgeCenter: -> @topRight().add(@leftEdge().scale(0.5))
@@ -157,7 +158,7 @@ class agt.geom.Rectangle
 
   # Returns the rectangle's top edge vector.
   #
-  # <script>drawGeometryEdge('rectangle', 'topLeft', 'topEdge')</script>
+  # <script>drawGeometryEdge(exampleKey, 'topLeft', 'topEdge')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   topEdge: -> new Point @width * Math.cos(@rotation),
@@ -165,7 +166,7 @@ class agt.geom.Rectangle
 
   # Returns the rectangle's left edge vector.
   #
-  # <script>drawGeometryEdge('rectangle', 'topLeft', 'leftEdge')</script>
+  # <script>drawGeometryEdge(exampleKey, 'topLeft', 'leftEdge')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   leftEdge: ->
@@ -174,56 +175,56 @@ class agt.geom.Rectangle
 
   # Returns the rectangle's bottom edge vector.
   #
-  # <script>drawGeometryEdge('rectangle', 'bottomLeft', 'bottomEdge')</script>
+  # <script>drawGeometryEdge(exampleKey, 'bottomLeft', 'bottomEdge')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   bottomEdge: -> @topEdge()
 
   # Returns the rectangle's right edge vector.
   #
-  # <script>drawGeometryEdge('rectangle', 'topRight', 'rightEdge')</script>
+  # <script>drawGeometryEdge(exampleKey, 'topRight', 'rightEdge')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   rightEdge: -> @leftEdge()
 
   # Returns the rectangle's diagonal vector.
   #
-  # <script>drawGeometryEdge('rectangle', 'topLeft', 'diagonal')</script>
+  # <script>drawGeometryEdge(exampleKey, 'topLeft', 'diagonal')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   diagonal: -> @leftEdge().add(@topEdge())
 
   # Returns the top-most coordinate of the rectangle shape.
   #
-  # <script>drawGeometryBound('rectangle', 'top')</script>
+  # <script>drawGeometryBound(exampleKey, 'top')</script>
   #
   # Returns a {Number}.
   top: -> Math.min @y, @topRight().y, @bottomRight().y, @bottomLeft().y
 
   # Returns the bottom-most coordinate of the rectangle shape.
   #
-  # <script>drawGeometryBound('rectangle', 'bottom')</script>
+  # <script>drawGeometryBound(exampleKey, 'bottom')</script>
   #
   # Returns a {Number}.
   bottom: -> Math.max @y, @topRight().y, @bottomRight().y, @bottomLeft().y
 
   # Returns the left-most coordinate of the rectangle shape.
   #
-  # <script>drawGeometryBound('rectangle', 'left')</script>
+  # <script>drawGeometryBound(exampleKey, 'left')</script>
   #
   # Returns a {Number}.
   left: -> Math.min @x, @topRight().x, @bottomRight().x, @bottomLeft().x
 
   # Returns the right-most coordinate of the rectangle shape.
   #
-  # <script>drawGeometryBound('rectangle', 'right')</script>
+  # <script>drawGeometryBound(exampleKey, 'right')</script>
   #
   # Returns a {Number}.
   right: -> Math.max @x, @topRight().x, @bottomRight().x, @bottomLeft().x
 
   # Sets the position of the rectangle using its center as reference.
   #
-  # <script>drawTransform('rectangle', {type: 'setCenter', args: [100, 50], width: 150})</script>
+  # <script>drawTransform(exampleKey, {type: 'setCenter', args: [100, 50], width: 150})</script>
   #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
@@ -240,7 +241,7 @@ class agt.geom.Rectangle
   # Adds the passed-in [Point]{agt.geom.Point} to the position
   # of this rectangle.
   #
-  # <script>drawTransform('rectangle', {type: 'translate', args: [50, 0], width: 150})</script>
+  # <script>drawTransform(exampleKey, {type: 'translate', args: [50, 0], width: 150})</script>
   #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
@@ -256,7 +257,7 @@ class agt.geom.Rectangle
 
   # Adds the passed-in rotation to the current rectangle rotation.
   #
-  # <script>drawTransform('rectangle', {type: 'rotate', args: [-Math.PI/ 4]})</script>
+  # <script>drawTransform(exampleKey, {type: 'rotate', args: [-Math.PI/ 4]})</script>
   #
   # **Note:** This method is also aliased as `rotateAroundCenter`.
   #
@@ -276,7 +277,7 @@ class agt.geom.Rectangle
   # You can use the `width` and `height` property to change the size of the
   # rectangle without affecting the position.
   #
-  # <script>drawTransform('rectangle', {type: 'scale', args: [0.6]})</script>
+  # <script>drawTransform(exampleKey, {type: 'scale', args: [0.6]})</script>
   #
   # scale - The scale {Number} to apply to the rectangle.
   #
@@ -292,7 +293,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle around its center by the amount of the arguments.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateAroundCenter', args: [10, 10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateAroundCenter', args: [10, 10]})</script>
   #
   # x - A {Number} for the width or a point-like {Object}.
   # y - A {Number} for the height if the first argument
@@ -307,7 +308,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle from its origin by the amount of the arguments.
   #
-  # <script>drawTransform('rectangle', {type: 'inflate', args: [10, 10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflate', args: [10, 10]})</script>
   #
   # x - A {Number} for the width or a point-like {Object}.
   # y - A {Number} for the height if the first argument
@@ -322,7 +323,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle width to the left by the passed-in value.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateLeft', args: [10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateLeft', args: [10]})</script>
   #
   # inflate - a {Number} for the width inflation.
   #
@@ -335,7 +336,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle width to the right by the passed-in value.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateRight', args: [10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateRight', args: [10]})</script>
   #
   # inflate - A {Number} for width inflation.
   #
@@ -346,7 +347,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle height to the top by the passed-in value.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateTop', args: [10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateTop', args: [10]})</script>
   #
   # x - A {Number} for the height inflation.
   #
@@ -359,7 +360,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle height to the bottom by the passed-in value.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateBottom', args: [10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateBottom', args: [10]})</script>
   #
   # x - A {Number} for the height inflation.
   #
@@ -370,7 +371,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle to the top left by the amount of the arguments.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateTopLeft', args: [10, 10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateTopLeft', args: [10, 10]})</script>
   #
   # x - A {Number} for the width or a point-like {Object}.
   # y - A {Number} for the height if the first argument
@@ -385,7 +386,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle to the top right by the amount of the arguments.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateTopRight', args: [10, 10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateTopRight', args: [10, 10]})</script>
   #
   # x - A {Number} for the width or a point-like {Object}.
   # y - A {Number} for the height if the first argument
@@ -400,7 +401,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle to the bottom left by the amount of the arguments.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateBottomLeft', args: [10, 10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateBottomLeft', args: [10, 10]})</script>
   #
   # x - A {Number} for the width or a point-like {Object}.
   # y - A {Number} for the height if the first argument
@@ -415,7 +416,7 @@ class agt.geom.Rectangle
 
   # Inflates the rectangle to the bottom right by the amount of the arguments.
   #
-  # <script>drawTransform('rectangle', {type: 'inflateBottomRight', args: [10, 10]})</script>
+  # <script>drawTransform(exampleKey, {type: 'inflateBottomRight', args: [10, 10]})</script>
   #
   # x - A {Number} for the width or a point-like {Object}.
   # y - A {Number} for the height if the first argument
@@ -431,7 +432,7 @@ class agt.geom.Rectangle
 
   # Returns the rectangle points.
   #
-  # <script>drawGeometryPoints('rectangle', 'points')</script>
+  # <script>drawGeometryPoints(exampleKey, 'points')</script>
   #
   # Returns an {Array}.
   points: ->
@@ -442,7 +443,7 @@ class agt.geom.Rectangle
   #
   # angle - The angle {Number}.
   #
-  # <script>drawGeometry('rectangle', {angle: true})</script>
+  # <script>drawGeometry(exampleKey, {angle: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   pointAtAngle: (angle) ->
@@ -461,7 +462,7 @@ class agt.geom.Rectangle
   # In the example below all the green points on the screen represents
   # coordinates that are contained in the rectangle.
   #
-  # <script>drawGeometry('rectangle', {contains: true})</script>
+  # <script>drawGeometry(exampleKey, {contains: true})</script>
   #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
@@ -474,7 +475,7 @@ class agt.geom.Rectangle
 
   # Returns a randomly generated point within the rectangle perimeter.
   #
-  # <script>drawGeometry('rectangle', {surface: true})</script>
+  # <script>drawGeometry(exampleKey, {surface: true})</script>
   #
   # random - An optional [Random]{agt.random.Random} instance to use instead
   #          of the default `Math` random method.
@@ -495,7 +496,7 @@ class agt.geom.Rectangle
   # Returns a [Point]{agt.geom.Point} on the rectangle perimeter using
   # a {Number} between `0` and `1`.
   #
-  # <script>drawGeometry('rectangle', {paths: [0, 1/3, 2/3]})</script>
+  # <script>drawGeometry(exampleKey, {paths: [0, 1/3, 2/3]})</script>
   #
   # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
   # pathBasedOnLength - A {Boolean} of whether the position on the path
@@ -521,7 +522,7 @@ class agt.geom.Rectangle
 
   # Returns the angle of the rectangle perimeter at the path position {Number}.
   #
-  # <script>drawGeometry('rectangle', {paths: [0, 1/3, 2/3]})</script>
+  # <script>drawGeometry(exampleKey, {paths: [0, 1/3, 2/3]})</script>
   #
   # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
   # pathBasedOnLength - A {Boolean} of whether the position on the path

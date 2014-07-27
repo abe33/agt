@@ -8,6 +8,7 @@
 # is available for a given kind of geometry. For instance, when computing
 # intersections between a [Circle]{agt.geom.Circle} and another geometry
 # the {agt.geom.Circle::eachIntersections} method wil be used instead.
+# <script>window.exampleKey = 'geometry'</script>
 class agt.geom.Intersections
   @iterators: {}
 
@@ -15,7 +16,7 @@ class agt.geom.Intersections
 
   # Returns `true` if the passed-in geometry intersects the current geometry.
   #
-  # <script>drawIntersectsGeometry('geometry')</script>
+  # <script>drawIntersectsGeometry(exampleKey)</script>
   #
   # geometry - The [Geometry]{agt.geom.Geometry} to test.
   #
@@ -32,7 +33,7 @@ class agt.geom.Intersections
   # the passed-in geometry. If there's no intersections the function returns
   # `null`.
   #
-  # <script>drawShapeIntersections('geometry', 'geometry')</script>
+  # <script>drawShapeIntersections(exampleKey, exampleKey)</script>
   #
   # geometry - The [Geometry]{agt.geom.Geometry} to test.
   #

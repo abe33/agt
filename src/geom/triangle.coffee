@@ -5,7 +5,8 @@
 # It is the simplest geometry you can find in the `geom` package, every other
 # surface geometries can be reduced to a set of triangles.
 #
-# <script>drawGeometry('triangle', {highlight: true})</script>
+# <script>window.exampleKey = 'triangle'</script>
+# <script>drawGeometry(exampleKey, {highlight: true})</script>
 #
 # ### Included Mixins
 #
@@ -67,7 +68,7 @@ class agt.geom.Triangle
 
   # Returns the center of the triangle.
   #
-  # <script>drawGeometry('triangle', {center: true})</script>
+  # <script>drawGeometry(exampleKey, {center: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   center: -> new Point (@a.x + @b.x + @c.x) / 3,
@@ -75,21 +76,21 @@ class agt.geom.Triangle
 
   # Returns the center of the `ab` edge of the triangle.
   #
-  # <script>drawGeometryPoints('triangle', 'abCenter')</script>
+  # <script>drawGeometryPoints(exampleKey, 'abCenter')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   abCenter: -> @a.add @ab().scale(0.5)
 
   # Returns the center of the `ac` edge of the triangle.
   #
-  # <script>drawGeometryPoints('triangle', 'acCenter')</script>
+  # <script>drawGeometryPoints(exampleKey, 'acCenter')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   acCenter: -> @a.add @ac().scale(0.5)
 
   # Returns the center of the `bc` edge of the triangle.
   #
-  # <script>drawGeometryPoints('triangle', 'bcCenter')</script>
+  # <script>drawGeometryPoints(exampleKey, 'bcCenter')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   bcCenter: -> @b.add @bc().scale(0.5)
@@ -101,42 +102,42 @@ class agt.geom.Triangle
 
   # Returns the triangle's `ab` edge vector.
   #
-  # <script>drawGeometryEdge('triangle', 'a', 'ab')</script>
+  # <script>drawGeometryEdge(exampleKey, 'a', 'ab')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   ab: -> @b.subtract @a
 
   # Returns the triangle's `ab` edge vector.
   #
-  # <script>drawGeometryEdge('triangle', 'a', 'ac')</script>
+  # <script>drawGeometryEdge(exampleKey, 'a', 'ac')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   ac: -> @c.subtract @a
 
   # Returns the triangle's `ba` edge vector.
   #
-  # <script>drawGeometryEdge('triangle', 'b', 'ba')</script>
+  # <script>drawGeometryEdge(exampleKey, 'b', 'ba')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   ba: -> @a.subtract @b
 
   # Returns the triangle's `bc` edge vector.
   #
-  # <script>drawGeometryEdge('triangle', 'b', 'bc')</script>
+  # <script>drawGeometryEdge(exampleKey, 'b', 'bc')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   bc: -> @c.subtract @b
 
   # Returns the triangle's `ca` edge vector.
   #
-  # <script>drawGeometryEdge('triangle', 'c', 'ca')</script>
+  # <script>drawGeometryEdge(exampleKey, 'c', 'ca')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   ca: -> @a.subtract @c
 
   # Returns the triangle's `cb` edge vector.
   #
-  # <script>drawGeometryEdge('triangle', 'c', 'cb')</script>
+  # <script>drawGeometryEdge(exampleKey, 'c', 'cb')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   cb: -> @b.subtract @c
@@ -158,28 +159,28 @@ class agt.geom.Triangle
 
   # Returns the top-most coordinate of the triangle shape.
   #
-  # <script>drawGeometryBound('triangle', 'top')</script>
+  # <script>drawGeometryBound(exampleKey, 'top')</script>
   #
   # Returns a {Number}.
   top: -> Math.min @a.y, @b.y, @c.y
 
   # Returns the bottom-most coordinate of the triangle shape.
   #
-  # <script>drawGeometryBound('triangle', 'bottom')</script>
+  # <script>drawGeometryBound(exampleKey, 'bottom')</script>
   #
   # Returns a {Number}.
   bottom: -> Math.max @a.y, @b.y, @c.y
 
   # Returns the left-most coordinate of the triangle shape.
   #
-  # <script>drawGeometryBound('triangle', 'left')</script>
+  # <script>drawGeometryBound(exampleKey, 'left')</script>
   #
   # Returns a {Number}.
   left: -> Math.min @a.x, @b.x, @c.x
 
   # Returns the right-most coordinate of the triangle shape.
   #
-  # <script>drawGeometryBound('triangle', 'right')</script>
+  # <script>drawGeometryBound(exampleKey, 'right')</script>
   #
   # Returns a {Number}.
   right: -> Math.max @a.x, @b.x, @c.x
@@ -212,7 +213,7 @@ class agt.geom.Triangle
   # Adds the passed-in [Point]{agt.geom.Point} to the position
   # of this triangle.
   #
-  # <script>drawTransform('triangle', {type: 'translate', args: [50, 0], width: 150})</script>
+  # <script>drawTransform(exampleKey, {type: 'translate', args: [50, 0], width: 150})</script>
   #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
@@ -228,7 +229,7 @@ class agt.geom.Triangle
 
   # Adds the passed-in rotation to the current triangle rotation.
   #
-  # <script>drawTransform('triangle', {type: 'rotate', args: [Math.PI/ 3]})</script>
+  # <script>drawTransform(exampleKey, {type: 'rotate', args: [Math.PI/ 3]})</script>
   #
   # rotation - The rotation {Number}.
   #
@@ -244,7 +245,7 @@ class agt.geom.Triangle
 
   # Scales the triangle around its center.
   #
-  # <script>drawTransform('triangle', {type: 'scale', args: [0.6]})</script>
+  # <script>drawTransform(exampleKey, {type: 'scale', args: [0.6]})</script>
   #
   # scale - The scale {Number} to apply to the triangle.
   #
@@ -265,7 +266,7 @@ class agt.geom.Triangle
 
   # Returns the triangle points.
   #
-  # <script>drawGeometryPoints('triangle', 'points')</script>
+  # <script>drawGeometryPoints(exampleKey, 'points')</script>
   #
   # Returns an {Array}.
   points: -> [@a.clone(), @b.clone(), @c.clone(), @a.clone()]
@@ -275,7 +276,7 @@ class agt.geom.Triangle
   #
   # angle - The angle {Number}.
   #
-  # <script>drawGeometry('triangle', {angle: true})</script>
+  # <script>drawGeometry(exampleKey, {angle: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   pointAtAngle: (angle) ->
@@ -298,7 +299,7 @@ class agt.geom.Triangle
   # In the example below all the green points on the screen represents
   # coordinates that are contained in the triangle.
   #
-  # <script>drawGeometry('triangle', {contains: true})</script>
+  # <script>drawGeometry(exampleKey, {contains: true})</script>
   #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
@@ -326,7 +327,7 @@ class agt.geom.Triangle
 
   # Returns a randomly generated point within the triangle perimeter.
   #
-  # <script>drawGeometry('triangle', {surface: true})</script>
+  # <script>drawGeometry(exampleKey, {surface: true})</script>
   #
   # random - An optional [Random]{agt.random.Random} instance to use instead
   #          of the default `Math` random method.
@@ -354,7 +355,7 @@ class agt.geom.Triangle
   # Returns a [Point]{agt.geom.Point} on the triangle perimeter using
   # a {Number} between `0` and `1`.
   #
-  # <script>drawGeometry('triangle', {paths: [0, 1/3, 2/3]})</script>
+  # <script>drawGeometry(exampleKey, {paths: [0, 1/3, 2/3]})</script>
   #
   # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
   # pathBasedOnLength - A {Boolean} of whether the position on the path
@@ -378,7 +379,7 @@ class agt.geom.Triangle
 
   # Returns the orientation of the path at the given position.
   #
-  # <script>drawGeometry('triangle', {paths: [0, 1/3, 2/3]})</script>
+  # <script>drawGeometry(exampleKey, {paths: [0, 1/3, 2/3]})</script>
   #
   # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
   # pathBasedOnLength - A {Boolean} of whether the position on the path

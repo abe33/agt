@@ -8,11 +8,12 @@
 # circle = new Circle radius: 80, x: 100, y: 100, rotation: 0
 # ```
 #
-# <script>drawGeometry('circle', {highlight: true})</script>
+# <script>window.exampleKey = 'circle'</script>
+# <script>drawGeometry(exampleKey, {highlight: true})</script>
 #
 # When conforming to the [Geometry]{agt.geom.Geometry} interface such as the
 # [points]{agt.geom.Geometry::points} method the `Circle` class
-# use approximations based on the number of `segments` defined on the circle.
+# use approximations based on the number of ` segments` defined on the circle.
 #
 # ### Included Mixins
 #
@@ -43,7 +44,7 @@ class agt.geom.Circle
   # The general intersections algorithm for circles with non-circle
   # geometries.
   #
-  # <script>drawShapeIntersections('circle', 'rectangle')</script>
+  # <script>drawShapeIntersections(exampleKey, 'rectangle')</script>
   #
   # geom1 - The first [Geometry]{agt.geom.Geometry}.
   # geom2 - The second [Geometry]{agt.geom.Geometry}.
@@ -62,7 +63,7 @@ class agt.geom.Circle
 
   # The specific algorithm for circle with circle intersections.
   #
-  # <script>drawShapeIntersections('circle', 'circle')</script>
+  # <script>drawShapeIntersections(exampleKey, exampleKey)</script>
   #
   # geom1 - The first `Circle`.
   # geom2 - The second `Circle`.
@@ -111,35 +112,35 @@ class agt.geom.Circle
 
   # Returns the center of the circle.
   #
-  # <script>drawGeometry('circle', {center: true})</script>
+  # <script>drawGeometry(exampleKey, {center: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   center: -> new Point @x, @y
 
   # Returns the top-most coordinate of the circle shape.
   #
-  # <script>drawGeometryBound('circle', 'top')</script>
+  # <script>drawGeometryBound(exampleKey, 'top')</script>
   #
   # Returns a {Number}.
   top: -> @y - @radius
 
   # Returns the bottom-most coordinate of the circle shape.
   #
-  # <script>drawGeometryBound('circle', 'bottom')</script>
+  # <script>drawGeometryBound(exampleKey, 'bottom')</script>
   #
   # Returns a {Number}.
   bottom: -> @y + @radius
 
   # Returns the left-most coordinate of the circle shape.
   #
-  # <script>drawGeometryBound('circle', 'left')</script>
+  # <script>drawGeometryBound(exampleKey, 'left')</script>
   #
   # Returns a {Number}.
   left: -> @x - @radius
 
   # Returns the right-most coordinate of the circle shape.
   #
-  # <script>drawGeometryBound('circle', 'right')</script>
+  # <script>drawGeometryBound(exampleKey, 'right')</script>
   #
   # Returns a {Number}.
   right: -> @x + @radius
@@ -147,7 +148,7 @@ class agt.geom.Circle
   # Adds the passed-in [Point]{agt.geom.Point} to the position
   # of this circle.
   #
-  # <script>drawTransform('circle', {type: 'translate', args: [50, 0], width: 150})</script>
+  # <script>drawTransform(exampleKey, {type: 'translate', args: [50, 0], width: 150})</script>
   #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
@@ -167,7 +168,7 @@ class agt.geom.Circle
   # starts. In consequences it affects its triangulation, its path properties
   # and in general every methods that deals with position on the perimeter.
   #
-  # <script>drawTransform('circle', {type: 'rotate', args: [Math.PI/ 3]})</script>
+  # <script>drawTransform(exampleKey, {type: 'rotate', args: [Math.PI/ 3]})</script>
   #
   # rotation - The rotation {Number}.
   #
@@ -178,7 +179,7 @@ class agt.geom.Circle
 
   # Scales the circle by multiplying its radius by the passed-in `scale`.
   #
-  # <script>drawTransform('circle', {type: 'scale', args: [0.6]})</script>
+  # <script>drawTransform(exampleKey, {type: 'scale', args: [0.6]})</script>
   #
   # scale - The scale {Number} to apply to the circle.
   #
@@ -190,7 +191,7 @@ class agt.geom.Circle
   # Returns the circle points as approximated using the current `segments`
   # of the circle.
   #
-  # <script>drawGeometryPoints('circle', 'points')</script>
+  # <script>drawGeometryPoints(exampleKey, 'points')</script>
   #
   # Returns an {Array}.
   points: ->
@@ -200,7 +201,7 @@ class agt.geom.Circle
   # Returns the triangles forming the circle as approximated using
   # the current `segments` of the circle.
   #
-  # <script>drawGeometry('circle', {triangles: true})</script>
+  # <script>drawGeometry(exampleKey, {triangles: true})</script>
   #
   # Returns an {Array} of [Triangles]{agt.geom.Triangle}.
   triangles: ->
@@ -222,7 +223,7 @@ class agt.geom.Circle
   # Iterates over all intersections between the vector formed by the `a` and `b`
   # [Points]{agt.geom.Point} and the current circle.
   #
-  # <script>drawLineIntersections('circle')</script>
+  # <script>drawLineIntersections(exampleKey)</script>
   #
   # a - The starting [Points]{agt.geom.Point} of the vector.
   # b - The ending [Points]{agt.geom.Point} of the vector.
@@ -257,7 +258,7 @@ class agt.geom.Circle
   #
   # angle - The angle {Number}.
   #
-  # <script>drawGeometry('circle', {angle: true})</script>
+  # <script>drawGeometry(exampleKey, {angle: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   pointAtAngle: (angle) ->
@@ -274,7 +275,7 @@ class agt.geom.Circle
   # In the example below all the green points on the screen represents
   # coordinates that are contained in the circle.
   #
-  # <script>drawGeometry('circle', {contains: true})</script>
+  # <script>drawGeometry(exampleKey, {contains: true})</script>
   #
   # x - A {Number} for the x coordinate or a point-like {Object}.
   # y - A {Number} for the y coordinate if the first argument
@@ -288,7 +289,7 @@ class agt.geom.Circle
 
   # Returns a randomly generated point within the circle perimeter.
   #
-  # <script>drawGeometry('circle', {surface: true})</script>
+  # <script>drawGeometry(exampleKey, {surface: true})</script>
   #
   # random - An optional [Random]{agt.random.Random} instance to use instead
   #          of the default `Math` random method.
@@ -311,7 +312,7 @@ class agt.geom.Circle
   # Returns a [Point]{agt.geom.Point} on the circle perimeter using
   # a {Number} between `0` and `1`.
   #
-  # <script>drawGeometry('circle', {paths: [0, 1/3, 2/3]})</script>
+  # <script>drawGeometry(exampleKey, {paths: [0, 1/3, 2/3]})</script>
   #
   # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
   #

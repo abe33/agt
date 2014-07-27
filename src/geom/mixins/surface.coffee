@@ -13,6 +13,7 @@
 #
 #   # Your surface implementation
 # ```
+# <script>window.exampleKey = 'geometry'</script>
 class agt.geom.Surface
 
   ### Public ###
@@ -25,14 +26,14 @@ class agt.geom.Surface
   # **Abstract** - Returns a random [Point]{agt.geom.Point} with coordinates
   # inside the geometry shape.
   #
-  # <script>drawGeometry('geometry', {surface: true})</script>
+  # <script>drawGeometry(exampleKey, {surface: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}.
   randomPointInSurface: -> null
 
   # **Abstract** - Tests if the passed-in coordinates are inside the geometry shape.
   #
-  # <script>drawGeometry('geometry', {contains: true})</script>
+  # <script>drawGeometry(exampleKey, {contains: true})</script>
   #
   # x - Either a {Number} for the x coordinate or a [Point]{agt.geom.Point}.
   # y - A {Number} for the y coordinate, used when a {Number} was passed for
@@ -44,7 +45,7 @@ class agt.geom.Surface
   # Tests if the passed-in geometry is completely contained inside the
   # current geometry shape.
   #
-  # <script>drawContainsGeometry('geometry')</script>
+  # <script>drawContainsGeometry(exampleKey)</script>
   #
   # geometry - The [Geometry]{agt.geom.Geometry} to test.
   #
