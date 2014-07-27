@@ -5,6 +5,10 @@
 # the [CubicBezier]{agt.geom.CubicBezier} or the
 # [LinearSpline]{agt.geom.LinearSpline} classes.
 #
+# <script>window.exampleKey = 'cubic_spline'</script>
+# <script>drawGeometry('cubic_spline', {highlight: true})</script>
+# <script>drawGeometry('linear_spline', {highlight: true})</script>
+#
 # ```coffeescript
 # class DummySpline
 #   @include agt.geom.Spine(1)
@@ -22,6 +26,8 @@ agt.geom.Spline = (segmentSize) ->
 
   # Public: The concrete mixin as returned by the
   # [Spline](../files/geom/mixins/spline.coffee.html) method.
+  #
+  # <script>window.exampleKey = 'cubic_spline'</script>
   class ConcreteSpline
     @include mixins.Memoizable
 
@@ -52,6 +58,8 @@ agt.geom.Spline = (segmentSize) ->
         throw new Error "The number of vertices for #{this} doesn't match"
 
     # Returns the center of the spline by averaging its vertices.
+    #
+    # <script>drawGeometry(exampleKey, {center: true})</script>
     #
     # Returns a [Point]{agt.geom.Point}.
     center: ->
