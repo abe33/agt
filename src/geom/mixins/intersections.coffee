@@ -1,9 +1,25 @@
-# Public: 
+# Public: The `Intersections` mixin provides methods to geometries that
+# allow to compute intersections with other geometries.
+#
+# The default intersections computation implies testing all segments formed
+# by the `points` array returned by both geometries.
+#
+# The mixin also provides methods to register faster routines when one
+# is available for a given kind of geometry. For instance, when computing
+# intersections between a [Circle]{agt.geom.Circle} and another geometry
+# the {agt.geom.Circle::eachIntersections} method wil be used instead.
 class agt.geom.Intersections
   @iterators: {}
 
   ### Public ###
 
+  # Returns `true` if the passed-in geometry intersects the current geometry.
+  #
+  # <script>drawIntersectsGeometry('geometry')</script>
+  #
+  # geometry - The [Geometry]{agt.geom.Geometry} to test.
+  #
+  # Returns a {Boolean} of whether the two geometries intersects.
   intersects: (geometry) ->
     return false if geometry.bounds? and not @boundsCollide geometry
     output = false
@@ -12,6 +28,15 @@ class agt.geom.Intersections
 
     output
 
+  # Returns an {Array} of all the intersections [Points]{agt.geom.Point} with
+  # the passed-in geometry. If there's no intersections the function returns
+  # `null`.
+  #
+  # <script>drawShapeIntersections('geometry', 'geometry')</script>
+  #
+  # geometry - The [Geometry]{agt.geom.Geometry} to test.
+  #
+  # Returns an {Array} of [Points]{agt.geom.Point}.
   intersections: (geometry) ->
     return null if geometry.bounds? and not @boundsCollide geometry
     output = []
@@ -22,6 +47,12 @@ class agt.geom.Intersections
 
     if output.length > 0 then output else null
 
+  # Returns `true` if the bounds of the passed-in geometry intersects
+  # the current geometry bounds.
+  #
+  # geometry - The [Geometry]{agt.geom.Geometry} to test.
+  #
+  # Returns a {Boolean}.
   boundsCollide: (geometry) ->
     bounds1 = @bounds()
     bounds2 = geometry.bounds()
@@ -32,6 +63,8 @@ class agt.geom.Intersections
       bounds1.bottom < bounds2.top or
       bounds1.right < bounds2.left
     )
+
+  ### Internal ###
 
   intersectionsIterator: (geom1, geom2) ->
     c1 = if geom1.classname then geom1.classname() else ''
@@ -100,8 +133,6 @@ class agt.geom.Intersections
 
           return if block.call this, cross, context
           lastIntersection = cross
-
-  ### Internal ###
 
   perCrossing: (start1, dir1, start2, dir2) ->
     v3bx = start2.x - start1.x

@@ -124,3 +124,15 @@ window.drawContainsGeometry = (key, options={}) ->
     else
       g.fill(context, renderer.colorPalette.fill.highlight)
       g.stroke(context, renderer.colorPalette.stroke.highlight)
+
+
+window.drawIntersectsGeometry = (key, options={}) ->
+  {renderer, geometry, context, canvas} = drawGeometry(key, options)
+
+  for g in defaults[key].intersects
+    if geometry.intersects(g)
+      g.fill(context, renderer.colorPalette.fill.over)
+      g.stroke(context, renderer.colorPalette.stroke.over)
+    else
+      g.fill(context, renderer.colorPalette.fill.highlight)
+      g.stroke(context, renderer.colorPalette.stroke.highlight)

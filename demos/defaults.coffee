@@ -23,6 +23,16 @@ defaults =
       new agt.geom.Circle(15,50,50)
       new agt.geom.Circle(15,75,70)
     ]
+    intersects: [
+      new agt.geom.Circle(15,50,50)
+      new agt.geom.Circle(15,75,70)
+    ]
+    intersectionInstance: ->
+      new @class vertices: [
+        new agt.geom.Point(40, 60)
+        new agt.geom.Point(120, 70)
+        new agt.geom.Point(130, 20)
+      ]
 
   circle:
     class: agt.geom.Circle
