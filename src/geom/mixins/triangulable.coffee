@@ -1,9 +1,18 @@
-# Public: 
+# Public: The `Triangulable` mixin provides the {::triangles} method, allowing
+# closed geometries to returns the [Triangles]{agt.geom.Triangle} that compose
+# it.
+#
+# <script>window.exampleKey = 'geometry'</script>
 class agt.geom.Triangulable
   @include mixins.Memoizable
 
   ### Public ###
 
+  # Returns the triangles that forms the geometry surface.
+  #
+  # <script>drawGeometry(exampleKey, {triangles: true})</script>
+  #
+  # Returns an {Array} of [Triangles]{agt.geom.Triangle}.
   triangles: ->
     return @memoFor 'triangles' if @memoized 'triangles'
 
