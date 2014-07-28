@@ -77,6 +77,8 @@ agt.geom.Spline = (segmentSize) ->
     # Applies a translation represented by the passed-in [point]{agt.geom.Point}
     # to every vertices of the spline.
     #
+    # <script>drawTransform(exampleKey, {type: 'translate', args: [50, 0], width: 150})</script>
+    #
     # x - A {Number} for the x coordinate or a point-like {Object}.
     # y - A {Number} for the y coordinate if the first argument is also a number.
     #
@@ -90,6 +92,8 @@ agt.geom.Spline = (segmentSize) ->
     # Rotates every vertices around the spline center by an amount of `rotation`
     # radians.
     #
+    # <script>drawTransform(exampleKey, {type: 'rotate', args: [Math.PI / 3]})</script>
+    #
     # rotation - The {Number} of radians to rotate the spline.
     #
     # Returns this {ConcreteSpline}.
@@ -101,6 +105,8 @@ agt.geom.Spline = (segmentSize) ->
 
     # Scales the spline by moving every vertices on the vector they forms with
     # the spline center.
+    #
+    # <script>drawTransform(exampleKey, {type: 'scale', args: [0.6]})</script>
     #
     # scale - The scaling factor {Number}, a value of `0.5` will scale down
     #         the spline at half its original size when a value of `2` will
@@ -117,6 +123,8 @@ agt.geom.Spline = (segmentSize) ->
     # property of the current spline. The total number of points for a geometry
     # is always the result of the following equation: `segment size * number
     # of segments`.
+    #
+    # <script>drawGeometryPoints(exampleKey, 'points')</script>
     #
     # Returns an {Array} of [Points]{agt.geom.Point}.
     points: ->
@@ -266,6 +274,8 @@ agt.geom.Spline = (segmentSize) ->
 
     # Draws the spline vertices onto the passed-in canvas context.
     #
+    # <script>drawGeometry(exampleKey, {vertices: true})</script>
+    #
     # context - The canvas context to draw in.
     # color - The color {String} to use for the vertices.
     drawVertices: (context, color=agt.COLORS.VERTICES) ->
@@ -277,6 +287,8 @@ agt.geom.Spline = (segmentSize) ->
         context.closePath()
 
     # Draws the segments between each vertex onto the passed-in canvas context.
+    #
+    # <script>drawGeometry(exampleKey, {verticesConnections: true})</script>
     #
     # context - The canvas context to draw in.
     # color - The color {String} to use for the vertices connections.

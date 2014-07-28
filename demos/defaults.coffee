@@ -3,7 +3,7 @@ instanciate = (opts={}) ->
 
   new @class opts
 
-instanciateSpline = -> new @class @defaults.vertices
+instanciateSpline = -> new @class @defaults.vertices()
 
 defaults =
   width: 100
@@ -39,7 +39,7 @@ defaults =
   cubic_spline:
     class: agt.geom.CubicBezier
     defaults:
-      vertices: [
+      vertices: -> [
         # Start
         new agt.geom.Point(10, 50)
         # First quadrant
@@ -73,7 +73,7 @@ defaults =
   linear_spline:
     class: agt.geom.LinearSpline
     defaults:
-      vertices: [
+      vertices: -> [
         new agt.geom.Point(10, 85)
         new agt.geom.Point(40, 10)
         new agt.geom.Point(50, 25)
@@ -132,4 +132,5 @@ defaults =
     surface: false
     triangles: false
     vertices: false
+    verticesConnections: false
     highlight: false
