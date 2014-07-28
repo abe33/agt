@@ -131,6 +131,8 @@ class agt.geom.Geometry
 
   # Paints the geometry shape in the specified canvas `context` as a line.
   #
+  # <script>drawGeometry(exampleKey, {stroke: 'highlight'})</script>
+  #
   # context - The canvas context into which draw the geometry.
   # color - The {String} color of the stroke.
   stroke: (context, color=agt.COLORS.STROKE) ->
@@ -142,6 +144,8 @@ class agt.geom.Geometry
 
   # Paints the geometry shape in the specified canvas `context`
   # as a plain shape.
+  #
+  # <script>drawGeometry(exampleKey, {fill: 'highlight'})</script>
   #
   # context - The canvas context into which draw the geometry.
   # color - The {String} color of the fill.
