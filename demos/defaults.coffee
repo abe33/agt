@@ -121,6 +121,8 @@ defaults =
         c: new agt.geom.Point 120, 70
 
   render:
+    stroke: 'base'
+    fill: 'base'
     angle: false
     paths: false
     contains: false

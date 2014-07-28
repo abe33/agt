@@ -21,7 +21,6 @@ class GeometryRenderer
   colorPalette: colorPalette
 
   constructor: (@geometry, @options={}) ->
-    @baseState = @state = if @options.highlight then 'highlight' else 'base'
     @pathPosition = 0
     @random = new agt.random.Random new agt.random.MathRandom
     @name = @geometry.classname().toLowerCase()
@@ -29,8 +28,11 @@ class GeometryRenderer
     @angleSpeed = @random.in(1,3) * @random.sign()
 
   render: (context) ->
-    if @geometry.stroke? and @geometry.fill?
-      @renderShape context
+    if @geometry.stroke?
+      @geometry.stroke context, colorPalette.stroke[if @options.highlight then 'highlight' else @options.stroke]
+
+    if @geometry.fill?
+      @geometry.fill context, colorPalette.fill[if @options.highlight then 'highlight' else @options.fill]
 
     if @options.bounds and @geometry.bounds?
       @renderBounds context
@@ -50,15 +52,14 @@ class GeometryRenderer
     if @options.vertices and @geometry.drawVertices?
       @renderVertices context
 
+    if @options.verticesConnections and @geometry.drawVerticesConnections?
+      @renderVerticesConnections context
+
     if @options.center and @geometry.center?
       @renderCenter context
 
     if @options.contains and @geometry.contains?
       @renderContains context
-
-  renderShape: (context) ->
-    @geometry.fill(context, colorPalette.fill[@state])
-    @geometry.stroke(context, colorPalette.stroke[@state])
 
   renderPaths: (context) ->
     for path in @options.paths
@@ -153,4 +154,6 @@ class GeometryRenderer
 
   renderVertices: (context) ->
     @geometry.drawVertices context, colorPalette.vertices
+
+  renderVerticesConnections: (context) ->
     @geometry.drawVerticesConnections context, colorPalette.verticesConnections
