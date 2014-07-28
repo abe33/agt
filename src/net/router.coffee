@@ -19,11 +19,11 @@ class net.Router
   notFound: (@notFoundHandle) ->
 
   goto: (route) ->
-    route = route.replace(/\/$/, '') unless route is '/'
-    route = route.replace(/^\./, '') unless route is '.'
     route = '/' if route is '.'
+    route = route.replace(/^\./, '')
+    route = route.replace(/\/$/, '') unless route is '/'
     route = "/#{route}" if route.indexOf('/') isnt 0
-    
+
     handler = @findRoute(route)
 
     @beforeFilters.forEach (filter) => filter(route, this)
