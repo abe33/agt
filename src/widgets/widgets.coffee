@@ -1,5 +1,3 @@
-
-
 #
 __widgets__ = {}
 
@@ -143,11 +141,11 @@ widgets.domEvent = (type, data={}, options={bubbles, cancelable}={}) ->
 widgets.define = (name, block) -> __widgets__[name] = block
 
 # A shorthand method to register a jQuery widget.
-widgets.$define = (name, base_options={}, block) ->
-  [base_options, block] = [{}, base_options] if typeof base_options is 'function'
+widgets.$define = (name, baseOptions={}, block) ->
+  [baseOptions, block] = [{}, baseOptions] if typeof baseOptions is 'function'
   throw new Error "#{name} jquery widget isn't defined" unless $.fn[name]
   __widgets__[name] = (element, options={}) ->
-    options[k] = v for k,v of base_options when not options[k]?
+    options[k] = v for k,v of baseOptions when not options[k]?
     res = $(element)[name](options)
     block?(res, options)
 
@@ -155,16 +153,22 @@ widgets.$define = (name, base_options={}, block) ->
 # of the given `name` from the page.
 # It's the widget responsibility to clean up its dependencies during
 # the `dispose` call.
-widgets.release = (name) ->
-  __instances__[name].each (value) -> value?.dispose?()
+widgets.release = (names...) ->
+  names = Object.keys(__instances__) if names.length is 0
+  for name in names
+    __instances__[name].each (value) -> value?.dispose?()
 
 # Activates all the widgets instances of type `name`.
-widgets.activate = (name) ->
-  __instances__[name].each (value) -> value?.activate?()
+widgets.activate = (names...) ->
+  names = Object.keys(__instances__) if names.length is 0
+  for name in names
+    __instances__[name].each (value) -> value?.activate?()
 
 # Deactivates all the widgets instances of type `name`.
-widgets.deactivate = (name) ->
-  __instances__[name].each (value) -> value?.deactivate?()
+widgets.deactivate = (names...) ->
+  names = Object.keys(__instances__) if names.length is 0
+  for name in names
+    __instances__[name].each (value) -> value?.deactivate?()
 
 if window?
   window.widgets = widgets
