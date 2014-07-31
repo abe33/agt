@@ -1,7 +1,16 @@
-
 {Point,Intersections,Geometry,Spline,Path} = agt.geom
 
 # Public:
+#
+# ### Included Mixins
+#
+# - {agt.geom.Geometry}
+# - {agt.geom.Intersections}
+# - {agt.geom.Path}
+# - [agt.mixins.Spline](../../../files/geom/mixins/spline.coffee.html)
+# - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
+# - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
+# - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
 class agt.geom.QuadBezier
   @include mixins.Formattable('QuadBezier')
   @include mixins.Sourcable('agt.geom.QuadBezier', 'vertices', 'bias')

@@ -27,6 +27,17 @@ agt.geom.Spline = (segmentSize) ->
   # Public: The concrete mixin as returned by the
   # [Spline](../files/geom/mixins/spline.coffee.html) method.
   #
+  # ### Concrete Splines
+  #
+  # - {agt.geom.LinearSpline}
+  # - {agt.geom.CubicBezier}
+  # - {agt.geom.QuadBezier}
+  # - {agt.geom.QuintBezier}
+  #
+  # ### Included Mixins
+  #
+  # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
+  #
   # <script>window.exampleKey = 'cubic_spline'</script>
   class ConcreteSpline
     @include mixins.Memoizable
