@@ -52,6 +52,8 @@ module.exports = (grunt) ->
             'src/particles/sub_system.coffee'
             'src/particles/mixins/*.coffee'
             'src/particles/**/*.coffee'
+            'src/widgets/widgets.coffee'
+            'src/widgets/hash.coffee'
           ]
 
           'lib/agt.spec.js': [
