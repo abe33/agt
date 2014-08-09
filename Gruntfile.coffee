@@ -23,12 +23,19 @@ module.exports = (grunt) ->
     ####    ##    ## ##     ## ##       ##       ##       ##
     ####     ######   #######  ##       ##       ######## ########
     coffee:
-      sources:
+      glob_to_multiple:
+        expand: true
+        cwd: 'src/'
+        src: ['**/*.coffee']
+        dest: 'lib/'
+        ext: '.js'
+
+      build:
         options:
           join: true
 
         files:
-          'lib/agt.js': [
+          'build/agt.js': [
             'src/index.coffee'
             'src/object.coffee'
             'src/function.coffee'
@@ -56,11 +63,12 @@ module.exports = (grunt) ->
             'src/widgets/hash.coffee'
           ]
 
-          'lib/agt.spec.js': [
+          'build/agt.spec.js': [
             'specs/support/spec_helper.coffee'
             'specs/support/**/*.coffee'
             'specs/units/**/*.coffee'
           ]
+
       demos:
         options:
           join: true
@@ -75,7 +83,7 @@ module.exports = (grunt) ->
     uglify:
       all:
         files:
-          'lib/agt.min.js': ['lib/agt.js']
+          'build/agt.min.js': ['build/agt.js']
 
     ####    ##      ##    ###    ########  ######  ##     ##
     ####    ##  ##  ##   ## ##      ##    ##    ## ##     ##
@@ -128,7 +136,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'extend:biscotto', 'Generates the documentation', ->
     done = @async()
-    exec 'cat lib/agt.min.js doc/assets/customs.js >> doc/assets/biscotto.js', (err, stdin, stderr) ->
+    exec 'cat build/agt.min.js doc/assets/customs.js >> doc/assets/biscotto.js', (err, stdin, stderr) ->
       console.log stdin
       console.log stderr
       exec 'cat demos/customs.css >> doc/assets/biscotto.css', (err, stdin, stderr) ->
@@ -140,7 +148,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'biscotto', 'Generates the documentation', ->
     done = @async()
     # run('biscotto src')
-    run('/Users/cedric/Development/coffeescript/biscotto/bin/biscotto src')
+    run('/Users/cedric/Development/coffeescript/biscotto/bin/biscotto --internal --private -v src')
     .then ->
       done()
     .fail ->
@@ -157,5 +165,13 @@ module.exports = (grunt) ->
       grunt.task.run 'growl:jasmine_failure'
       done false
 
-  grunt.registerTask('all', ['coffee:sources', 'uglify', 'test', 'biscotto', 'coffee:demos', 'extend:biscotto'])
+  grunt.registerTask('all', [
+    'coffee:glob_to_multiple'
+    'coffee:build'
+    'uglify'
+    'test'
+    'biscotto'
+    'coffee:demos'
+    'extend:biscotto'
+  ])
   grunt.registerTask('default', ['all'])
