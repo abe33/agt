@@ -5,5 +5,7 @@ class agt.random.NoRandom
   @include mixins.Formattable('NoRandom','seed')
 
   ### Public ###
+
   constructor: (@seed=0) ->
+
   get: -> @seed
