@@ -53,7 +53,7 @@ class agt.mixins.Memoizable
     @__memoizationKey__ = @memoizationKey()
     @__memo__[ prop ] = value
 
-  # Public: **Abstract** - Generates the memoization key for this
+  # Public Abstract: Generates the memoization key for this
   # instance's state.
   #
   # By default the memoization key of an object is the return of its `toString`
