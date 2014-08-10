@@ -148,7 +148,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'biscotto', 'Generates the documentation', ->
     done = @async()
     # run('biscotto src')
-    run('/Users/cedric/Development/coffeescript/biscotto/bin/biscotto --internal --private -v src')
+    run('/Users/cedric/Development/coffeescript/biscotto/bin/biscotto --internal --private -q src')
     .then ->
       done()
     .fail ->
