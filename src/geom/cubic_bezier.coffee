@@ -28,6 +28,7 @@ class agt.geom.CubicBezier
     pt
 
   ### Internal ###
+
   b1: (t) -> ((1 - t) * (1 - t) * (1 - t))
 
   b2: (t) -> (3 * t * (1 - t) * (1 - t))

@@ -5,6 +5,7 @@ class agt.random.MersenneTwister
   @include mixins.Formattable('MersenneTwister','seed')
 
   ### Public ###
+
   constructor: (seed=0) ->
     @mt = Array 623
     @z = 0

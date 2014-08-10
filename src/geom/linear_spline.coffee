@@ -47,4 +47,10 @@ class agt.geom.LinearSpline
   drawVerticesConnections: ->
 
   ### Internal ###
+
+  # Validates the size of the vertices array.
+  #
+  # vertices - The {Array} of vertices to validate.
+  #
+  # Returns a {Boolean}.
   validateVertices: (vertices) -> vertices.length >= 2
