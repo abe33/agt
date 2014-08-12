@@ -5,6 +5,7 @@ class agt.random.LaggedFibonnacci
   @include mixins.Formattable('LaggedFibonnacci','seed')
 
   ### Public ###
+  
   constructor: (seed=0) ->
     @plantSeed seed
 

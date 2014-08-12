@@ -49,7 +49,7 @@ class agt.geom.Geometry
 
   ### Public ###
 
-  # **Abstract** - Returns an {Array} of [Points]{agt.geom.Point}
+  # Abstract: Returns an {Array} of [Points]{agt.geom.Point}
   # constituting the geometry.
   #
   # Closed geometry should always returns an array where the start and end
@@ -60,7 +60,7 @@ class agt.geom.Geometry
   # Returns an {Array} of [Points]{agt.geom.Point}.
   points: ->
 
-  # **Abstract** - Returns a {Boolean} of whether the points forms
+  # Abstract: Returns a {Boolean} of whether the points forms
   # a closed geometry.
   #
   # Returns a {Boolean}.

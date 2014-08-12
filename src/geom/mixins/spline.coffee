@@ -145,6 +145,10 @@ agt.geom.Spline = (segmentSize) ->
       @memoize('points', points).concat()
 
     # Internal: Validates the length of the vertices {Array}.
+    #
+    # vertices - The {Array} of vertices to validate.
+    #
+    # Returns a {Boolean}.
     validateVertices: (vertices) ->
       vertices.length % segmentSize is 1 and
       vertices.length >= segmentSize + 1

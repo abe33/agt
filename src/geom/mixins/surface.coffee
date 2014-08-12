@@ -18,12 +18,12 @@ class agt.geom.Surface
 
   ### Public ###
 
-  # **Abstract** - Returns the surface of the geometry in px<sup>2</sup>.
+  # Abstract: Returns the surface of the geometry in px<sup>2</sup>.
   #
   # Returns a {Number}.
   acreage: -> null
 
-  # **Abstract** - Returns a random [Point]{agt.geom.Point} with coordinates
+  # Abstract: Returns a random [Point]{agt.geom.Point} with coordinates
   # inside the geometry shape.
   #
   # <script>drawGeometry(exampleKey, {surface: true})</script>
@@ -31,7 +31,7 @@ class agt.geom.Surface
   # Returns a [Point]{agt.geom.Point}.
   randomPointInSurface: -> null
 
-  # **Abstract** - Tests if the passed-in coordinates are inside the geometry shape.
+  # Abstract: Tests if the passed-in coordinates are inside the geometry shape.
   #
   # <script>drawGeometry(exampleKey, {contains: true})</script>
   #

@@ -2,7 +2,7 @@ if typeof module is 'undefined'
   window.global = window
   agt = global.agt
 else
-  global.agt = agt = require '../../../lib/agt'
+  global.agt = agt = require '../../../build/agt'
 
 global.DEFAULT_SEGMENTS = 36
 global.DEG_TO_RAD = Math.PI / 180
