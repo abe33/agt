@@ -15,6 +15,7 @@
 #
 # 
 class agt.net.Router
+  @extend agt.mixins.Aliasable
 
   constructor: (block) ->
     @routes = {}
@@ -24,10 +25,12 @@ class agt.net.Router
     block.call(this)
     @buildRoutesHandlers()
 
-  get: (path, options={}, handle) ->
+  match: (path, options={}, handle) ->
     [options, handle] = [{}, options] if typeof options is 'function'
     path = path.replace /^\/|\/$/g, ''
     @routes[path] = {handle, options}
+
+  @alias 'match', 'get'
 
   beforeFilter: (filter) -> @beforeFilters.push filter
   afterFilter: (filter) -> @afterFilters.push filter
