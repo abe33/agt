@@ -75,9 +75,9 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
       condition_matched = testCondition(mediaCondition, element)
 
       if condition_matched and not widget.active
-        widget.activate?()
+        widget.activate()
       else if not condition_matched and widget.active
-        widget.deactivate?()
+        widget.deactivate()
 
     window.addEventListener 'resize', ->
       instances.each_pair (element, widget) ->
@@ -91,16 +91,18 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
     Array::forEach.call elements, (element) ->
       return unless can_be_handled element
 
-      res = __widgets__[name] element, Object.create(options), elements
+      widget = new agt.widgets.Widget(element)
+      args = [widget, element, Object.create(options), elements]
+      __widgets__[name].call(args...)
       element.className += " #{handled_class}"
-      instances.set element, res
+      instances.set element, widget
 
       # The widgets activation state are resolved at creation
       mediaHandler(element, res) if mediaCondition?
 
       document.dispatchEvent "#{name}:handled", element
 
-      block?.call element, element, res
+      block?.call element, element, widget
 
   # For each event specified, the handler is registered as listener.
   # A special case is the `init` event that simply mean to trigger the
@@ -156,16 +158,22 @@ widgets.$define = (name, baseOptions={}, block) ->
 widgets.release = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
-    __instances__[name].each (value) -> value?.dispose?()
+    __instances__[name].each (value) -> value.dispose()
 
 # Activates all the widgets instances of type `name`.
 widgets.activate = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
-    __instances__[name].each (value) -> value?.activate?()
+    __instances__[name].each (value) -> value.activate()
 
 # Deactivates all the widgets instances of type `name`.
 widgets.deactivate = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
-    __instances__[name].each (value) -> value?.deactivate?()
+    __instances__[name].each (value) -> value.deactivate()
+
+class agt.widgets.Widget
+  @include agt.mixins.Activable
+  @include agt.mixins.Disposable
+
+  constructor: (@element) ->
