@@ -1,4 +1,20 @@
-class net.Router
+# Public: The router class allow to trigger view changes on url changes.
+# Typically the url changes may be handled by the history API or a url hash
+# handler.
+# The routes the router will support are defined in the callback passed to
+# the router constructor as in the example below:
+#
+# ```coffee
+# router = new Router ->
+#   @match '/posts', ->
+#     # render the post index
+#
+#   @match '/posts/:id', ({id}) ->
+#     # render a single post identified with an :id
+# ```
+#
+# 
+class agt.net.Router
 
   constructor: (block) ->
     @routes = {}
