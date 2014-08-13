@@ -33,39 +33,40 @@ class agt.net.Router
   @alias 'match', 'get'
 
   beforeFilter: (filter) -> @beforeFilters.push filter
+
   afterFilter: (filter) -> @afterFilters.push filter
 
   notFound: (@notFoundHandle) ->
 
-  goto: (route) ->
-    route = '/' if route is '.'
-    route = route.replace(/^\./, '')
-    route = route.replace(/\/$/, '') unless route is '/'
-    route = "/#{route}" if route.indexOf('/') isnt 0
+  goto: (path) ->
+    path = '/' if path is '.'
+    path = path.replace(/^\./, '')
+    path = path.replace(/\/$/, '') unless path is '/'
+    path = "/#{path}" if path.indexOf('/') isnt 0
 
-    handler = @findRoute(route)
+    handler = @findRoute(path)
 
-    @beforeFilters.forEach (filter) => filter(route, this)
+    @beforeFilters.forEach (filter) => filter(path, this)
 
     if handler?
-      handler(route)
+      handler(path)
     else
-      @notFoundHandle?(route)
+      @notFoundHandle?({path})
 
-    $(document).trigger('page:change')
+    $(document).trigger('page:change') if document?
 
-    @afterFilters.forEach (filter) => filter(route, this)
+    @afterFilters.forEach (filter) => filter(path, this)
 
-  findRoute: (route) ->
+  findRoute: (path) ->
     for k, {test, handle} of @routes
-      return handle if test(route)
+      return handle if test(path)
 
   buildRoutesHandlers: ->
-    for route, data of @routes
-      @routes[route] = @buildRouteHandler(route, data)
+    for path, data of @routes
+      @routes[path] = @buildRouteHandler(path, data)
 
-  buildRouteHandler: (route, {handle, options}) ->
-    pathArray = route.split '/'
+  buildRouteHandler: (path, {handle, options}) ->
+    pathArray = path.split '/'
     pathRe = []
     pathParams = []
 
@@ -82,10 +83,10 @@ class agt.net.Router
 
     {
       options
-      test: (route) -> re.test(route)
-      handle: (route) ->
-        params = {path: route}
-        res = re.exec(route)
+      test: (path) -> re.test(path)
+      handle: (path) ->
+        params = {path: path}
+        res = re.exec(path)
         if res? and res.length > 1
           for pname,i in pathParams
             params[pname] = decodeURI(res[i+1])
