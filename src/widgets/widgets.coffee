@@ -9,7 +9,7 @@ __instances__ = {}
 
 # The `widgets` function is both the main module and the function
 # used to register the widgets to apply on a page.
-widgets = (name, selector, options={}, block) ->
+widgets = agt.widgets = (name, selector, options={}, block) ->
   unless __widgets__[name]?
     throw new Error "Unable to find widget '#{name}'"
 
@@ -30,7 +30,7 @@ widgets = (name, selector, options={}, block) ->
 
   # The widgets instances are stored in a Hash with the DOM element they
   # target as key. The instances hashes are stored per widget type.
-  instances = __instances__[name] ||= new widgets.Hash
+  instances = __instances__[name] ||= new agt.widgets.Hash
 
   # This method execute a test condition for the given element. The condition
   # can be either a function or a value converted to boolean.
@@ -169,8 +169,3 @@ widgets.deactivate = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
     __instances__[name].each (value) -> value?.deactivate?()
-
-if window?
-  window.widgets = widgets
-  window.widget = widgets
-  window.$w = widgets
