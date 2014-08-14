@@ -10,7 +10,9 @@ class agt.random.PaulHoule
   @include mixins.Formattable('PaulHoule','seed')
 
   ### Public ###
+
   constructor: (@seed) ->
+
   get: ->
     @seed = (@seed * 9301 + 49297) % 233280
     @seed / 233280.0

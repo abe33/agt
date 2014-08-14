@@ -1,5 +1,5 @@
 # Public:
-class widgets.Hash
+class agt.widgets.Hash
   constructor: ->
     @clear()
 

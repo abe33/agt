@@ -1,6 +1,6 @@
 {
   "name": "agt",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Cédric Néhémie <cedric.nehemie@gmail.com>",
   "description": "Some game tools",
   "keywords": ["mixins","random","geometry","particles"],

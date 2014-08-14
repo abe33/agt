@@ -109,10 +109,14 @@ module.exports = (grunt) ->
         options:
           reload: true
 
+      npm:
+        files: ['package.json']
+        tasks: ['npm:install']
+
     growl:
       jasmine_success:
         title: 'Jasmine Tests'
-        message: 'All test passed'
+        message: 'All tests passed'
 
       jasmine_failure:
         title: 'Jasmine Tests'
@@ -154,7 +158,7 @@ module.exports = (grunt) ->
     .fail ->
       done()
 
-  grunt.registerTask 'test', 'Run npm tests', ->
+  grunt.registerTask 'npm:test', 'Run npm tests', ->
     done = @async()
     run('npm test')
     .then ->
@@ -165,11 +169,21 @@ module.exports = (grunt) ->
       grunt.task.run 'growl:jasmine_failure'
       done false
 
+  grunt.registerTask 'npm:install', 'Run npm tests', ->
+    done = @async()
+    run('npm install')
+    .then ->
+      console.log "Package installed #{'✓'.green}"
+      done true
+    .fail (reason) ->
+      console.log reason
+      done false
+
   grunt.registerTask('all', [
     'coffee:glob_to_multiple'
     'coffee:build'
     'uglify'
-    'test'
+    'npm:test'
     'biscotto'
     'coffee:demos'
     'extend:biscotto'
