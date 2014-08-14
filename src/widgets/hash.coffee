@@ -8,7 +8,7 @@ class agt.widgets.Hash
     @values = []
 
   set: (key, value) ->
-    if @has_key key
+    if @hasKey key
       index = @keys.indexOf key
       @keys[index] = key
       @values[index] = value
@@ -18,9 +18,9 @@ class agt.widgets.Hash
 
   get: (key) -> @values[ @keys.indexOf key ]
 
-  get_key: (value) -> @keys[ @values.indexOf value ]
+  getKey: (value) -> @keys[ @values.indexOf value ]
 
-  has_key: (key) -> @keys.indexOf(key) > 0
+  hasKey: (key) -> @keys.indexOf(key) > 0
 
   unset: (key) ->
     index = @keys.indexOf key
@@ -29,6 +29,6 @@ class agt.widgets.Hash
 
   each: (block) -> @values.forEach block
 
-  each_key: (block) -> @keys.forEach block
+  eachKey: (block) -> @keys.forEach block
 
-  each_pair: (block) -> @keys.forEach (key) => block? key, @get key
+  eachPair: (block) -> @keys.forEach (key) => block? key, @get key

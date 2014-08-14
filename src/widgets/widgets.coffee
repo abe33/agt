@@ -46,7 +46,7 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
   # conditions. Note that if both the `if` and `unless` conditions
   # are passed in the options object they will be tested as both part
   # of a single `&&` condition.
-  can_be_handled = (element) ->
+  canBeHandled = (element) ->
     res = element.className.indexOf(handled_class) is -1
     res &&= testCondition(ifCondition, element) if ifCondition?
     res &&= not testCondition(unlessCondition, element) if unlessCondition?
@@ -80,7 +80,7 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
         widget.deactivate()
 
     window.addEventListener 'resize', ->
-      instances.each_pair (element, widget) ->
+      instances.eachPair (element, widget) ->
         mediaHandler element, widget
 
   # The `handler` function is the function registered on specified event and
@@ -89,7 +89,7 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
     elements = document.querySelectorAll selector
 
     Array::forEach.call elements, (element) ->
-      return unless can_be_handled element
+      return unless canBeHandled element
 
       widget = new agt.widgets.Widget(element)
       args = [widget, element, Object.create(options), elements]
