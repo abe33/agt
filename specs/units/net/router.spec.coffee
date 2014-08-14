@@ -36,3 +36,13 @@ describe 'Router', ->
     router.goto '/posts/4/foo'
     expect(spy404).toHaveBeenCalled()
     expect(spy404.calls.argsFor(0)[0]).toEqual({path: '/posts/4/foo'})
+
+  # Browser-only tests
+  if document?
+    it 'dispatch a page:change event', ->
+      spy = jasmine.createSpy('pageChange')
+      document.addEventListener('page:change', spy)
+
+      router.goto '/posts'
+      expect(spy).toHaveBeenCalled()
+      expect(spy.calls.argsFor(0)[0].data).toEqual(path: '/posts')

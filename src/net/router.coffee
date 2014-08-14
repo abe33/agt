@@ -13,7 +13,7 @@
 #     # render a single post identified with an :id
 # ```
 #
-# 
+#
 class agt.net.Router
   @extend agt.mixins.Aliasable
 
@@ -53,7 +53,7 @@ class agt.net.Router
     else
       @notFoundHandle?({path})
 
-    $(document).trigger('page:change') if document?
+    document.dispatchEvent agt.domEvent('page:change', {path}) if document?
 
     @afterFilters.forEach (filter) => filter(path, this)
 
