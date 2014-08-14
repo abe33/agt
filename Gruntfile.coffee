@@ -44,6 +44,7 @@ module.exports = (grunt) ->
             'src/signal.coffee'
             'src/impulse.coffee'
             'src/promise.coffee'
+            'src/dom.coffee'
             'src/mixins/*.coffee'
             'src/net/*.coffee'
             'src/random/**/*.coffee'

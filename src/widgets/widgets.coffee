@@ -115,20 +115,6 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
       else
         document.addEventListener event, handler
 
-# Creates a new event object.
-widgets.domEvent = (type, data={}, options={bubbles, cancelable}={}) ->
-  try
-    event = new Event type, {
-      bubbles: bubbles ? true
-      cancelable: cancelable ? true
-    }
-  catch e
-    event = document.createEvent 'Event'
-    event.initEvent type, bubbles ? true, cancelable ? true
-
-  event.data = data
-  event
-
 # The `widgets.define` is used to create a new widget usable through the
 # `widgets` method. Basically, a widget is defined using a `name`, and a
 # `block` function that will be called for each DOM elements targeted by
