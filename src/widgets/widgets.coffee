@@ -100,7 +100,10 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
       instances.set element, widget
 
       # The widgets activation state are resolved at creation
-      mediaHandler(element, res) if mediaCondition?
+      if mediaCondition?
+        mediaHandler(element, widget)
+      else
+        widget.activate()
 
       document.dispatchEvent agt.domEvent("#{name}:handled", {element, widget})
 

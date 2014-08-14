@@ -28,6 +28,9 @@ if document?
         expect(spy.calls.first().args[0]).toBe(element)
         expect(spy.calls.first().object).toBe(widget)
 
+      it 'activates the widget object', ->
+        expect(widget.active).toBeTruthy()
+
     describe 'with a if condition', ->
       describe 'that return true', ->
         beforeEach ->
