@@ -137,6 +137,12 @@ widgets.$define = (name, baseOptions={}, block) ->
     res = $(element)[name](options)
     block?(res, options)
 
+widgets.widgetsFor = (element, widget) ->
+  if widget?
+    __instances__[widget].get(element)
+  else
+    instances.get(element) for instances in __instances__ when instances.hasKey(element)
+
 # The `widgets.release` method can be used to completely remove the widgets
 # of the given `name` from the page.
 # It's the widget responsibility to clean up its dependencies during
