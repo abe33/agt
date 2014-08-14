@@ -5,6 +5,8 @@ __widgets__ = {}
 # stored by widget type and then mapped with their target DOM element as key.
 __instances__ = {}
 
+__subscriptions__ = {}
+
 ### Public ###
 
 # The `widgets` function is both the main module and the function
@@ -111,9 +113,9 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
     switch event
       when 'init' then handler()
       when 'load', 'resize'
-        window.addEventListener event, handler
+        widgets.subscribe name, window, event, handler
       else
-        document.addEventListener event, handler
+        widgets.subscribe name, document, event, handler
 
 # The `widgets.define` is used to create a new widget usable through the
 # `widgets` method. Basically, a widget is defined using a `name`, and a
@@ -142,6 +144,13 @@ widgets.widgetsFor = (element, widget) ->
     __instances__[widget].get(element)
   else
     instances.get(element) for instances in __instances__ when instances.hasKey(element)
+
+widgets.subscribe = (name, to, evt, handler) ->
+  __subscriptions__[name] ||= []
+  to.addEventListener(evt, handler)
+  subscription = off: -> to.removeEventListener(evt, handler)
+  __subscriptions__[name].push subscription
+  subscription
 
 # The `widgets.release` method can be used to completely remove the widgets
 # of the given `name` from the page.
