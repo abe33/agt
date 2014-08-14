@@ -139,6 +139,15 @@ widgets.$define = (name, baseOptions={}, block) ->
     res = $(element)[name](options)
     block?(res, options)
 
+widgets.delete = (name) ->
+  __subscriptions__[name]?.forEach (subscription) -> subscription.off()
+  widgets.release(name)
+  delete __widgets__[name]
+
+widgets.reset = (names...) ->
+  names = Object.keys(__instances__) if names.length is 0
+  widgets.delete(name) for name in names
+
 widgets.widgetsFor = (element, widget) ->
   if widget?
     __instances__[widget].get(element)

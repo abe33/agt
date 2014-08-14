@@ -13,6 +13,8 @@ if document?
       agt.widgets.define 'dummy', spy
 
       agt.widgets 'dummy', '.dummy', on: 'custom:event'
+    afterEach ->
+      agt.widgets.reset()
 
       document.dispatchEvent(agt.domEvent 'custom:event')
 
