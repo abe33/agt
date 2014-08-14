@@ -1,10 +1,15 @@
 # Public: This widgets decorates all the dom path until the current
 # element with a `focus` class when the element have the focus.
 widgets.define 'bubbling_focus', (element) ->
-  blur = -> $('.focus').removeClass('focus')
+  blur = ->
+    Array::forEach.call document.querySelectorAll('.focus'), (el) ->
+      el.classList.remove('.focus')
 
-  $element = $(element)
-  $element.on 'blur', -> blur()
-  $element.on 'focus', ->
+  element.addEventListener 'blur', -> blur()
+  element.addEventListener 'focus', ->
     blur()
-    $element.parents().addClass('focus')
+    node = element
+    node.classList.add('focus')
+    while node.nodeName.toLowerCase() isnt 'html'
+      node = node.parentNode
+      node.classList.add('focus')
