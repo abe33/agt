@@ -47,3 +47,15 @@ global.testProperty = (source, property) ->
 
       it "should be #{value}", ->
         expect(this[source][property]).toBeClose(value)
+
+if document?
+  global.fixture = (fixtureHTML) ->
+    beforeEach ->
+      @fixture = document.createElement('div')
+      @fixture.id = 'fixture'
+      @fixture.innerHTML = fixtureHTML
+      document.body.appendChild(@fixture)
+
+    afterEach ->
+      document.body.removeChild(@fixture)
+      @fixture = null
