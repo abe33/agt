@@ -39,7 +39,7 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
 
   # The DOM elements handled by a widget will receive a handled class
   # to differenciate them from unhandled elements.
-  handled_class = "#{name}-handled"
+  handledClass = "#{name}-handled"
 
   # This method will test if an element can be handled by the current widget.
   # It will test for both the handled class presence and the widget
@@ -47,7 +47,7 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
   # are passed in the options object they will be tested as both part
   # of a single `&&` condition.
   canBeHandled = (element) ->
-    res = element.className.indexOf(handled_class) is -1
+    res = !element.classList.contains(handledClass)
     res &&= testCondition(ifCondition, element) if ifCondition?
     res &&= not testCondition(unlessCondition, element) if unlessCondition?
     res
@@ -94,7 +94,7 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
       widget = new agt.widgets.Widget(element)
       args = [widget, element, Object.create(options), elements]
       __widgets__[name].call(args...)
-      element.className += " #{handled_class}"
+      element.classList.add handledClass
       instances.set element, widget
 
       # The widgets activation state are resolved at creation
