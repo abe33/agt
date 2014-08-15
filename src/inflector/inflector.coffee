@@ -6,6 +6,7 @@ class agt.inflector.Inflector
       singular: (m,r) => @singular(lang,m,r)
       irregular: (p,s) => @irregular(lang,p,s)
       uncountable: (a...) => @uncountable(lang,a)
+      pastTense: (m,r) => @pastTense(lang,m,r)
 
     block.call(scope, scope)
 
@@ -21,11 +22,6 @@ class agt.inflector.Inflector
     inflection = new agt.inflector.Inflection(match, replace)
     @inflections[lang].singular.push(inflection)
 
-  uncountable: (lang, uncountables) ->
-    @default(lang, 'uncountable')
-
-    @inflections[lang].uncountable = @inflections[lang].uncountable.concat(uncountables)
-
   irregular: (lang, plural, singular) ->
     @default(lang, 'plural')
     @default(lang, 'singular')
@@ -35,8 +31,20 @@ class agt.inflector.Inflector
     @inflections[lang].singular.push(singularInflection)
     @inflections[lang].plural.push(pluralInflection)
 
+  uncountable: (lang, uncountables) ->
+    @default(lang, 'uncountable')
+
+    @inflections[lang].uncountable = @inflections[lang].uncountable.concat(uncountables)
+
+  pastTense: (lang, match, replace) ->
+    @default(lang, 'past')
+
+    inflection = new agt.inflector.Inflection(match, replace)
+    @inflections[lang].past.push(inflection)
+
   pluralize: (string, lang='en') -> @inflect('plural', string, lang)
   singularize: (string, lang='en') -> @inflect('singular', string, lang)
+  toPast: (string, lang='en') -> @inflect('past', string, lang)
 
   inflect: (action, string, lang='en') ->
     result = string

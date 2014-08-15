@@ -15,11 +15,17 @@ describe 'agt.inflector.Inflector', ->
 
       @uncountable 'equipment'
 
+      @pastTense /$/, 'ed'
+      @pastTense /ight/i, 'ought'
+      @pastTense 'buy', 'bought'
+
+
   describe 'when configurated', ->
     it 'contains the inflections defined in the configuration block', ->
       expect(inflector.inflections.en.plural.length).toEqual(4)
       expect(inflector.inflections.en.singular.length).toEqual(3)
       expect(inflector.inflections.en.uncountable.length).toEqual(1)
+      expect(inflector.inflections.en.past.length).toEqual(3)
 
     it 'creates an inflector that can pluralize', ->
       expect(inflector.pluralize('foo')).toEqual('foos')
@@ -33,3 +39,8 @@ describe 'agt.inflector.Inflector', ->
       expect(inflector.singularize('foos')).toEqual('foo')
       expect(inflector.singularize('')).toEqual('')
       expect(inflector.singularize('equipment')).toEqual('equipment')
+
+    it 'creates an singularInflection that can conjugate to the past', ->
+      expect(inflector.toPast('walk')).toEqual('walked')
+      expect(inflector.toPast('fight')).toEqual('fought')
+      expect(inflector.toPast('buy')).toEqual('bought')

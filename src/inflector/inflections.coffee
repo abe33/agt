@@ -58,3 +58,18 @@ agt.inflector.config 'en', ->
   @irregular('zombie', 'zombies')
 
   @uncountable('equipment', 'information', 'rice', 'money', 'species', 'series', 'fish', 'sheep', 'jeans ', 'police')
+
+  @pastTense /^(.*)$/,'$1ed'
+  @pastTense /e$/,'ed'
+  @pastTense /t$/,'ted'
+  @pastTense /g$/,'gged'
+  @pastTense /ight$/,'ought'
+  @pastTense "buy",'bought'
+  @pastTense "have",'had'
+  @pastTense "sell",'sold'
+  @pastTense "is",'was'
+  @pastTense "are",'were'
+  @pastTense "teach",'taught'
+  @pastTense "feel",'felt'
+  @pastTense "light",'lit'
+  @pastTense "find",'found'
