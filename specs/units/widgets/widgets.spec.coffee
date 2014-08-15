@@ -23,10 +23,11 @@ if document?
 
         widget = agt.widgets.widgetsFor(element, 'dummy')
 
-      it 'calls the widget method', ->
+      it 'calls the widget method and creates a widget', ->
         expect(spy).toHaveBeenCalled()
         expect(spy.calls.first().args[0]).toBe(element)
         expect(spy.calls.first().object).toBe(widget)
+        expect(widget.element).toBe(element)
 
       it 'activates the widget object', ->
         expect(widget.active).toBeTruthy()
