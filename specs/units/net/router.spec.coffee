@@ -39,9 +39,9 @@ describe 'Router', ->
 
   # Browser-only tests
   if document?
-    it 'dispatch a page:change event', ->
-      spy = jasmine.createSpy('pageChange')
-      document.addEventListener('page:change', spy)
+    it 'dispatch a route:changed event', ->
+      spy = jasmine.createSpy('routeChanged')
+      document.addEventListener('route:changed', spy)
 
       router.goto '/posts'
       expect(spy).toHaveBeenCalled()

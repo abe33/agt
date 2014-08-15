@@ -53,10 +53,10 @@ class agt.net.Router
     else
       @notFoundHandle?({path})
 
-    document.dispatchEvent agt.domEvent('page:change', {path}) if document?
 
     @afterFilters.forEach (filter) => filter(path, this)
 
+    document.dispatchEvent agt.domEvent('route:changed', {path}) if document?
   findRoute: (path) ->
     for k, {test, handle} of @routes
       return handle if test(path)
