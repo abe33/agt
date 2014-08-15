@@ -47,6 +47,8 @@ module.exports = (grunt) ->
             'src/dom.coffee'
             'src/mixins/*.coffee'
             'src/net/*.coffee'
+            'src/inflector/inflector.coffee'
+            'src/inflector/*.coffee'
             'src/random/**/*.coffee'
             'src/geom/mixins/**/*.coffee'
             'src/geom/point.coffee'

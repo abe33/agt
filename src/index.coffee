@@ -7,6 +7,7 @@ agt.mixins = mixins = {}
 agt.random = random = {}
 agt.geom = geom = {}
 agt.net = net = {}
+agt.inflector = {}
 agt.particles = particles = {
   actions: {}
   emitters: {}
