@@ -40,7 +40,7 @@ describe 'agt.inflector.Inflector', ->
       expect(inflector.singularize('')).toEqual('')
       expect(inflector.singularize('equipment')).toEqual('equipment')
 
-    it 'creates an singularInflection that can conjugate to the past', ->
+    it 'creates an inflector that can conjugate to the past', ->
       expect(inflector.toPast('walk')).toEqual('walked')
       expect(inflector.toPast('fight')).toEqual('fought')
       expect(inflector.toPast('buy')).toEqual('bought')
