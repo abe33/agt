@@ -65,7 +65,7 @@ agt.inflector.config 'en', ->
   @pastTense /g$/,'gged'
   @pastTense /ight$/,'ought'
   @pastTense "buy",'bought'
-  @pastTense "have",'had'
+  @pastTense "has",'had'
   @pastTense "sell",'sold'
   @pastTense "is",'was'
   @pastTense "are",'were'
