@@ -1,5 +1,6 @@
 namespace('agt.sprites')
 
+# Public:
 class agt.sprites.Sprite
   constructor: (@animation) ->
     @position = new agt.geom.Point

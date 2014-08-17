@@ -1,4 +1,6 @@
 namespace('agt.sprites')
+
+# Public:
 class agt.sprites.Animation
   constructor: (@image,
                 @width, @height,

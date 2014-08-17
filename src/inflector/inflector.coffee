@@ -1,6 +1,49 @@
 namespace('agt.inflector')
+# Public: The `Inflector` transform words from singular to plural
+# and verbs from present to past. The `agt.inflector` package is an instance
+# of the `Inflector` class with default inflections for english words and verbs.
+#
+# ```coffeescript
+# agt.inflector.config 'fr', ->
+#   @plural /$/, 's'
+#   @plural /^(bij|caill|ch|gen|hib|jouj|p)ou$/i, '$1oux'
+#   @plural /^(b|cor|ém|gemm|soupir|trav|vant|vitr)ail$/i, 'aux'
+#
+#   @singular /s$/i, ''
+#   @singular /oux$/i, 'ou'
+#   @singular /aux$/i, 'ail'
+#
+#   @uncountable 'discours', 'secours', 'souris'
+#
+#   @pastTense /^a$/i, 'avait'
+#   @pastTense /^est$/i, 'était'
+#
+# agt.inflector.pluralize('fr', 'coup') # 'coups'
+# agt.inflector.pluralize('fr', 'hibou') # 'hiboux'
+# agt.inflector.pluralize('fr', 'discours') # 'discours'
+#
+# agt.inflector.singularize('fr', 'hiboux') # 'hibou'
+# agt.inflector.singularize('fr', 'coups') # 'coup'
+# ```
 class agt.inflector.Inflector
 
+  # Public: Extends or defines the inflections for a given language.
+  #
+  # ```coffee
+  # inflect.config 'en', ->
+  #   # ...
+  #
+  # inflect.config 'fr', ->
+  #   # ...
+  #
+  # inflect.config 'de', ->
+  #   # ...
+  # ```
+  #
+  # lang - The language {String} to configurate.
+  # block - The configuration {Function} to call. The function is called
+  #         with the inflector as the `this` object as well as the sole
+  #         argument.
   config: (lang, block) ->
     scope =
       plural: (m,r) => @plural(lang,m,r)
