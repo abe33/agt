@@ -1,3 +1,4 @@
+namespace('agt.geom')
 # Public: A spline is a curve made of [vertices]{agt.geom.Point} that
 # controls the resulting geometry.
 #
@@ -40,7 +41,7 @@ agt.geom.Spline = (segmentSize) ->
   #
   # <script>window.exampleKey = 'cubic_spline'</script>
   class ConcreteSpline
-    @include mixins.Memoizable
+    @include agt.mixins.Memoizable
 
     ### Public ###
 
@@ -83,7 +84,7 @@ agt.geom.Spline = (segmentSize) ->
       x = x / @vertices.length
       y = y / @vertices.length
 
-      new Point x, y
+      new agt.geom.Point x, y
 
     # Applies a translation represented by the passed-in [point]{agt.geom.Point}
     # to every vertices of the spline.
@@ -95,7 +96,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # Returns this {ConcreteSpline}.
     translate: (x,y) ->
-      {x,y} = Point.pointFrom x,y
+      {x,y} = agt.geom.Point.pointFrom x,y
       for vertex,i in @vertices
         @vertices[i] = vertex.add x, y
       this

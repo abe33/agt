@@ -1,10 +1,10 @@
 
-Point = agt.geom.Point
+namespace('agt.geom')
 
 # Public:
 class agt.geom.TransformationProxy
   ### Public ###
-  
+
   @defineProxy: (key, type) ->
     switch type
       when 'PointList'
@@ -23,8 +23,8 @@ class agt.geom.TransformationProxy
         @::[key] = ->
           angle = @geometry[key].apply(@geometry, arguments)
           if @matrix?
-            vec = new Point Math.cos(angle),
-                            Math.sin(angle)
+            vec = new agt.geom.Point Math.cos(angle),
+                                     Math.sin(angle)
             @matrix.transformPoint(vec).angle()
           else angle
 

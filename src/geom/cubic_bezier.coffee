@@ -1,14 +1,13 @@
-
-{Point,Intersections,Geometry,Spline,Path} = agt.geom
+namespace('agt.geom')
 
 # Public:
 class agt.geom.CubicBezier
-  @include mixins.Formattable('CubicBezier')
-  @include mixins.Sourcable('agt.geom.CubicBezier', 'vertices', 'bias')
-  @include Geometry
-  @include Path
-  @include Intersections
-  @include Spline(3)
+  @include agt.mixins.Formattable('CubicBezier')
+  @include agt.mixins.Sourcable('agt.geom.CubicBezier', 'vertices', 'bias')
+  @include agt.geom.Geometry
+  @include agt.geom.Path
+  @include agt.geom.Intersections
+  @include agt.geom.Spline(3)
 
   ### Public ###
 
@@ -16,7 +15,7 @@ class agt.geom.CubicBezier
     @initSpline vertices, bias
 
   pointInSegment: (t, seg) ->
-    pt = new Point()
+    pt = new agt.geom.Point()
     pt.x = (seg[0].x * @b1 (t)) +
            (seg[1].x * @b2 (t)) +
            (seg[2].x * @b3 (t)) +

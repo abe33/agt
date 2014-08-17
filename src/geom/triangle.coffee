@@ -1,5 +1,5 @@
 
-{Point,Path,Surface,Geometry,Intersections} = agt.geom
+namespace('agt.geom')
 
 # Public: A `Triangle` is only defined using three [Points]{agt.geom.Point}.
 # It is the simplest geometry you can find in the `geom` package, every other
@@ -21,17 +21,17 @@
 # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
 class agt.geom.Triangle
-  @extend mixins.Aliasable
+  @extend agt.mixins.Aliasable
 
-  @include mixins.Equatable('a','b','c')
-  @include mixins.Formattable('Triangle','a','b','c')
-  @include mixins.Sourcable('agt.geom.Triangle','a','b','c')
-  @include mixins.Cloneable()
-  @include mixins.Memoizable
-  @include Geometry
-  @include Surface
-  @include Path
-  @include Intersections
+  @include agt.mixins.Equatable('a','b','c')
+  @include agt.mixins.Formattable('Triangle','a','b','c')
+  @include agt.mixins.Sourcable('agt.geom.Triangle','a','b','c')
+  @include agt.mixins.Cloneable()
+  @include agt.mixins.Memoizable
+  @include agt.geom.Geometry
+  @include agt.geom.Surface
+  @include agt.geom.Path
+  @include agt.geom.Intersections
 
   ### Public ###
 
@@ -46,16 +46,16 @@ class agt.geom.Triangle
   #   :b - A [Point]{agt.geom.Point} for the second vertex of the triangle.
   #   :c - A [Point]{agt.geom.Point} for the mast vertex of the triangle.
   @triangleFrom: (a, b, c) ->
-    {a,b,c} = a if a? and typeof a is 'object' and not Point.isPoint a
+    {a,b,c} = a if a? and typeof a is 'object' and not agt.geom.Point.isPoint a
 
-    @invalidPoint 'a', a unless Point.isPoint a
-    @invalidPoint 'b', b unless Point.isPoint b
-    @invalidPoint 'c', c unless Point.isPoint c
+    @invalidPoint 'a', a unless agt.geom.Point.isPoint a
+    @invalidPoint 'b', b unless agt.geom.Point.isPoint b
+    @invalidPoint 'c', c unless agt.geom.Point.isPoint c
 
     {
-      a: new Point(a)
-      b: new Point(b)
-      c: new Point(c)
+      a: new agt.geom.Point(a)
+      b: new agt.geom.Point(b)
+      c: new agt.geom.Point(c)
     }
 
   # Creates a new `Triangle` instance.
@@ -71,7 +71,7 @@ class agt.geom.Triangle
   # <script>drawGeometry(exampleKey, {center: true})</script>
   #
   # Returns a [Point]{agt.geom.Point}.
-  center: -> new Point (@a.x + @b.x + @c.x) / 3,
+  center: -> new agt.geom.Point (@a.x + @b.x + @c.x) / 3,
                        (@a.y + @b.y + @c.y) / 3
 
   # Returns the center of the `ab` edge of the triangle.
@@ -221,7 +221,7 @@ class agt.geom.Triangle
   #
   # Returns this [Triangle]{agt.geom.Triangle}.
   translate: (x,y) ->
-    pt = Point.pointFrom x,y
+    pt = agt.geom.Point.pointFrom x,y
     @a.x += pt.x; @a.y += pt.y
     @b.x += pt.x; @b.y += pt.y
     @c.x += pt.x; @c.y += pt.y
@@ -307,7 +307,7 @@ class agt.geom.Triangle
   #
   # Returns a {Boolean}.
   contains: (x, y) ->
-    p = new Point x, y
+    p = new agt.geom.Point x, y
 
     v0 = @ac()
     v1 = @ab()
@@ -335,7 +335,7 @@ class agt.geom.Triangle
   # Returns a [Point]{agt.geom.Point}.
   randomPointInSurface: (random) ->
     unless random?
-      random = new chancejs.Random new chancejs.MathRandom
+      random = new agt.random.Random new agt.random.MathRandom
 
     a1 = random.get()
     a2 = random.get()

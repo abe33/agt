@@ -1,3 +1,4 @@
+namespace('agt.inflector')
 class agt.inflector.Inflection
   constructor: (@match, @replace) ->
     @match = ///^#{@match}$///i if typeof @match is 'string'

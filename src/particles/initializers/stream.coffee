@@ -1,4 +1,4 @@
-
+namespace('agt.particles.initializers')
 # Public:
 class agt.particles.initializers.Stream
   @include agt.particles.Randomizable

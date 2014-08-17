@@ -1,3 +1,4 @@
+namespace('agt.inflector')
 class agt.inflector.Inflector
 
   config: (lang, block) ->

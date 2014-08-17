@@ -1,34 +1,31 @@
 # The module bootstrap.
 isCommonJS = typeof module isnt "undefined"
 
-agt = {}
+__namespaces__ = {}
 
-agt.mixins = mixins = {}
-agt.random = random = {}
-agt.geom = geom = {}
-agt.net = net = {}
-agt.inflector = {}
-agt.particles = particles = {
-  actions: {}
-  emitters: {}
-  timers: {}
-  counters: {}
-  initializers: {}
-}
+namespace = (path) ->
+  return if __namespaces__[path]
+
+  __namespaces__[path] = true
+
+  originalPath = path
+  path = path.split('.')
+  root = path.shift()
+
+  obj = if isCommonJS
+    module.exports
+  else
+    window[root] ||= {}
+
+  for p in path
+    obj = obj[p] = obj[p] or {}
+
+namespace('agt')
 
 if isCommonJS
-  exports = module.exports = agt
+  agt = module.exports
 else
-  exports = window.agt = agt
-
-agt.CAMEL_CASE = 'camel'
-agt.SNAKE_CASE = 'snake'
-agt.COLORS =
-  STROKE: '#ff0000'
-  FILL: 'rgba(255,0,0,0.5)'
-  VERTICES: '#0077ff'
-  VERTICES_CONNECTIONS: 'rgba(0,127,255,0.5)'
-  BOUNDING_BOX: '#69af23'
+  agt = window.agt
 
 agt.deprecated = (message) ->
   parseLine = (line) ->

@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: A `Memoizable` object can store data resulting of heavy methods
 # in order to speed up further call to that method.
 #

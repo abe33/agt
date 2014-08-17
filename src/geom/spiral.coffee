@@ -1,13 +1,13 @@
 
-{Point,Ellipsis,Geometry,Path,Intersections} = agt.geom
+namespace('agt.geom')
 
 # Public:
 class agt.geom.Spiral
   properties = ['radius1', 'radius2', 'twirl', 'x', 'y', 'rotation','segments']
 
-  @include mixins.Equatable.apply(null, properties)
-  @include mixins.Formattable.apply(null, ['Spiral'].concat properties)
-  @include mixins.Parameterizable('spiralFrom', {
+  @include agt.mixins.Equatable.apply(null, properties)
+  @include agt.mixins.Formattable.apply(null, ['Spiral'].concat properties)
+  @include agt.mixins.Parameterizable('spiralFrom', {
     radius1: 1
     radius2: 1
     twirl: 1
@@ -16,12 +16,12 @@ class agt.geom.Spiral
     rotation: 0
     segments: 36
   })
-  @include mixins.Sourcable.apply(null, ['agt.geom.Spiral'].concat properties)
-  @include mixins.Cloneable()
-  @include mixins.Memoizable
-  @include Geometry
-  @include Path
-  @include Intersections
+  @include agt.mixins.Sourcable.apply(null, ['agt.geom.Spiral'].concat properties)
+  @include agt.mixins.Cloneable()
+  @include agt.mixins.Memoizable
+  @include agt.geom.Geometry
+  @include agt.geom.Path
+  @include agt.geom.Intersections
 
   ### Public ###
 
@@ -36,14 +36,14 @@ class agt.geom.Spiral
       @segments
     } = @spiralFrom r1, r2, twirl, x, y, rot, segments
 
-  center: -> new Point @x, @y
+  center: -> new agt.geom.Point @x, @y
 
   ellipsis: ->
     return @memoFor 'ellipsis' if @memoized 'ellipsis'
-    @memoize 'ellipsis', new Ellipsis this
+    @memoize 'ellipsis', new agt.geom.Ellipsis this
 
   translate: (x,y) ->
-    {x,y} = Point.pointFrom x, y
+    {x,y} = agt.geom.Point.pointFrom x, y
     @x += x
     @y += y
     this

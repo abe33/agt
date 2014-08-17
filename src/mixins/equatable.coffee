@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: An `Equatable` object can be compared in equality with another object.
 # Objects are considered as equal if all the listed properties are equal.
 #

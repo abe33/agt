@@ -1,14 +1,14 @@
 
-{Point,Intersections,Geometry,Spline,Path} = agt.geom
+namespace('agt.geom')
 
 # Public:
 class agt.geom.QuintBezier
-  @include mixins.Formattable('QuintBezier')
-  @include mixins.Sourcable('agt.geom.QuintBezier', 'vertices', 'bias')
-  @include Geometry
-  @include Path
-  @include Intersections
-  @include Spline(4)
+  @include agt.mixins.Formattable('QuintBezier')
+  @include agt.mixins.Sourcable('agt.geom.QuintBezier', 'vertices', 'bias')
+  @include agt.geom.Geometry
+  @include agt.geom.Path
+  @include agt.geom.Intersections
+  @include agt.geom.Spline(4)
 
   ### Public ###
 
@@ -16,7 +16,7 @@ class agt.geom.QuintBezier
     @initSpline vertices, bias
 
   pointInSegment: (t, seg) ->
-    pt = new Point()
+    pt = new agt.geom.Point()
     pt.x = (seg[0].x * @b1 (t)) +
            (seg[1].x * @b2 (t)) +
            (seg[2].x * @b3 (t)) +

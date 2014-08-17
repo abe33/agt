@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: A `Sourcable` object is an object that can return the source code
 # to re-create it by code.
 #
@@ -43,5 +43,3 @@ agt.mixins.Sourcable = (name, signature...) ->
       args = (@[ arg ] for arg in signature).map (o) -> sourceFor o
 
       "new #{ name }(#{ args.join ',' })"
-
-mixins.Sourcable._name = 'Sourcable'

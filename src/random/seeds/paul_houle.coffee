@@ -1,3 +1,4 @@
+namespace('agt.random')
 # Original Implementation License:
 #
 # The Central Randomizer 1.3 (C) 1997 by Paul Houle (paul@honeylocust.com)
@@ -5,9 +6,9 @@
 
 # Public:
 class agt.random.PaulHoule
-  @include mixins.Cloneable('seed')
-  @include mixins.Sourcable('chancejs.PaulHoule','seed')
-  @include mixins.Formattable('PaulHoule','seed')
+  @include agt.mixins.Cloneable('seed')
+  @include agt.mixins.Sourcable('chancejs.PaulHoule','seed')
+  @include agt.mixins.Formattable('PaulHoule','seed')
 
   ### Public ###
 

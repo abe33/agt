@@ -1,3 +1,5 @@
+namespace('agt.widgets')
+
 #
 __widgets__ = {}
 

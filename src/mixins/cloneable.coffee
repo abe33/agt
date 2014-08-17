@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Internal: Contains all the function that will instanciate a class
 # with a specific number of arguments. These functions are all generated
 # at runtime with the `Function` constructor.

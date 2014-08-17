@@ -1,3 +1,4 @@
+namespace('agt.geom')
 # Public: The `Intersections` mixin provides methods to geometries that
 # allow to compute intersections with other geometries.
 #

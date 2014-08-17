@@ -1,4 +1,4 @@
-{Point,Intersections,Geometry,Spline,Path} = agt.geom
+namespace('agt.geom')
 
 # Public:
 #
@@ -12,12 +12,12 @@
 # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
 class agt.geom.QuadBezier
-  @include mixins.Formattable('QuadBezier')
-  @include mixins.Sourcable('agt.geom.QuadBezier', 'vertices', 'bias')
-  @include Geometry
-  @include Path
-  @include Intersections
-  @include Spline(2)
+  @include agt.mixins.Formattable('QuadBezier')
+  @include agt.mixins.Sourcable('agt.geom.QuadBezier', 'vertices', 'bias')
+  @include agt.geom.Geometry
+  @include agt.geom.Path
+  @include agt.geom.Intersections
+  @include agt.geom.Spline(2)
 
   ### Public ###
 
@@ -25,7 +25,7 @@ class agt.geom.QuadBezier
     @initSpline vertices, bias
 
   pointInSegment: (t, seg) ->
-    pt = new Point()
+    pt = new agt.geom.Point()
     pt.x = (seg[0].x * @b1 (t)) +
            (seg[1].x * @b2 (t)) +
            (seg[2].x * @b3 (t))

@@ -1,3 +1,5 @@
+namespace('agt.widgets')
+
 # Public:
 class agt.widgets.Hash
   constructor: ->

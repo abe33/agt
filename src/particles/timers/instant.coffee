@@ -1,4 +1,4 @@
-
+namespace('agt.particles.timers')
 # Public:
 class agt.particles.timers.Instant
 

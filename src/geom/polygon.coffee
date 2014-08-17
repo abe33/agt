@@ -1,17 +1,17 @@
-{Point,Triangulable,Geometry,Surface,Path,Intersections} = agt.geom
+namespace('agt.geom')
 
 # Public:
 class agt.geom.Polygon
-  @extend mixins.Aliasable
-  
-  @include mixins.Formattable('Polygon', 'vertices')
-  @include mixins.Sourcable('agt.geom.Polygon', 'vertices')
-  @include mixins.Cloneable()
-  @include Geometry
-  @include Intersections
-  @include Triangulable
-  @include Surface
-  @include Path
+  @extend agt.mixins.Aliasable
+
+  @include agt.mixins.Formattable('Polygon', 'vertices')
+  @include agt.mixins.Sourcable('agt.geom.Polygon', 'vertices')
+  @include agt.mixins.Cloneable()
+  @include agt.geom.Geometry
+  @include agt.geom.Intersections
+  @include agt.geom.Triangulable
+  @include agt.geom.Surface
+  @include agt.geom.Path
 
   ### Public ###
 
@@ -40,10 +40,10 @@ class agt.geom.Polygon
     x = x / @vertices.length
     y = y / @vertices.length
 
-    new Point x, y
+    new agt.geom.Point x, y
 
   translate: (x,y) ->
-    {x,y} = Point.pointFrom x,y
+    {x,y} = agt.geom.Point.pointFrom x,y
     for vertex in @vertices
       vertex.x += x
       vertex.y += y
@@ -89,7 +89,7 @@ class agt.geom.Polygon
 
   randomPointInSurface: (random) ->
     unless random?
-      random = new chancejs.Random new chancejs.MathRandom
+      random = new agt.random.Random new agt.random.MathRandom
 
     acreage = @acreage()
     triangles = @triangles()

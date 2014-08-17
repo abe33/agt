@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: A `Parameterizable` object provides a class and an instance
 # method to convert an arbitrary {Object} or a series of values into
 # an instance of the class receiving the mixin.

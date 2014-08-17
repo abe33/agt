@@ -1,4 +1,4 @@
-{Point} = agt.geom
+namespace('agt.geom')
 
 # Public: The Matrix class represents a transformation matrix that
 # determines how to map points from one coordinate space to another.
@@ -21,10 +21,10 @@ class agt.geom.Matrix
   # A list of the proprties to be checked to consider an object as a matrix.
   properties = ['a', 'b', 'c', 'd', 'tx', 'ty']
 
-  @include mixins.Equatable(properties...)
-  @include mixins.Formattable(['Matrix'].concat(properties)...)
-  @include mixins.Sourcable(['agt.geom.Matrix'].concat(properties)...)
-  @include mixins.Parameterizable('matrixFrom', {
+  @include agt.mixins.Equatable(properties...)
+  @include agt.mixins.Formattable(['Matrix'].concat(properties)...)
+  @include agt.mixins.Sourcable(['agt.geom.Matrix'].concat(properties)...)
+  @include agt.mixins.Parameterizable('matrixFrom', {
     a: 1
     b: 0
     c: 0
@@ -32,7 +32,7 @@ class agt.geom.Matrix
     tx: 0
     ty: 0
   })
-  @include mixins.Cloneable()
+  @include agt.mixins.Cloneable()
 
   ### Public ###
 
@@ -95,9 +95,9 @@ class agt.geom.Matrix
     if not x? and not y?
       throw new Error "transformPoint was called without arguments"
 
-    {x,y} = Point.pointFrom x, y, true
-    new Point x*@a + y*@c + @tx,
-              x*@b + y*@d + @ty
+    {x,y} = agt.geom.Point.pointFrom x, y, true
+    new agt.geom.Point x*@a + y*@c + @tx,
+                       x*@b + y*@d + @ty
 
   # Translates the matrix by the amount of the passed-in point.
   #
@@ -107,7 +107,7 @@ class agt.geom.Matrix
   #
   # Returns this [Matrix]{agt.geom.Matrix}.
   translate: (x=0, y=0) ->
-    {x,y} = Point.pointFrom x, y
+    {x,y} = agt.geom.Point.pointFrom x, y
 
     @tx += x
     @ty += y
@@ -121,7 +121,7 @@ class agt.geom.Matrix
   #
   # Returns this [Matrix]{agt.geom.Matrix}.
   scale: (x=1, y=1) ->
-    {x,y} = Point.pointFrom x, y
+    {x,y} = agt.geom.Point.pointFrom x, y
 
     @a *= x
     @d *= y
@@ -155,7 +155,7 @@ class agt.geom.Matrix
   #
   # Returns this [Matrix]{agt.geom.Matrix}.
   skew: (x, y) ->
-    pt = Point.pointFrom(x, y, 0)
+    pt = agt.geom.Point.pointFrom(x, y, 0)
     @append Math.cos(pt.y),
             Math.sin(pt.y),
             -Math.sin(pt.x),

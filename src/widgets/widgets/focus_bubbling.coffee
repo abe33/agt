@@ -1,6 +1,6 @@
 # Public: This widgets decorates all the dom path until the current
 # element with a `focus` class when the element have the focus.
-widgets.define 'bubbling_focus', (element) ->
+agt.widgets.define 'bubbling_focus', (element) ->
   blur = ->
     Array::forEach.call document.querySelectorAll('.focus'), (el) ->
       el.classList.remove('.focus')

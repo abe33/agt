@@ -1,3 +1,4 @@
+namespace('agt.net')
 # Public: The router class allow to trigger view changes on url changes.
 # Typically the url changes may be handled by the history API or a url hash
 # handler.

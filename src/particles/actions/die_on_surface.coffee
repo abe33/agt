@@ -1,3 +1,4 @@
+namespace('agt.particles.actions')
 # Public:
 class agt.particles.actions.DieOnSurface
 

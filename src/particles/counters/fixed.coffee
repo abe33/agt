@@ -1,4 +1,4 @@
-
+namespace('agt.particles.counters')
 # Public:
 class agt.particles.counters.Fixed
 

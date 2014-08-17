@@ -1,10 +1,11 @@
+namespace('agt.geom')
 # Public: The `Triangulable` mixin provides the {::triangles} method, allowing
 # closed geometries to returns the [Triangles]{agt.geom.Triangle} that compose
 # it.
 #
 # <script>window.exampleKey = 'geometry'</script>
 class agt.geom.Triangulable
-  @include mixins.Memoizable
+  @include agt.mixins.Memoizable
 
   ### Public ###
 

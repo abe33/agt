@@ -1,3 +1,4 @@
+namespace('agt.mixins')
 
 # Public: The `HasCollection` mixin provides methods to expose a collection
 # in a class. The mixin is created using two strings.
@@ -42,7 +43,7 @@ agt.mixins.HasCollection = (plural, singular) ->
   class ConcreteHasCollection
     # The mixin integrates `Aliasable` to create various alias to the
     # collection methods.
-    @extend mixins.Aliasable
+    @extend agt.mixins.Aliasable
 
     # Public: Creates a `name` scope on instances that filter
     # the collection using the passed-in `block`.

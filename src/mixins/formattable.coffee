@@ -1,3 +1,4 @@
+namespace('agt.mixins')
 # Public: A `Formattable` object provides a `toString` that return
 # a string representation of the current instance.
 #

@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: Provides class methods to deal with aliased methods and properties.
 #
 # ```coffeescript

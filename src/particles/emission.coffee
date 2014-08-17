@@ -1,18 +1,14 @@
-
-Particle = agt.particles.Particle
-NullTimer = agt.particles.timers.NullTimer
-NullCounter = agt.particles.counters.NullCounter
-NullEmitter = agt.particles.emitters.NullEmitter
+namespace('agt.particles')
 
 # Public:
 class agt.particles.Emission
 
   ### Public ###
 
-  constructor: (@particleType=Particle,
-                @emitter=new NullEmitter(),
-                @timer=new NullTimer(),
-                @counter=new NullCounter(),
+  constructor: (@particleType=agt.particles.Particle,
+                @emitter=new agt.particles.timers.NullEmitter(),
+                @timer=new agt.particles.counters.NullTimer(),
+                @counter=new agt.particles.emitters.NullCounter(),
                 @initializer=null) ->
 
   prepare: (bias, biasInSeconds, time) ->

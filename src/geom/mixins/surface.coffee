@@ -1,3 +1,4 @@
+namespace('agt.geom')
 # Public: Every closed geometry should have the properties of a surface.
 #
 # These properties are:

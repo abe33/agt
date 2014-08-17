@@ -1,4 +1,4 @@
-
+namespace('agt.particles.initializers')
 # Public:
 class agt.particles.initializers.Life
   @include agt.particles.Randomizable

@@ -1,11 +1,12 @@
+namespace('agt.random')
 # Public:
 class agt.random.LaggedFibonnacci
-  @include mixins.Cloneable('seed')
-  @include mixins.Sourcable('chancejs.LaggedFibonnacci','seed')
-  @include mixins.Formattable('LaggedFibonnacci','seed')
+  @include agt.mixins.Cloneable('seed')
+  @include agt.mixins.Sourcable('chancejs.LaggedFibonnacci','seed')
+  @include agt.mixins.Formattable('LaggedFibonnacci','seed')
 
   ### Public ###
-  
+
   constructor: (seed=0) ->
     @plantSeed seed
 

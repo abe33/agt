@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: The `Delegation` mixin allow to define properties on an object that
 # proxy another property of an object stored in one of its property.
 #

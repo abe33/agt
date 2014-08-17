@@ -1,19 +1,16 @@
-Signal = agt.Signal
-Impulse = agt.Impulse
-NullInitializer = agt.particles.initializers.NullInitializer
-NullAction = agt.particles.actions.NullAction
+namespace('agt.particles')
 
 # Public:
 class agt.particles.System
 
   ### Public ###
 
-  constructor: (@initializer=new NullInitializer,
-                @action= new NullAction, @subSystem) ->
-    @particlesCreated = new Signal
-    @particlesDied = new Signal
-    @emissionStarted = new Signal
-    @emissionFinished = new Signal
+  constructor: (@initializer=new agt.particles.initializers.NullInitializer,
+                @action= new agt.particles.actions.NullAction, @subSystem) ->
+    @particlesCreated = new agt.Signal
+    @particlesDied = new agt.Signal
+    @emissionStarted = new agt.Signal
+    @emissionFinished = new agt.Signal
     @particles = []
     @emissions = []
 
@@ -39,12 +36,12 @@ class agt.particles.System
 
   start: ->
     unless @running
-      Impulse.instance().add @tick, this
+      agt.Impulse.instance().add @tick, this
       @running = true
 
   stop: ->
     if @running
-      Impulse.instance().remove @tick, this
+      agt.Impulse.instance().remove @tick, this
       @running = false
 
   tick: (bias, biasInSeconds, time) ->

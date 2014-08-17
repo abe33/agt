@@ -1,8 +1,9 @@
+namespace('agt.random')
 # Public:
 class agt.random.Linear
-  @include mixins.Cloneable('step')
-  @include mixins.Sourcable('chancejs.Linear','step')
-  @include mixins.Formattable('Linear','step')
+  @include agt.mixins.Cloneable('step')
+  @include agt.mixins.Sourcable('chancejs.Linear','step')
+  @include agt.mixins.Formattable('Linear','step')
 
   ### Public ###
 

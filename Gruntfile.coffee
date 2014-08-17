@@ -37,6 +37,7 @@ module.exports = (grunt) ->
         files:
           'build/agt.js': [
             'src/index.coffee'
+            'src/config.coffee'
             'src/object.coffee'
             'src/function.coffee'
             'src/inheritance.coffee'

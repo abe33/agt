@@ -1,4 +1,4 @@
-{Point,Intersections,Geometry,Spline,Path} = agt.geom
+namespace('agt.geom')
 
 # Public: The `LinearSpline` is the simplest spline you can find.
 #
@@ -15,12 +15,12 @@
 # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
 class agt.geom.LinearSpline
-  @include mixins.Formattable('LinearSpline')
-  @include mixins.Sourcable('agt.geom.LinearSpline', 'vertices', 'bias')
-  @include Geometry
-  @include Path
-  @include Intersections
-  @include Spline(1)
+  @include agt.mixins.Formattable('LinearSpline')
+  @include agt.mixins.Sourcable('agt.geom.LinearSpline', 'vertices', 'bias')
+  @include agt.geom.Geometry
+  @include agt.geom.Path
+  @include agt.geom.Intersections
+  @include agt.geom.Spline(1)
 
   ### Public ###
 

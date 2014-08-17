@@ -1,3 +1,4 @@
+namespace('agt.mixins')
 
 # Internal: The list of properties that are unglobalizable by default.
 DEFAULT_UNGLOBALIZABLE = [

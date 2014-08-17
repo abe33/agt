@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: A `Poolable` class has the ability to manage a pool of instances
 # and prevent the further creation of instances as long as unused ones
 # are still present.

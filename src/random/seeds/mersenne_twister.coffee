@@ -1,8 +1,9 @@
+namespace('agt.random')
 # Public:
 class agt.random.MersenneTwister
-  @include mixins.Cloneable('seed')
-  @include mixins.Sourcable('chancejs.MersenneTwister','seed')
-  @include mixins.Formattable('MersenneTwister','seed')
+  @include agt.mixins.Cloneable('seed')
+  @include agt.mixins.Sourcable('chancejs.MersenneTwister','seed')
+  @include agt.mixins.Formattable('MersenneTwister','seed')
 
   ### Public ###
 

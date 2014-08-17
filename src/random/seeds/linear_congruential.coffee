@@ -1,8 +1,9 @@
+namespace('agt.random')
 # Public:
 class agt.random.LinearCongruential
-  @include mixins.Cloneable('seed')
-  @include mixins.Sourcable('chancejs.LinearCongruential','seed')
-  @include mixins.Formattable('LinearCongruential','seed')
+  @include agt.mixins.Cloneable('seed')
+  @include agt.mixins.Sourcable('chancejs.LinearCongruential','seed')
+  @include agt.mixins.Formattable('LinearCongruential','seed')
 
   ### Public ###
 

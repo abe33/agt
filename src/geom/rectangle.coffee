@@ -1,5 +1,5 @@
 
-{Point,Triangulable,Proxyable,Geometry,Surface,Path,Intersections} = agt.geom
+namespace('agt.geom')
 
 # Public: A `Rectangle` geometry is defined with a position, a size
 # and a rotation.
@@ -28,25 +28,25 @@
 class agt.geom.Rectangle
   properties = ['x','y','width','height','rotation']
 
-  @extend mixins.Aliasable
+  @extend agt.mixins.Aliasable
 
-  @include mixins.Cloneable()
-  @include mixins.Equatable.apply(null, properties)
-  @include mixins.Formattable.apply(null, ['Rectangle'].concat properties)
-  @include mixins.Sourcable.apply(null, ['agt.geom.Rectangle'].concat properties)
-  @include mixins.Parameterizable('rectangleFrom', {
+  @include agt.mixins.Cloneable()
+  @include agt.mixins.Equatable.apply(null, properties)
+  @include agt.mixins.Formattable.apply(null, ['Rectangle'].concat properties)
+  @include agt.mixins.Sourcable.apply(null, ['agt.geom.Rectangle'].concat properties)
+  @include agt.mixins.Parameterizable('rectangleFrom', {
     x: NaN
     y: NaN
     width: NaN
     height: NaN
     rotation: NaN
   })
-  @include Geometry
-  @include Surface
-  @include Path
-  @include Triangulable
-  @include Proxyable
-  @include Intersections
+  @include agt.geom.Geometry
+  @include agt.geom.Surface
+  @include agt.geom.Path
+  @include agt.geom.Triangulable
+  @include agt.geom.Proxyable
+  @include agt.geom.Intersections
 
   ### Public ###
 
@@ -66,7 +66,7 @@ class agt.geom.Rectangle
       @eachIntersections geom1, geom2, block, data
 
   # Registers the fast intersections iterators for the Rectangle class
-  iterators = Intersections.iterators
+  iterators = agt.geom.Intersections.iterators
   k = 'RectangleRectangle'
   iterators[k] = Rectangle.eachRectangleRectangleIntersections
 
@@ -93,7 +93,7 @@ class agt.geom.Rectangle
   # <script>drawGeometryPoints(exampleKey, 'topLeft')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
-  topLeft: -> new Point(@x, @y)
+  topLeft: -> new agt.geom.Point(@x, @y)
 
   # Returns the coordinates of the top right corner of the rectangle.
   #
@@ -161,7 +161,7 @@ class agt.geom.Rectangle
   # <script>drawGeometryEdge(exampleKey, 'topLeft', 'topEdge')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
-  topEdge: -> new Point @width * Math.cos(@rotation),
+  topEdge: -> new agt.geom.Point @width * Math.cos(@rotation),
                         @width * Math.sin(@rotation)
 
   # Returns the rectangle's left edge vector.
@@ -170,7 +170,7 @@ class agt.geom.Rectangle
   #
   # Returns a [Point]{agt.geom.Point}.
   leftEdge: ->
-    new Point @height * Math.cos(@rotation + Math.PI / 2),
+    new agt.geom.Point @height * Math.cos(@rotation + Math.PI / 2),
               @height * Math.sin(@rotation + Math.PI / 2)
 
   # Returns the rectangle's bottom edge vector.
@@ -232,7 +232,7 @@ class agt.geom.Rectangle
   #
   # Returns this [Rectangle]{agt.geom.Rectangle}.
   setCenter: (x, y) ->
-    pt = Point.pointFrom(x, y).subtract(@center())
+    pt = agt.geom.Point.pointFrom(x, y).subtract(@center())
 
     @x += pt.x
     @y += pt.y
@@ -249,7 +249,7 @@ class agt.geom.Rectangle
   #
   # Returns this {Rectangle}.
   translate: (x, y) ->
-    pt = Point.pointFrom(x, y)
+    pt = agt.geom.Point.pointFrom(x, y)
 
     @x += pt.x
     @y += pt.y
@@ -316,7 +316,7 @@ class agt.geom.Rectangle
   #
   # Returns this [Rectangle]{agt.geom.Rectangle}.
   inflate: (x, y) ->
-    pt = Point.pointFrom x, y
+    pt = agt.geom.Point.pointFrom x, y
     @width += pt.x
     @height += pt.y
     this
@@ -379,7 +379,7 @@ class agt.geom.Rectangle
   #
   # Returns this [Rectangle]{agt.geom.Rectangle}.
   inflateTopLeft: (x, y) ->
-    pt = Point.pointFrom x, y
+    pt = agt.geom.Point.pointFrom x, y
     @inflateLeft pt.x
     @inflateTop pt.y
     this
@@ -394,7 +394,7 @@ class agt.geom.Rectangle
   #
   # Returns this [Rectangle]{agt.geom.Rectangle}.
   inflateTopRight: (x, y) ->
-    pt = Point.pointFrom x, y
+    pt = agt.geom.Point.pointFrom x, y
     @inflateRight pt.x
     @inflateTop pt.y
     this
@@ -409,7 +409,7 @@ class agt.geom.Rectangle
   #
   # Returns this [Rectangle]{agt.geom.Rectangle}.
   inflateBottomLeft: (x, y) ->
-    pt = Point.pointFrom x, y
+    pt = agt.geom.Point.pointFrom x, y
     @inflateLeft pt.x
     @inflateBottom pt.y
     this
@@ -470,7 +470,7 @@ class agt.geom.Rectangle
   #
   # Returns a {Boolean}.
   contains: (x, y) ->
-    {x,y} = new Point(x, y).rotateAround(@topLeft(), -@rotation)
+    {x,y} = new agt.geom.Point(x, y).rotateAround(@topLeft(), -@rotation)
     (@x <= x <= @x + @width) and (@y <= y <= @y + @height)
 
   # Returns a randomly generated point within the rectangle perimeter.
@@ -483,7 +483,7 @@ class agt.geom.Rectangle
   # Returns a [Point]{agt.geom.Point}.
   randomPointInSurface: (random) ->
     unless random?
-      random = new chancejs.Random new chancejs.MathRandom
+      random = new agt.random.Random new agt.random.MathRandom
     @topLeft()
       .add(@topEdge().scale random.get())
       .add(@leftEdge().scale random.get())

@@ -1,4 +1,4 @@
-
+namespace('agt.particles.actions')
 # Public:
 class agt.particles.actions.Friction extends agt.particles.actions.BaseAction
 

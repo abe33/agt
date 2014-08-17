@@ -1,9 +1,9 @@
-
+namespace('agt.particles.actions')
 # Public:
 class agt.particles.actions.Move extends agt.particles.actions.BaseAction
 
   ### Public ###
-  
+
   process: (particle) ->
     particle.lastPosition.x = particle.position.x
     particle.lastPosition.y = particle.position.y

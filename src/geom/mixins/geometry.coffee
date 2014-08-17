@@ -1,3 +1,4 @@
+namespace('agt.geom')
 # Public: The `Geometry` mixin describes the most basic interface a geometry
 # should implements.
 #

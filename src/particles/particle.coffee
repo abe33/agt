@@ -1,4 +1,4 @@
-Point = agt.geom.Point
+namespace('agt.particles')
 
 # Public:
 class agt.particles.Particle
@@ -10,9 +10,9 @@ class agt.particles.Particle
     @dead = false
     @life = 0
     @maxLife = 0
-    @position = new Point
-    @lastPosition = new Point
-    @velocity = new Point
+    @position = new agt.geom.Point
+    @lastPosition = new agt.geom.Point
+    @velocity = new agt.geom.Point
     @parasite = {}
 
     @[ k ] = v for k,v of options

@@ -1,6 +1,6 @@
-
+namespace('agt.mixins')
 class agt.mixins.StateMachine
-  @initial: (state) -> @::state = state
+  @initial: (state) -> @initialState = state
 
   @event: (name, block) ->
     @::[name] = block
@@ -15,7 +15,7 @@ class agt.mixins.StateMachine
 
     this
 
-  initializeStateMachine: -> @setState(@state)
+  initializeStateMachine: -> @setState(@constructor.initialState)
 
   transition: (options) ->
     throw new Error("From option is mandatory") unless options.from?

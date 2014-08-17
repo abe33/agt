@@ -1,3 +1,5 @@
+namespace('agt.geom')
+
 # Public: A `Point` represent a location in a two-dimensional space.
 #
 # A point with coordinates (0,0) can be constructed with:
@@ -20,10 +22,10 @@
 # - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
 class agt.geom.Point
-  @include mixins.Equatable('x', 'y')
-  @include mixins.Formattable('Point','x', 'y')
-  @include mixins.Sourcable('agt.geom.Point', 'x', 'y')
-  @include mixins.Cloneable()
+  @include agt.mixins.Equatable('x', 'y')
+  @include agt.mixins.Formattable('Point','x', 'y')
+  @include agt.mixins.Sourcable('agt.geom.Point', 'x', 'y')
+  @include agt.mixins.Cloneable()
 
   ### Public: Static methods ###
 

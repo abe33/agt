@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: The `HasNestedCollection` adds a property with named `name`
 # that collects and concatenates all the descendants collections
 # into a single array.

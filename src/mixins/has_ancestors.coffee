@@ -1,3 +1,4 @@
+namespace('agt.mixins')
 
 # Public: The `HasAncestors` mixin adds several methods to instance to deal
 # with parents and ancestors.

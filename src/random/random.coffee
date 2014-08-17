@@ -1,4 +1,4 @@
-
+namespace('agt.random')
 {floor, round} = Math
 
 # Public: Create a `Random` object whenever you need randomized values
@@ -10,9 +10,9 @@
 # random = new agt.random.Random(new agt.random.MathRandom)
 # ```
 class agt.random.Random
-  @include mixins.Cloneable('generator')
-  @include mixins.Sourcable('agt.random.Random','generator')
-  @include mixins.Formattable('Random','generator')
+  @include agt.mixins.Cloneable('generator')
+  @include agt.mixins.Sourcable('agt.random.Random','generator')
+  @include agt.mixins.Formattable('Random','generator')
 
   ### Public ###
 

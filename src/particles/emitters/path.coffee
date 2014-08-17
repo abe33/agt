@@ -1,4 +1,4 @@
-
+namespace('agt.particles.emitters')
 # Public:
 class agt.particles.emitters.Path
   @include agt.particles.Randomizable

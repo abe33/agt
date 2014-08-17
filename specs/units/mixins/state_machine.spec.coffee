@@ -64,7 +64,7 @@ describe 'StateMachine', ->
       dummy.live()
 
       expect(dummy.state).toEqual('life')
-      expect(dummy.live()).toBeTruthy()
+      expect(dummy.life()).toBeTruthy()
       expect(dummy.talk()).toEqual('I am alive')
       expect(dummy.age).toEqual(20)
 

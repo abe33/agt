@@ -1,4 +1,4 @@
-
+namespace('agt.mixins')
 # Public: The `AlternateCase` mixin add methods to convert the properties
 # of a class instance to camelCase or snake_case.
 #
