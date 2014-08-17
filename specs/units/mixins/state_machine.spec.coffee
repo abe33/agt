@@ -55,6 +55,7 @@ describe 'StateMachine', ->
 
   it 'initialize the instance in the initial state', ->
     expect(dummy.state).toEqual('birth')
+    expect(dummy.birth()).toBeTruthy()
     expect(dummy.talk()).toEqual('...waaahahaahaAAHAAAHAAA')
     expect(dummy.age).toEqual(0)
 
@@ -63,6 +64,7 @@ describe 'StateMachine', ->
       dummy.live()
 
       expect(dummy.state).toEqual('life')
+      expect(dummy.live()).toBeTruthy()
       expect(dummy.talk()).toEqual('I am alive')
       expect(dummy.age).toEqual(20)
 
@@ -71,6 +73,7 @@ describe 'StateMachine', ->
         dummy.disappear()
 
         expect(dummy.state).toEqual('void')
+        expect(dummy.void()).toBeTruthy()
         expect(dummy.talk).toBeUndefined()
         expect(dummy.age).toBeUndefined()
 
