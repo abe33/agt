@@ -1,3 +1,5 @@
 language: node_js
+before_script:
+  - grunt coffee:build
 node_js:
   - 0.10
