@@ -1,16 +1,7 @@
-{spawn, exec} = require 'child_process'
-{print} = require 'util'
-Q = require 'q'
 
-run = (command) ->
-  defer = Q.defer()
-  [command, args...] = command.split(/\s+/g)
-  exe = spawn command, args
-  exe.stdout.on 'data', (data) -> print data
-  exe.stderr.on 'data', (data) -> print data
-  exe.on 'exit', (status) ->
-    if status is 0 then defer.resolve(status) else defer.reject(status)
-  defer.promise
+npm = require './tasks/npm'
+biscotto = require './tasks/biscotto'
+gemify = require './tasks/gemify'
 
 module.exports = (grunt) ->
   grunt.initConfig
@@ -110,7 +101,7 @@ module.exports = (grunt) ->
         tasks: ['biscotto', 'coffee:demos', 'extend:biscotto']
 
       config:
-        files: ['Gruntfile.coffee']
+        files: ['Gruntfile.coffee', 'tasks/*.coffee']
         options:
           reload: true
 
@@ -143,46 +134,9 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-growl')
 
-  grunt.registerTask 'extend:biscotto', 'Generates the documentation', ->
-    done = @async()
-    exec 'cat build/agt.min.js doc/assets/customs.js >> doc/assets/biscotto.js', (err, stdin, stderr) ->
-      console.log stdin
-      console.log stderr
-      exec 'cat demos/customs.css >> doc/assets/biscotto.css', (err, stdin, stderr) ->
-        console.log stdin
-        console.log stderr
-        grunt.task.run 'growl:biscotto_success'
-        done()
-
-  grunt.registerTask 'biscotto', 'Generates the documentation', ->
-    done = @async()
-    # run('biscotto src')
-    run('/Users/cedric/Development/coffeescript/biscotto/bin/biscotto --internal --private -q src')
-    .then ->
-      done()
-    .fail ->
-      done()
-
-  grunt.registerTask 'npm:test', 'Run npm tests', ->
-    done = @async()
-    run('npm test')
-    .then ->
-      grunt.task.run 'growl:jasmine_success'
-      done true
-    .fail ->
-      console.log 'in fail'
-      grunt.task.run 'growl:jasmine_failure'
-      done false
-
-  grunt.registerTask 'npm:install', 'Run npm tests', ->
-    done = @async()
-    run('npm install')
-    .then ->
-      console.log "Package installed #{'✓'.green}"
-      done true
-    .fail (reason) ->
-      console.log reason
-      done false
+  npm(grunt)
+  biscotto(grunt)
+  gemify(grunt)
 
   grunt.registerTask('all', [
     'coffee:glob_to_multiple'
