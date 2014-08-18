@@ -146,5 +146,6 @@ module.exports = (grunt) ->
     'biscotto'
     'coffee:demos'
     'extend:biscotto'
+    'gemify'
   ])
   grunt.registerTask('default', ['all'])
