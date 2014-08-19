@@ -3,10 +3,10 @@
 Q = require 'q'
 
 module.exports =
-  run: (command) ->
+  run: (command, options={}) ->
     defer = Q.defer()
 
-    exec command, (err, stdout, stderr) ->
+    exec command, options, (err, stdout, stderr) ->
       if err?
         print stderr
         defer.reject(err)

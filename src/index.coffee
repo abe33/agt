@@ -3,6 +3,11 @@ isCommonJS = typeof module isnt "undefined"
 
 __namespaces__ = {}
 
+if isCommonJS
+  module.exports = agt = {}
+else
+  window.agt = agt = {}
+
 namespace = (path) ->
   return if __namespaces__[path]
 
@@ -20,12 +25,7 @@ namespace = (path) ->
   for p in path
     obj = obj[p] = obj[p] or {}
 
-namespace('agt')
-
-if isCommonJS
-  agt = module.exports
-else
-  agt = window.agt
+window.namespace if window?
 
 agt.deprecated = (message) ->
   parseLine = (line) ->
