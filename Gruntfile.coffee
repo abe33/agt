@@ -14,7 +14,7 @@ module.exports = (grunt) ->
     ####    ##    ## ##     ## ##       ##       ##       ##
     ####     ######   #######  ##       ##       ######## ########
     coffee:
-      glob_to_multiple:
+      lib:
         expand: true
         cwd: 'src/'
         src: ['**/*.coffee']
@@ -65,7 +65,7 @@ module.exports = (grunt) ->
             'specs/units/**/*.coffee'
           ]
 
-      demos:
+      docs:
         options:
           join: true
 
@@ -75,6 +75,13 @@ module.exports = (grunt) ->
             'demos/docs/defaults.coffee'
             'demos/docs/index.coffee'
           ]
+
+      demos:
+        expand: true
+        cwd: 'demos/'
+        src: ['assets/**/*.coffee']
+        dest: 'demos/build'
+        ext: '.js'
 
     uglify:
       all:
@@ -98,7 +105,7 @@ module.exports = (grunt) ->
 
       demos:
         files: ['demos/**/*.coffee', 'demos/**/*.css']
-        tasks: ['biscotto', 'coffee:demos', 'extend:biscotto']
+        tasks: ['biscotto', 'coffee:docs', 'coffee:demos', 'extend:biscotto']
 
       config:
         files: ['Gruntfile.coffee', 'tasks/*.coffee']
@@ -139,12 +146,13 @@ module.exports = (grunt) ->
   gemify(grunt)
 
   grunt.registerTask('all', [
-    'coffee:glob_to_multiple'
+    'coffee:lib'
     'coffee:build'
     'uglify'
     'npm:test'
     'biscotto'
     'coffee:demos'
+    'coffee:docs'
     'extend:biscotto'
     'gemify:prepare'
   ])
