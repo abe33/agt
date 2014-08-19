@@ -70,10 +70,10 @@ module.exports = (grunt) ->
           join: true
 
         files:
-          'doc/assets/customs.js': [
-            'demos/geometry_renderer.coffee'
-            'demos/defaults.coffee'
-            'demos/customs.coffee'
+          'doc/assets/index.js': [
+            'demos/docs/geometry_renderer.coffee'
+            'demos/docs/defaults.coffee'
+            'demos/docs/index.coffee'
           ]
 
     uglify:
