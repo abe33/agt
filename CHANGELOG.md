@@ -1,5 +1,12 @@
-<a name="0.0.1"></a>
-# 0.0.1 (2014-08-20)
+<a name="v0.0.2"></a>
+# v0.0.2 (2014-08-20)
+
+## :bug: Bug Fixes
+
+- Fix invalid affectation of namespace function ([07765a32](https://github.com/abe33/agt.git/commit/07765a3252f343e3d26a2c921a69c1b7b7767391))
+
+<a name="v0.0.1"></a>
+# v0.0.1 (2014-08-20)
 
 ## :sparkles: Features
 
