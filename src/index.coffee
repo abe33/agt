@@ -25,7 +25,7 @@ namespace = (path) ->
   for p in path
     obj = obj[p] = obj[p] or {}
 
-window.namespace if window?
+window.namespace = namespace if window?
 
 agt.deprecated = (message) ->
   parseLine = (line) ->
