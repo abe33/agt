@@ -7,7 +7,7 @@ global.addRectangleMatchers = (scope) ->
     toBeRectangle: ->
       compare: (actual,x=0, y=0, width=0, height=0, rotation=0) ->
         result = {}
-        result.message = "Expect #{actual}to be a rectangle equals to (#{x},#{y},#{width},#{height},#{rotation})"
+        result.message = "Expect #{actual} to be a rectangle equals to (#{x},#{y},#{width},#{height},#{rotation})"
 
         result.pass = actual.x is x and
         actual.y is y and
