@@ -1,4 +1,4 @@
-{exec} = require 'child_process'
+{exec, spawn} = require 'child_process'
 {print} = require 'util'
 Q = require 'q'
 
@@ -14,4 +14,14 @@ module.exports =
         print stdout
         defer.resolve()
 
+    defer.promise
+
+  execute: (command) ->
+    defer = Q.defer()
+    [command, args...] = command.split(/\s+/g)
+    exe = spawn command, args
+    exe.stdout.on 'data', (data) -> print data
+    exe.stderr.on 'data', (data) -> print data
+    exe.on 'exit', (status) ->
+      if status is 0 then defer.resolve(status) else defer.reject(status)
     defer.promise
