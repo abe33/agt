@@ -54,6 +54,7 @@ module.exports = (grunt) ->
             'src/particles/sub_system.coffee'
             'src/particles/mixins/*.coffee'
             'src/particles/**/*.coffee'
+            'src/scenes/**/*.coffee'
             'src/sprites/**/*.coffee'
             'src/widgets/widgets.coffee'
             'src/widgets/hash.coffee'
