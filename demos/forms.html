@@ -5,7 +5,7 @@
   <title>Form Demos</title>
 
   <link rel="stylesheet" href="./build/assets/css/index.css"/>
-  <!-- include source files here... -->
+
   <script type="text/javascript" src="../build/agt.js"></script>
   <script type="text/javascript" src="./build/assets/js/forms.js"></script>
 
@@ -14,7 +14,13 @@
 </head>
 
 <body>
-  <form>
+  <form data-action="login" method="post">
+
+    <input type="email" placeholder="email" name="email"/>
+    <input type="password" placeholder="password" name="password"/>
+
+    <button type="submit">Yeah, let's go!</button>
+
   </form>
 </body>
 </html>

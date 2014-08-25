@@ -58,6 +58,7 @@ module.exports = (grunt) ->
             'src/sprites/**/*.coffee'
             'src/widgets/widgets.coffee'
             'src/widgets/hash.coffee'
+            'src/widgets/widgets/*.coffee'
           ]
 
           'build/agt.spec.js': [
