@@ -1,9 +1,9 @@
-{run} = require './utils'
+{execute} = require './utils'
 
 module.exports = (grunt) ->
   grunt.registerTask 'npm:test', 'Run npm tests', ->
     done = @async()
-    run('npm test')
+    execute('npm test')
     .then ->
       grunt.task.run 'growl:jasmine_success'
       done true
@@ -14,7 +14,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'npm:install', 'Run npm tests', ->
     done = @async()
-    run('npm install')
+    execute('npm install')
     .then ->
       console.log "Package installed #{'✓'.green}"
       done true

@@ -59,3 +59,17 @@ if document?
     afterEach ->
       document.body.removeChild(@fixture)
       @fixture = null
+
+global.withWindow = (block) ->
+  return block() if window?
+
+  describe '', ->
+    beforeEach ->
+      global.window =
+        innerWidth: 640
+        innerHeight: 480
+
+    afterEach ->
+      delete global.window
+
+    block.call(this)
