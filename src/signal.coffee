@@ -97,6 +97,8 @@ class agt.Signal
       # a new listener is added.
       @sortListeners()
 
+      remove: => @remove(listener, context)
+
   # Registers a listener for only one call.
   #
   # All the others rules are the same. So you can't add

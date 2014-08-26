@@ -28,6 +28,17 @@ describe 'Signal', ->
 
     expect(signal.listeners.length).toBe(1)
 
+  it 'returns a subscription when adding a listener', ->
+    signal = new agt.Signal
+    listener = ->
+
+    subscription = signal.add listener
+    expect(signal.listeners.length).toBe(1)
+
+    subscription.remove()
+
+    expect(signal.listeners.length).toBe(0)
+
   it 'allows to remove listeners', ->
     signal = new agt.Signal
     listener = ->
