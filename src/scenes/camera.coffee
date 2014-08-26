@@ -9,12 +9,13 @@ CAMERA_SETTERS_MAP =
   height: 'resizeToHeight'
 
 class agt.scenes.Camera
+  @include agt.mixins.Emitter
+
   constructor: (@screen=new Rectangle(0, 0,
                                       window.innerWidth, window.innerHeight),
                 @initialZoom=1,
                 @zoomRange=new Range(-Infinity, Infinity),
                 @silent=false) ->
-    @changed = new agt.Signal
 
   Object.keys(CAMERA_SETTERS_MAP).forEach (key) ->
     setter = CAMERA_SETTERS_MAP[key]
@@ -26,4 +27,4 @@ class agt.scenes.Camera
 
     Camera::[setter] = (value) ->
       @screen[key] = value
-      @changed.dispatch(this)
+      @dispatch('changed', this)
