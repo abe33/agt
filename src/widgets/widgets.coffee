@@ -13,7 +13,7 @@ __subscriptions__ = {}
 
 # The `widgets` function is both the main module and the function
 # used to register the widgets to apply on a page.
-widgets = agt.widgets = (name, selector, options={}, block) ->
+agt.widgets = (name, selector, options={}, block) ->
   unless __widgets__[name]?
     throw new Error "Unable to find widget '#{name}'"
 
@@ -118,9 +118,9 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
     switch event
       when 'init' then handler()
       when 'load', 'resize'
-        widgets.subscribe name, window, event, handler
+        agt.widgets.subscribe name, window, event, handler
       else
-        widgets.subscribe name, document, event, handler
+        agt.widgets.subscribe name, document, event, handler
 
 # The `widgets.define` is used to create a new widget usable through the
 # `widgets` method. Basically, a widget is defined using a `name`, and a
@@ -133,10 +133,10 @@ widgets = agt.widgets = (name, selector, options={}, block) ->
 #
 # The `options` object will contains all the options passed to the `widgets`
 # method except the `on`, `if`, `unless` and `media` ones.
-widgets.define = (name, block) -> __widgets__[name] = block
+agt.widgets.define = (name, block) -> __widgets__[name] = block
 
 # A shorthand method to register a jQuery widget.
-widgets.$define = (name, baseOptions={}, block) ->
+agt.widgets.$define = (name, baseOptions={}, block) ->
   [baseOptions, block] = [{}, baseOptions] if typeof baseOptions is 'function'
   throw new Error "#{name} jquery widget isn't defined" unless $.fn[name]
   __widgets__[name] = (element, options={}) ->
@@ -144,22 +144,22 @@ widgets.$define = (name, baseOptions={}, block) ->
     res = $(element)[name](options)
     block?(res, options)
 
-widgets.delete = (name) ->
+agt.widgets.delete = (name) ->
   __subscriptions__[name]?.forEach (subscription) -> subscription.off()
-  widgets.release(name)
+  agt.widgets.release(name)
   delete __widgets__[name]
 
-widgets.reset = (names...) ->
+agt.widgets.reset = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
-  widgets.delete(name) for name in names
+  agt.widgets.delete(name) for name in names
 
-widgets.widgetsFor = (element, widget) ->
+agt.widgets.widgetsFor = (element, widget) ->
   if widget?
     __instances__[widget].get(element)
   else
     instances.get(element) for instances in __instances__ when instances.hasKey(element)
 
-widgets.subscribe = (name, to, evt, handler) ->
+agt.widgets.subscribe = (name, to, evt, handler) ->
   __subscriptions__[name] ||= []
   to.addEventListener(evt, handler)
   subscription = off: -> to.removeEventListener(evt, handler)
@@ -170,19 +170,19 @@ widgets.subscribe = (name, to, evt, handler) ->
 # of the given `name` from the page.
 # It's the widget responsibility to clean up its dependencies during
 # the `dispose` call.
-widgets.release = (names...) ->
+agt.widgets.release = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
     __instances__[name].each (value) -> value.dispose()
 
 # Activates all the widgets instances of type `name`.
-widgets.activate = (names...) ->
+agt.widgets.activate = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
     __instances__[name].each (value) -> value.activate()
 
 # Deactivates all the widgets instances of type `name`.
-widgets.deactivate = (names...) ->
+agt.widgets.deactivate = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
     __instances__[name].each (value) -> value.deactivate()
