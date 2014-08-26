@@ -10,6 +10,9 @@ describe 'agt.scenes.Camera', ->
       beforeEach ->
         camera = new agt.scenes.Camera
 
+      afterEach ->
+        camera.off()
+
       it 'sets the screen based on the window dimensions', ->
         expect(camera.screen)
         .toBeRectangle(0, 0, window.innerWidth, window.innerHeight)
@@ -42,3 +45,17 @@ describe 'agt.scenes.Camera', ->
         camera.once 'changed', signalSpy
         camera.x = 10
         expect(signalSpy).toHaveBeenCalled()
+
+      it 'batches changes when using the update method', ->
+        signalSpy = jasmine.createSpy('signalSpy')
+        camera.on 'changed', signalSpy
+        camera.update x: 100, y: 20, width: 200, height: 150
+
+        expect(signalSpy).toHaveBeenCalled()
+        expect(signalSpy.calls.count()).toEqual(1)
+
+        expect(camera.x).toEqual(100)
+        expect(camera.y).toEqual(20)
+        expect(camera.width).toEqual(200)
+        expect(camera.height).toEqual(150)
+        expect(camera.screen).toBeRectangle(100,20,200,150)

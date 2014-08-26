@@ -27,4 +27,14 @@ class agt.scenes.Camera
 
     Camera::[setter] = (value) ->
       @screen[key] = value
-      @dispatch('changed', this)
+      @dispatch('changed', this) unless @inBatch
+
+  update: (props={}) ->
+    @inBatch = true
+    changed = false
+    for key, value of props
+      @[key] = value
+      changed ||= true
+    
+    @dispatch('changed', this) if changed
+    @inBatch = false
