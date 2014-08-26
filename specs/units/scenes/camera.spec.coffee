@@ -36,3 +36,9 @@ describe 'agt.scenes.Camera', ->
         expect(camera.width).toEqual(200)
         expect(camera.height).toEqual(150)
         expect(camera.screen).toBeRectangle(100,20,200,150)
+
+      it 'dispatches a signal when changed', ->
+        signalSpy = jasmine.createSpy('signalSpy')
+        camera.changed.addOnce signalSpy
+        camera.x = 10
+        expect(signalSpy).toHaveBeenCalled()

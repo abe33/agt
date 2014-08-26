@@ -1,18 +1,24 @@
 namespace('agt.scenes')
 
-propertiesMapping =
+{Rectangle, Range} = agt.geom
+
+CAMERA_SETTERS_MAP =
   x: 'moveToX'
   y: 'moveToY'
   width: 'resizeToWidth'
   height: 'resizeToHeight'
 
 class agt.scenes.Camera
+  constructor: (@screen=new Rectangle(0, 0,
+                                      window.innerWidth, window.innerHeight),
+                @initialZoom=1,
+                @zoomRange=new Range(-Infinity, Infinity),
+                @silent=false) ->
+    @changed = new agt.Signal
 
+  Object.keys(CAMERA_SETTERS_MAP).forEach (key) ->
+    setter = CAMERA_SETTERS_MAP[key]
 
-  constructor: (@screen=new agt.geom.Rectangle(0,0,window.innerWidth, window.innerHeight), @initialZoom=1, @zoomRange=new agt.geom.Range(-Infinity, Infinity), @silent=false) ->
-
-  Object.keys(propertiesMapping).forEach (key) ->
-    setter = propertiesMapping[key]
     Camera.accessor key, {
       get: -> @screen[key]
       set: (value) -> @[setter](value)
@@ -20,3 +26,4 @@ class agt.scenes.Camera
 
     Camera::[setter] = (value) ->
       @screen[key] = value
+      @changed.dispatch(this)
