@@ -161,8 +161,12 @@ class agt.geom.Rectangle
   # <script>drawGeometryEdge(exampleKey, 'topLeft', 'topEdge')</script>
   #
   # Returns a [Point]{agt.geom.Point}.
-  topEdge: -> new agt.geom.Point @width * Math.cos(@rotation),
-                        @width * Math.sin(@rotation)
+  topEdge: ->
+    if @rotation is 0
+      new agt.geom.Point @width, 0
+    else
+      new agt.geom.Point @width * Math.cos(@rotation),
+                         @width * Math.sin(@rotation)
 
   # Returns the rectangle's left edge vector.
   #
@@ -170,8 +174,11 @@ class agt.geom.Rectangle
   #
   # Returns a [Point]{agt.geom.Point}.
   leftEdge: ->
-    new agt.geom.Point @height * Math.cos(@rotation + Math.PI / 2),
-              @height * Math.sin(@rotation + Math.PI / 2)
+    if @rotation is 0
+      new agt.geom.Point 0, @height
+    else
+      new agt.geom.Point @height * Math.cos(@rotation + Math.PI / 2),
+                         @height * Math.sin(@rotation + Math.PI / 2)
 
   # Returns the rectangle's bottom edge vector.
   #
