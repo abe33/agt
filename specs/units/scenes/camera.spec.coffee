@@ -87,3 +87,12 @@ withWindow ->
         camera.width = 200
 
         expect(camera.screen.width).toBeClose(400)
+
+    describe '::center', ->
+      it 'changes the camera position with two numbers', ->
+        camera.center(200, 200)
+
+        expect(camera.x).toEqual(200)
+        expect(camera.y).toEqual(200)
+        expect(camera.screen.x).toEqual(200 - window.innerWidth / 2)
+        expect(camera.screen.y).toEqual(200 - window.innerHeight / 2)

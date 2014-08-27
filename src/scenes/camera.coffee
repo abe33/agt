@@ -55,6 +55,16 @@ class agt.scenes.Camera
         @_zoom = value
         @updateZoom()
 
+  center: (x,y) ->
+    {x,y} = agt.geom.Point.pointFrom(x,y)
+
+    x = @x unless x?
+    y = @y unless y?
+
+    if x isnt @x or y isnt @y
+      @screen.setCenter(x, y)
+      @fireCameraChange()
+
   update: (props={}) ->
     @inBatch = true
     changed = false
