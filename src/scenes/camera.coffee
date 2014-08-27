@@ -7,34 +7,40 @@ class agt.scenes.Camera
 
   constructor: (@screen=new Rectangle(0, 0,
                                       window.innerWidth, window.innerHeight),
-                @initialZoom=1,
+                @_zoom=1,
                 @zoomRange=new Range(-Infinity, Infinity),
                 @silent=false) ->
+    @_width = @screen.width
+    @_height = @screen.height
 
 
   @accessor 'x',
-    get: -> @screen.x
+    get: -> @screen.center().x
     set: (value) ->
-      @screen.x = value
+      return if value is @x
+      @screen.setCenter(value, @y)
       @fireCameraChange()
 
   @accessor 'y',
-    get: -> @screen.y
+    get: -> @screen.center().y
     set: (value) ->
-      @screen.y = value
+      return if value is @y
+      @screen.setCenter(@x, value)
       @fireCameraChange()
 
   @accessor 'width',
-    get: -> @screen.width
+    get: -> @_width
     set: (value) ->
-      @screen.width = value
-      @fireCameraChange()
+      return if value is @_width
+      @_width = value
+      @updateZoom()
 
   @accessor 'height',
-    get: -> @screen.height
+    get: -> @_height
     set: (value) ->
-      @screen.height = value
-      @fireCameraChange()
+      return if value is @_height
+      @_height = value
+      @updateZoom()
 
   @accessor 'rotation',
     get: -> @screen.rotation
@@ -47,6 +53,7 @@ class agt.scenes.Camera
     set: (value) ->
       if @zoomRange.surround(value)
         @_zoom = value
+        @updateZoom()
 
   update: (props={}) ->
     @inBatch = true
@@ -57,5 +64,12 @@ class agt.scenes.Camera
 
     @dispatch('changed', this) if changed
     @inBatch = false
+
+  updateZoom: ->
+    center = @screen.center()
+    @screen.width = @_width * @_zoom
+    @screen.height = @_height * @_zoom
+    @screen.setCenter(center)
+    @fireCameraChange()
 
   fireCameraChange: -> @dispatch('changed', this) unless @inBatch
