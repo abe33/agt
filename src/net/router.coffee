@@ -104,14 +104,15 @@ class agt.net.Router
 
     handler = @findRoute(path)
 
-    @beforeFilters.forEach (filter) => filter(path, this)
 
     if handler?
       handler(path)
     else
+      @beforeFilters.forEach (filter) => filter({path}, this)
       @notFoundHandle?({path})
+      @afterFilters.forEach (filter) => filter({path}, this)
 
-    @afterFilters.forEach (filter) => filter(path, this)
+
 
     document.dispatchEvent agt.domEvent('route:changed', {path}) if document?
 
@@ -150,6 +151,7 @@ class agt.net.Router
         pathRe.push part
 
     re = new RegExp('^/' + pathRe.join('/') + '$')
+    self = this
 
     {
       options
@@ -161,5 +163,7 @@ class agt.net.Router
           for pname,i in pathParams
             params[pname] = decodeURI(res[i+1])
 
+        self.beforeFilters.forEach (filter) => filter(params, self)
         handle(params)
+        self.afterFilters.forEach (filter) => filter(params, self)
     }
