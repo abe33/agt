@@ -78,6 +78,12 @@ withWindow ->
         expect(camera.y).toBeClose(y)
         expect(camera.width).toBeClose(width)
         expect(camera.height).toBeClose(height)
-        
+
         expect(camera.screen.width).toBeClose(width * 2)
         expect(camera.screen.height).toBeClose(height * 2)
+
+      it 'updates the screen with the zoom on width change', ->
+        camera.zoom = 2
+        camera.width = 200
+
+        expect(camera.screen.width).toBeClose(400)
