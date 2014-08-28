@@ -1,3 +1,23 @@
+<a name="v0.0.3"></a>
+# v0.0.3 (2014-08-28)
+
+## :sparkles: Features
+
+- Add center method on Camera ([1be71190](https://github.com/abe33/agt.git/commit/1be71190ed757bd44e768d11b694fbc88d55a282))
+- Add zooming ability on Camera ([bb6f2557](https://github.com/abe33/agt.git/commit/bb6f2557b51793a49d66c95428ef3b99a258453b))
+- Add Range methods ([9b745644](https://github.com/abe33/agt.git/commit/9b74564445451a7aaaf7d994f60291d9be0dc648))
+- Add batch update method on camera ([0cbce1c7](https://github.com/abe33/agt.git/commit/0cbce1c7bf1ed05e3ff91df5144584fd34982ae6))
+- Add a Subscriber mixin for events listening objects ([a6c7dedc](https://github.com/abe33/agt.git/commit/a6c7dedcfb13696768a9b28f36afe6434db0a7fb))
+- Add an Emitter mixin for events dispatching ([04273aa7](https://github.com/abe33/agt.git/commit/04273aa7f89ed5fb7c1da33662fb8196d77545fa))
+- Add a `changed` signal to the Camera class ([abb01665](https://github.com/abe33/agt.git/commit/abb0166543af9c66771b797b5cc7af0e10e61fc5))
+- Add I18n class ([b8a68e7e](https://github.com/abe33/agt.git/commit/b8a68e7ef7d828f3d188e72454a03d5335af30bb))
+- Add draft of a form widget ([97a04b27](https://github.com/abe33/agt.git/commit/97a04b27a83843281592589ac42f9e5b76667e74))
+- Add a camera class ([f5a354f2](https://github.com/abe33/agt.git/commit/f5a354f2891f5c05209afbbd59b4ee40800e49da))
+- Add a dummy renderer class ([4892e0de](https://github.com/abe33/agt.git/commit/4892e0de46e76dc1d69c15b457c87707ed2d4fd2))
+- Add a process helper based on spawn instead of exec ([90c5c37b](https://github.com/abe33/agt.git/commit/90c5c37ba02e0226afc08884e18692a86f7a0533))
+- Add a basic Range class ([d2911a99](https://github.com/abe33/agt.git/commit/d2911a99563a772023012e742739460786509ceb))
+- Add a first demo file with a specific task to compile assets ([04f86f25](https://github.com/abe33/agt.git/commit/04f86f257cb93574eb6796d06b0fad57d7015343))
+
 <a name="v0.0.2"></a>
 # v0.0.2 (2014-08-20)
 
