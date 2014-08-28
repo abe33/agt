@@ -1,6 +1,7 @@
 build
 demos
 doc
+gem
 node_modules
 specs
 .travis.yml
