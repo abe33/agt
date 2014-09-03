@@ -4,9 +4,12 @@ describe 'agt.mixins.Delegation', ->
       class TestClass
         @extend agt.mixins.Delegation
 
-        @delegate 'foo', 'bar', 'func', to: 'subObject'
+        @delegate 'foo', 'bar', to: 'subObject'
         @delegate 'baz', to: 'subObject', prefix: true
         @delegate 'baz', to: 'subObject', prefix: true, case: 'snake'
+
+        @delegates 'fromMethodToProperty', toMethod: 'method'
+        @delegates 'func', toProperty: 'subObject'
 
         constructor: ->
           @subObject =
@@ -14,6 +17,8 @@ describe 'agt.mixins.Delegation', ->
             bar: 'bar'
             baz: 'baz'
             func: -> @foo
+
+        method: -> 'method'
 
       @instance = new TestClass
 
@@ -26,6 +31,10 @@ describe 'agt.mixins.Delegation', ->
         describe 'calling the function', ->
           it 'binds the methods to the delegated object', ->
             expect(@instance.func()).toEqual('foo')
+
+      describe 'that is bound to a function', ->
+        it 'calls that function when accessing the property', ->
+          expect(@instance.fromMethodToProperty).toEqual('method')
 
       describe 'with prefix', ->
         it 'returns the composed instance value', ->

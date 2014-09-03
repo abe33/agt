@@ -64,7 +64,11 @@ class agt.mixins.Delegation
   #           :case - An optional {String} to define the case to use to generate
   #                   a prefixed delegated property.
   @delegate: (properties..., options={}) ->
-    delegated = options.to
+    {toProperty, toMethod} = options
+    toProperty ||= options.to
+
+    delegated = toMethod ? toProperty
+
     prefixed = options.prefix
     _case = options.case or agt.CAMEL_CASE
 
@@ -80,11 +84,22 @@ class agt.mixins.Delegation
             localAlias = delegated + property.replace /^./, (m) ->
               m.toUpperCase()
 
-      # The `Delegation` mixin rely on `Object.property` and thus can't
-      # be used on IE8.
-      Object.defineProperty @prototype, localAlias, {
-        enumerable: true
-        configurable: true
-        get: -> @[ delegated ][ property ]
-        set: (value) -> @[ delegated ][ property ] = value
-      }
+      if delegated is toMethod
+        Object.defineProperty @prototype, localAlias, {
+          enumerable: true
+          configurable: true
+          get: -> @[ delegated ]()
+          set: (value) -> @[ delegated ](value)
+        }
+
+      else
+        # The `Delegation` mixin rely on `Object.property` and thus can't
+        # be used on IE8.
+        Object.defineProperty @prototype, localAlias, {
+          enumerable: true
+          configurable: true
+          get: -> @[ delegated ][ property ]
+          set: (value) -> @[ delegated ][ property ] = value
+        }
+
+  @delegates: @delegate
