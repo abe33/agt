@@ -9,6 +9,8 @@ buildCollectionClass = (model) ->
   # every methods that should return an array return a collection
   # instead.
   class Collection
+    @extend agt.mixins.Delegation
+
     @model: model
 
     # We can't use `new Collection` because Collection's instances
@@ -33,17 +35,21 @@ buildCollectionClass = (model) ->
               target[name]
       }
 
-    @delegateArrayMethods: (methods...) ->
+    @delegatesArrayMethods: (methods...) ->
       methods.forEach (method) =>
         @::[method] = -> @array[method](arguments...)
 
-    @delegateArrayReturningMethods: (methods...) ->
+    @delegatesArrayReturningMethods: (methods...) ->
       methods.forEach (method) =>
         @::[method] = -> @constructor.create(@array[method](arguments...))
 
-    @delegateArrayMethods 'push', 'pop', 'shift', 'unshift', 'length', 'forEach', 'some', 'every', 'indexOf', 'reduce', 'join'
+    @delegates 'length', toProperty: 'array'
 
-    @delegateArrayReturningMethods 'concat', 'splice', 'slice', 'filter', 'reverse', 'sort'
+    @delegatesArrayMethods 'push', 'pop', 'shift', 'unshift', 'forEach', 'some', 'every', 'indexOf', 'reduce', 'join'
+
+    @delegatesArrayReturningMethods 'concat', 'splice', 'slice', 'filter', 'reverse', 'sort'
+
+    model: model
 
     constructor: (@array=[]) ->
 
@@ -79,12 +85,13 @@ buildCollectionClass = (model) ->
           res &&= model[k] is v
       res
 
-class cm.mixins.Model
+class agt.models.Model
+  @extend agt.mixins.Delegation
 
-  @delegateCollectionMethods: (methods...) ->
+  @delegatesCollectionMethods: (methods...) ->
     methods.forEach (method) => @[method] = -> @instances[method](arguments...)
 
-  @delegateCollectionMethods 'first', 'last', 'where', 'distinct'
+  @delegatesCollectionMethods 'first', 'last', 'where', 'distinct'
 
   ### Public ###
 
@@ -126,7 +133,7 @@ class cm.mixins.Model
     @Collection::[name] = (args...) ->
       @filter (instance, index) -> block([instance].concat(args)...)
 
-    @delegateCollectionMethods name
+    @delegatesCollectionMethods name
 
   ### Queries ###
 
