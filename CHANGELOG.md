@@ -1,3 +1,11 @@
+<a name="v0.0.4"></a>
+# v0.0.4 (2014-09-09)
+
+## :sparkles: Features
+
+- Add support for toProperty and toMethod options in delegation ([fdd08fc2](https://github.com/abe33/agt.git/commit/fdd08fc29e6cd2404e62bc8fbd63e611c958e48e))
+- Add draft of models mixing ([3101ce1d](https://github.com/abe33/agt.git/commit/3101ce1d855cdb40c088bcb7e5ce50a174fbb25b))
+
 <a name="v0.0.3"></a>
 # v0.0.3 (2014-08-28)
 
