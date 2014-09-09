@@ -1,5 +1,12 @@
+namespace('agt.i18n')
 # Public
-class window.I18n
+class agt.i18n.I18n
+  @attachToWindow: ->
+    instance = new I18n locales, $('html').attr('lang') or 'en'
+    window.t = instance.getHelper()
+
+    String::t = -> window.t(this)
+
   ### Public ###
 
   constructor: (@locales={}, @defaultLanguage='en') ->
@@ -15,20 +22,27 @@ class window.I18n
   # in the path as a capitalized sentence.
   #
   # i18n.get (path.that.do_not_exist) # Do Not Exist
-  get: (language, path) ->
-    [language, path] = [@defaultLanguage, language] unless path?
+  get: (language, path, tokens={}) ->
+    if !path? or typeof path is 'object'
+      [language, path, tokens] = [@defaultLanguage, language, path]
+
     lang = @locales[language]
 
     throw new Error "Language #{language} not found" unless lang?
     els = path.split('.')
     (lang = lang[v]; break unless lang?) for v in els
 
+    if typeof lang is 'object' and tokens.count?
+      lang = lang[tokens.count] ? lang.other
+
     unless lang?
       lang = els[-1..][0].replace(/[-_]/g, ' ')
                          .replace(/(^|\s)(\w)/g, (m,sp,s) ->
                             "#{sp}#{s.toUpperCase()}")
 
-    lang
+    lang.replace /\#\{([^\}]+)\}/g, (token, key) ->
+      return token unless tokens[key]?
+      tokens[key]
 
   # Returns a helper function bound to the current instance that allow
   # to retrieve localized string from the `I18n` instance as well as doing
@@ -39,15 +53,4 @@ class window.I18n
   # _('path.to.string')
   # _('path.to.string_with_token', token: 'token substitute')
   # ```
-  getHelper: -> (path, tokens={}) =>
-    @get(path).replace /\#\{([^\}]+)\}/g, (token, key) ->
-      return token unless tokens[key]?
-      tokens[key]
-
-if window? and document?
-  document.addEventListener 'load', f = ->
-    instance = new I18n locales, $('html').attr('lang') or 'en'
-    window.t = instance.getHelper()
-    document.removeEventListener 'load', f
-
-  String::t = -> window.t(this)
+  getHelper: -> (path, tokens={}) => @get(path, tokens)
