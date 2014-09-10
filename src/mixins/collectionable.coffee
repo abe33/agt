@@ -28,9 +28,7 @@ buildCollectionClass = (model) ->
               # With this we can call `collection[index]` and access the content
               # of the collection array.
               index = parseInt(name)
-              index = target.length + index if index < 0
-
-              target.array[index]
+              target.get(index)
             else
               target[name]
       }
@@ -53,11 +51,13 @@ buildCollectionClass = (model) ->
 
     constructor: (@array=[]) ->
 
-    get: (index) -> @array[index]
+    get: (index) ->
+      index = @length + index if index < 0
+      @array[index]
 
     first: -> @get(0)
 
-    last: -> @get(@length - 1)
+    last: -> @get(-1)
 
     where: (conditions={}) ->
       @filter (model) => @matchConditions(model, conditions)
