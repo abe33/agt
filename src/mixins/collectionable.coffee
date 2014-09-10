@@ -1,11 +1,11 @@
-namespace('agt.models')
+namespace('agt.mixins')
 
-# Creates a collection class for the given model. This class
+# Internal: Creates a collection class for the given model. This class
 # will be decorated with the scopes defined on the model class
 # so it have to be specific to the model class.
 buildCollectionClass = (model) ->
 
-  # The Collection class behaves mostly like an array except that
+  # Public: The Collection class behaves mostly like an array except that
   # every methods that should return an array return a collection
   # instead.
   class Collection
@@ -58,15 +58,13 @@ buildCollectionClass = (model) ->
     last: -> @array[@length - 1]
 
     map: (block) ->
-      results = if typeof block is 'string'
-        @array.map (el) -> el[block]
+      if typeof block is 'string'
+        @distinct(block)
       else
         @array.map(block)
 
-      new @constructor(results)
-
     distinct: (field) ->
-      values = []
+      values = @constructor.create
 
       @forEach (instance) ->
         values.push(instance[field]) unless instance[field] in values
@@ -85,7 +83,8 @@ buildCollectionClass = (model) ->
           res &&= model[k] is v
       res
 
-class agt.models.Model
+# Public: 
+class agt.mixins.Collectionable
   @extend agt.mixins.Delegation
 
   @delegatesCollectionMethods: (methods...) ->

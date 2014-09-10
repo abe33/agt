@@ -10,12 +10,12 @@ testCollectionInterface = (length, content) ->
     @collection.forEach (item,i) ->
       expect(item).toEqual(collection[i])
 
-describe 'agt.models.Model', ->
+describe 'agt.mixins.Collectionable', ->
   [instances] = []
 
   beforeEach ->
-    class @Model
-      @concern agt.models.Model
+    class @Collectionable
+      @concern agt.mixins.Collectionable
 
       @scope 'minor', (item) -> item.age < 18
       @scope 'major', (item) -> item.age >= 18
@@ -24,40 +24,38 @@ describe 'agt.models.Model', ->
         @constructor.register(this)
 
     @instances = [
-      new @Model name: 'a', age: 4
-      new @Model name: 'b', age: 8
-      new @Model name: 'c', age: 18
+      new @Collectionable name: 'a', age: 4
+      new @Collectionable name: 'b', age: 8
+      new @Collectionable name: 'c', age: 18
     ]
 
   afterEach ->
-    @Model.initialized = false
+    @Collectionable.initialized = false
 
   describe '.all', ->
     beforeEach ->
-      @collection = @Model.all()
+      @collection = @Collectionable.all()
 
     testCollectionInterface(3, 'instances')
 
   describe '.minor', ->
     beforeEach ->
-      @collection = @Model.minor()
+      @collection = @Collectionable.minor()
 
     testCollectionInterface 2, -> @instances[0..1]
 
   describe '.major', ->
     beforeEach ->
-      @collection = @Model.major()
+      @collection = @Collectionable.major()
 
     testCollectionInterface 1, -> @instances[2..]
 
   describe '.where', ->
     beforeEach ->
-      @collection = @Model.where(name: 'b')
+      @collection = @Collectionable.where(name: 'b')
 
     testCollectionInterface 1, -> [@instances[1]]
 
   describe '.find', ->
     it 'returns the found instance', ->
-      expect(@Model.find(2)).toEqual(@instances[1])
-
-  
+      expect(@Collectionable.find(2)).toEqual(@instances[1])
