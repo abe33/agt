@@ -53,9 +53,14 @@ buildCollectionClass = (model) ->
 
     constructor: (@array=[]) ->
 
-    first: -> @array[0]
+    get: (index) -> @array[index]
 
-    last: -> @array[@length - 1]
+    first: -> @get(0)
+
+    last: -> @get(@length - 1)
+
+    where: (conditions={}) ->
+      @filter (model) => @matchConditions(model, conditions)
 
     map: (block) ->
       if typeof block is 'string'
@@ -63,16 +68,27 @@ buildCollectionClass = (model) ->
       else
         @array.map(block)
 
+    sum: (field) -> @reduce ((a,b) -> a + b[field]), 0
+
+    group: (key) ->
+      results = {}
+
+      for record in @array
+        slot = record[key]
+        slot = slot.id if typeof slot is 'object' and slot.id?
+        results[slot] ?= @constructor.create()
+        results[slot].push record
+
+      results
+
+
     distinct: (field) ->
-      values = @constructor.create
+      values = []
 
       @forEach (instance) ->
         values.push(instance[field]) unless instance[field] in values
 
       values
-
-    where: (conditions={}) ->
-      @filter (model) => @matchConditions(model, conditions)
 
     matchConditions: (model, conditions) ->
       res = true
@@ -83,14 +99,14 @@ buildCollectionClass = (model) ->
           res &&= model[k] is v
       res
 
-# Public: 
+# Public:
 class agt.mixins.Collectionable
   @extend agt.mixins.Delegation
 
   @delegatesCollectionMethods: (methods...) ->
     methods.forEach (method) => @[method] = -> @instances[method](arguments...)
 
-  @delegatesCollectionMethods 'first', 'last', 'where', 'distinct'
+  @delegatesCollectionMethods 'first', 'last', 'where', 'distinct', 'sum', 'group'
 
   ### Public ###
 
@@ -100,7 +116,7 @@ class agt.mixins.Collectionable
 
     @Collection = buildCollectionClass(this)
 
-    @instances = @Collection.create([])
+    @instances = @Collection.create()
     @nextId = 1
 
     @initialized = true
@@ -118,6 +134,9 @@ class agt.mixins.Collectionable
 
   @unregister: (instance) ->
     @instances.splice(@instances.indexOf(instance), 1) if instance in @instances
+
+  @unregisterAll: ->
+    @instances = @Collection.create()
 
   ### Scopes ###
 
