@@ -92,6 +92,23 @@ module.exports = (grunt) ->
         files:
           'build/agt.min.js': ['build/agt.js']
 
+    ####     ######  ######## ##    ## ##       ##     ##  ######
+    ####    ##    ##    ##     ##  ##  ##       ##     ## ##    ##
+    ####    ##          ##      ####   ##       ##     ## ##
+    ####     ######     ##       ##    ##       ##     ##  ######
+    ####          ##    ##       ##    ##       ##     ##       ##
+    ####    ##    ##    ##       ##    ##       ##     ## ##    ##
+    ####     ######     ##       ##    ########  #######   ######
+    stylus:
+      build:
+        options:
+          compress: true
+          paths: ['demos/assets/css/partials']
+        files:
+          'demos/build/assets/css/index.css': [
+            'demos/assets/css/index.styl'
+          ]
+
     ####    ##      ##    ###    ########  ######  ##     ##
     ####    ##  ##  ##   ## ##      ##    ##    ## ##     ##
     ####    ##  ##  ##  ##   ##     ##    ##       ##     ##
@@ -107,8 +124,15 @@ module.exports = (grunt) ->
           livereload: true
           livereloadOnError: true
 
+      stylus:
+        files: ['demos/assets/css/**/*.styl']
+        tasks: ['stylus']
+        options:
+          livereload: true
+          livereloadOnError: false
+
       demos:
-        files: ['demos/**/*.coffee', 'demos/**/*.css']
+        files: ['demos/**/*.coffee']
         tasks: ['biscotto', 'coffee:docs', 'coffee:demos', 'extend:biscotto']
 
       config:
@@ -120,6 +144,13 @@ module.exports = (grunt) ->
         files: ['package.json']
         tasks: ['npm:install']
 
+    ####     ######   ########   #######  ##      ## ##
+    ####    ##    ##  ##     ## ##     ## ##  ##  ## ##
+    ####    ##        ##     ## ##     ## ##  ##  ## ##
+    ####    ##   #### ########  ##     ## ##  ##  ## ##
+    ####    ##    ##  ##   ##   ##     ## ##  ##  ## ##
+    ####    ##    ##  ##    ##  ##     ## ##  ##  ## ##
+    ####     ######   ##     ##  #######   ###  ###  ########
     growl:
       jasmine_success:
         title: 'Jasmine Tests'
@@ -143,6 +174,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-coffee')
+  grunt.loadNpmTasks('grunt-contrib-stylus')
   grunt.loadNpmTasks('grunt-growl')
 
   npm(grunt)
@@ -153,6 +185,7 @@ module.exports = (grunt) ->
     'coffee:lib'
     'coffee:build'
     'uglify'
+    'stylus'
     'npm:test'
     'biscotto'
     'coffee:demos'
