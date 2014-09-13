@@ -15,7 +15,7 @@ agt.widgets.define 'form', (form, options={}) ->
   fields = document.querySelectorAll(queryFields)
   actions = document.querySelectorAll(queryActions)
 
-  Array::forEaxch.call fields, (field) ->
+  Array::forEach.call fields, (field) ->
     # TODO create a field object for each input
 
   Array::forEach.call actions, (trigger) ->
