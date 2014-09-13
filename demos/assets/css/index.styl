@@ -1,0 +1,90 @@
+
+step1 = 6px
+step2 = 12px
+step3 = 24px
+step4 = 48px
+
+heading_steps = step4 step3 step2
+text_line_height = 32px
+
+$yanone
+  font-family 'Yanone Kaffeesatz'
+  font-weight 300
+  font-size-adjust 0.6
+
+$slab
+  font-family 'Roboto Slab'
+  font-weight 300
+
+$reset
+  margin 0
+  padding 0
+
+$block
+  margin step4 0
+
+text_border(color)
+  text-shadow 1px 1px 0px color, -1px 1px 0px color, 1px -1px 0px color, -1px -1px 0px color
+
+proper_underline(border...)
+  display inline-block
+  text-decoration none
+  border-bottom border
+  line-height 19px
+
+  text_border white
+
+body
+  @extend $yanone
+
+h1, h2, h3, h4, h5, h6
+  @extend $yanone
+  @extend $reset
+
+  padding-bottom step1
+  text-transform uppercase
+  box-sizing border-box
+
+
+for step,i in heading_steps
+  h{i + 2}
+    font-size step
+    line-height step -(2px * (3 - i))
+    letter-spacing i * 1px
+
+    if i is 0
+      margin-top -2px
+      font-weight 200
+    else if i is 2
+      font-weight 400
+
+p, li
+  @extend $slab
+
+  line-height text_line_height
+
+p, ul, ol, blockquote
+  @extend $block
+
+strong
+  font-weight 400
+
+blockquote
+  @extend $slab
+
+  font-size step3
+  font-style italic
+
+a
+  color black
+  transition border-color 0.5s
+
+  proper_underline 1px solid rgba(0,0,0,0.3)
+
+  &:hover
+    border-color black
+    transition border-color 0.1s
+
+.container
+  margin 48px auto 96px
+  width 672px
