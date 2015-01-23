@@ -7,3 +7,11 @@ unless Object.getPropertyDescriptor?
       descriptor
   else
     Object.getPropertyDescriptor = -> undefined
+
+Object.NO_DEFINE_PROPERTY = not Object.defineProperty?
+
+if Object.defineProperty?
+  try
+    Object.defineProperty(Array.prototype,'test', value: 'test')
+  catch e
+    Object.NO_DEFINE_PROPERTY = true

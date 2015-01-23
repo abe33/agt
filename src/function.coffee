@@ -1,3 +1,6 @@
+
+warn = (msg) -> console?.warn?(msg)
+
 ### Public ###
 
 # Creates a new non-enumerable method on the current class prototype.
@@ -10,11 +13,15 @@
 # name - The {String} for the method name.
 # block - The {Function} body.
 Function::def = (name, block) ->
-  Object.defineProperty @prototype, name, {
-    value: block
-    configurable: true
-    enumerable: false
-  }
+  if Object.NO_DEFINE_PROPERTY
+    warn "Using Function::def in a context where Object.defineProperty is not supported, falling back to prototype decoration."
+    @prototype[name] = block
+  else
+    Object.defineProperty @prototype, name, {
+      value: block
+      configurable: true
+      enumerable: false
+    }
   this
 
 # Creates a virtual property on the current class's prototype.
@@ -42,13 +49,15 @@ Function::accessor = (name, options) ->
 
   options.get ||= oldDescriptor.get if oldDescriptor?
   options.set ||= oldDescriptor.set if oldDescriptor?
-
-  Object.defineProperty @prototype, name, {
-    get: options.get
-    set: options.set
-    configurable: true
-    enumerable: true
-  }
+  if Object.NO_DEFINE_PROPERTY
+    throw new Error "Using Function::accessor in a context where Object.defineProperty is not supported."
+  else
+    Object.defineProperty @prototype, name, {
+      get: options.get
+      set: options.set
+      configurable: true
+      enumerable: true
+    }
   this
 
 # Creates a getter on the given class prototype.
@@ -150,72 +159,80 @@ Function::include = (mixins...) ->
     # We loop through all the enumerable properties of the mixin's
     # prototype that is not marked for exclusion.
     keys = Object.keys mixin.prototype
-    for k in keys
-      if k not in excl
 
-        # We prefer working with property descriptors rather than with
-        # the plain values.
-        oldDescriptor = Object.getPropertyDescriptor @prototype, k
-        newDescriptor = Object.getPropertyDescriptor mixin.prototype, k
-
-        # If the two descriptors are available we'll have to go deeper.
-        if oldDescriptor? and newDescriptor?
-          oldHasAccessor = oldDescriptor.get? or oldDescriptor.set?
-          newHasAccessor = newDescriptor.get? or newDescriptor.set?
-          bothHaveGet = oldDescriptor.get? and newDescriptor.get?
-          bothHaveSet = oldDescriptor.set? and newDescriptor.set?
-          bothHaveValue = oldDescriptor.value? and newDescriptor.value?
-
-          # When both properties are accessors we'll be able to follow
-          # the super accross them.
-          #
-          # Super methods are registered if both are there for getters
-          # and setters.
-          if oldHasAccessor and newHasAccessor
-            registerSuper k, newDescriptor.get, @, oldDescriptor.get, mixin if bothHaveGet
-            registerSuper k, newDescriptor.set, @, oldDescriptor.set, mixin if bothHaveSet
-
-            # If there was a getter or a setter and the new accessor
-            # doesn't define one them, the previous value is used.
-            newDescriptor.get ||= oldDescriptor.get
-            newDescriptor.set ||= oldDescriptor.set
-
-          # When both have a value, the super is also available.
-          else if bothHaveValue
-            registerSuper k, newDescriptor.value, @, oldDescriptor.value, mixin
-
-          else
-            throw new Error "Can't mix accessors and plain values inheritance"
-
-          # We also have to create the property on the class `__super__`
-          # property. It'll allow the method defined on the class itself
-          # and overriding the property to have access to its super property
-          # through the `super` keyword or with `this.super` method.
-          Object.defineProperty @__super__, k, newDescriptor
-
-        # We only have a descriptor for the new property, the previous
-        # one is just added to the class `__super__` property.
-        else if newDescriptor?
-          @__super__[k] = mixin[k]
-
-        # We only have a descriptor for the previous property, we'll
-        # create it on the class `__super__` property.
-        else if oldDescriptor?
-          Object.defineProperty @__super__, k, newDescriptor
-
-        # No descriptors at all. The super property is attached directly
-        # to the value.
-        else if @::[k]?
-          registerSuper k, mixin[k], @, @::[k], mixin
-          @__super__[k] = mixin[k]
-
-        # With a descriptor the new property is created using
-        # `Object.defineProperty` or by affecting the value
-        # to the prototype.
-        if newDescriptor?
-          Object.defineProperty @prototype, k, newDescriptor
-        else
+    if Object.NO_DEFINE_PROPERTY
+      warn "Using Function::include in a context where Object.defineProperty is not supported. Falling back to direct prototype decoration."
+      for k in keys
+        if k not in excl
+          @__super__[k] = mixin::[k]
           @::[k] = mixin::[k]
+    else
+      for k in keys
+        if k not in excl
+
+          # We prefer working with property descriptors rather than with
+          # the plain values.
+          oldDescriptor = Object.getPropertyDescriptor @prototype, k
+          newDescriptor = Object.getPropertyDescriptor mixin.prototype, k
+
+          # If the two descriptors are available we'll have to go deeper.
+          if oldDescriptor? and newDescriptor?
+            oldHasAccessor = oldDescriptor.get? or oldDescriptor.set?
+            newHasAccessor = newDescriptor.get? or newDescriptor.set?
+            bothHaveGet = oldDescriptor.get? and newDescriptor.get?
+            bothHaveSet = oldDescriptor.set? and newDescriptor.set?
+            bothHaveValue = oldDescriptor.value? and newDescriptor.value?
+
+            # When both properties are accessors we'll be able to follow
+            # the super accross them.
+            #
+            # Super methods are registered if both are there for getters
+            # and setters.
+            if oldHasAccessor and newHasAccessor
+              registerSuper k, newDescriptor.get, @, oldDescriptor.get, mixin if bothHaveGet
+              registerSuper k, newDescriptor.set, @, oldDescriptor.set, mixin if bothHaveSet
+
+              # If there was a getter or a setter and the new accessor
+              # doesn't define one them, the previous value is used.
+              newDescriptor.get ||= oldDescriptor.get
+              newDescriptor.set ||= oldDescriptor.set
+
+            # When both have a value, the super is also available.
+            else if bothHaveValue
+              registerSuper k, newDescriptor.value, @, oldDescriptor.value, mixin
+
+            else
+              throw new Error "Can't mix accessors and plain values inheritance"
+
+            # We also have to create the property on the class `__super__`
+            # property. It'll allow the method defined on the class itself
+            # and overriding the property to have access to its super property
+            # through the `super` keyword or with `this.super` method.
+            Object.defineProperty @__super__, k, newDescriptor
+
+          # We only have a descriptor for the new property, the previous
+          # one is just added to the class `__super__` property.
+          else if newDescriptor?
+            Object.defineProperty @__super__, k, newDescriptor
+
+          # We only have a descriptor for the previous property, we'll
+          # create it on the class `__super__` property.
+          else if oldDescriptor?
+            @__super__[k] = mixins::[k]
+
+          # No descriptors at all. The super property is attached directly
+          # to the value.
+          else if @::[k]?
+            registerSuper k, mixin::[k], @, @::[k], mixin
+            @__super__[k] = mixin::[k]
+
+          # With a descriptor the new property is created using
+          # `Object.defineProperty` or by affecting the value
+          # to the prototype.
+          if newDescriptor?
+            Object.defineProperty @prototype, k, newDescriptor
+          else
+            @::[k] = mixin::[k]
 
     # The `included` hook is triggered on the mixin.
     mixin.included? this
@@ -250,46 +267,51 @@ Function::extend = (mixins...) ->
     excl = excl.concat mixin.excluded if mixin.excluded?
 
     keys = Object.keys mixin
-    for k in keys
-      if k not in excl
-        oldDescriptor = Object.getPropertyDescriptor this, k
-        newDescriptor = Object.getPropertyDescriptor mixin, k
 
-        if oldDescriptor? and newDescriptor?
-          oldHasAccessor = oldDescriptor.get? or oldDescriptor.set?
-          newHasAccessor = newDescriptor.get? or newDescriptor.set?
-          bothHaveGet = oldDescriptor.get? and newDescriptor.get?
-          bothHaveSet = oldDescriptor.set? and newDescriptor.set?
-          bothHaveValue = oldDescriptor.value? and newDescriptor.value?
+    if Object.NO_DEFINE_PROPERTY
+      warn "Using Function::include in a context where Object.defineProperty is not supported. Falling back to direct prototype decoration."
+      @[k] = mixin[k] for k in keys when k not in excl
+    else
+      for k in keys
+        if k not in excl
+          oldDescriptor = Object.getPropertyDescriptor this, k
+          newDescriptor = Object.getPropertyDescriptor mixin, k
 
-          # When both properties are accessors we'll be able to follow
-          # the super accross them
-          #
-          # Super methods are registered if both are there for getters
-          # and setters.
-          if oldHasAccessor and newHasAccessor
-            registerSuper k, newDescriptor.get, @, oldDescriptor.get, mixin if bothHaveGet
-            registerSuper k, newDescriptor.set, @, oldDescriptor.set, mixin if bothHaveSet
+          if oldDescriptor? and newDescriptor?
+            oldHasAccessor = oldDescriptor.get? or oldDescriptor.set?
+            newHasAccessor = newDescriptor.get? or newDescriptor.set?
+            bothHaveGet = oldDescriptor.get? and newDescriptor.get?
+            bothHaveSet = oldDescriptor.set? and newDescriptor.set?
+            bothHaveValue = oldDescriptor.value? and newDescriptor.value?
 
-            # If there was a getter or a setter and the new accessor
-            # doesn't define one them, the previous value is used.
-            newDescriptor.get ||= oldDescriptor.get
-            newDescriptor.set ||= oldDescriptor.set
+            # When both properties are accessors we'll be able to follow
+            # the super accross them
+            #
+            # Super methods are registered if both are there for getters
+            # and setters.
+            if oldHasAccessor and newHasAccessor
+              registerSuper k, newDescriptor.get, @, oldDescriptor.get, mixin if bothHaveGet
+              registerSuper k, newDescriptor.set, @, oldDescriptor.set, mixin if bothHaveSet
 
-          # When both have a value, the super is also available.
-          else if bothHaveValue
-            registerSuper k, newDescriptor.value, @, oldDescriptor.value, mixin
+              # If there was a getter or a setter and the new accessor
+              # doesn't define one them, the previous value is used.
+              newDescriptor.get ||= oldDescriptor.get
+              newDescriptor.set ||= oldDescriptor.set
 
+            # When both have a value, the super is also available.
+            else if bothHaveValue
+              registerSuper k, newDescriptor.value, @, oldDescriptor.value, mixin
+
+            else
+              throw new Error "Can't mix accessors and plain values inheritance"
+
+          # With a descriptor the new property is created using
+          # `Object.defineProperty` or by affecting the value
+          # to the prototype.
+          if newDescriptor?
+            Object.defineProperty this, k, newDescriptor
           else
-            throw new Error "Can't mix accessors and plain values inheritance"
-
-        # With a descriptor the new property is created using
-        # `Object.defineProperty` or by affecting the value
-        # to the prototype.
-        if newDescriptor?
-          Object.defineProperty this, k, newDescriptor
-        else
-          @[k] = mixin[k]
+            @[k] = mixin[k]
 
     mixin.extended? this
 
