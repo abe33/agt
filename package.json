@@ -12,7 +12,7 @@
     "node": "~0.10.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node --coffee specs/"
+    "test": "./node_modules/.bin/jasmine --coffee JASMINE_CONFIG_PATH=specs/support/jasmine.json"
   },
   "testling": {
     "browsers": {
@@ -30,13 +30,14 @@
   "dependencies": {},
   "main": "./lib/index",
   "devDependencies": {
+    "coffee-script": "1.8.x",
     "grunt": "0.x",
     "grunt-contrib-jshint": "0.x",
     "grunt-contrib-nodeunit": "0.x",
     "grunt-contrib-uglify": "0.x",
     "grunt-contrib-coffee": "0.x",
     "grunt-contrib-watch": "0.x",
-    "jasmine-node": "2.x",
+    "jasmine": "2.x",
     "q": "~0.9.7",
     "grunt-growl": "~0.1.5"
   }
