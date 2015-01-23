@@ -1,3 +1,11 @@
+a name="v0.0.5"></a>
+# v0.0.5 (2015-01-23)
+
+## :bug: Bug Fixes
+
+- Fix event related issues on IE8 ([10b771df](https://github.com/abe33/agt.git/commit/10b771dfb9a5809b2df9309d7f9b89762815ee65))
+- Add a fallback for mixins used in IE8 ([faec4cdb](https://github.com/abe33/agt.git/commit/faec4cdb25e393c2e65e289ef4046cd117f46e96))
+
 <a name="v0.0.4"></a>
 # v0.0.4 (2014-09-09)
 
