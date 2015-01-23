@@ -5,8 +5,13 @@ agt.domEvent = (type, data={}, options={bubbles, cancelable}={}) ->
       cancelable: cancelable ? true
     }
   catch e
-    event = document.createEvent 'Event'
-    event.initEvent type, bubbles ? true, cancelable ? true
+    if document.createEvent?
+      event = document.createEvent 'Event'
+      event.initEvent type, bubbles ? true, cancelable ? true
+    else if document.createEventObject?
+      event = document.createEventObject()
+      event.type = type
+      event[k] = v for k,v of options
 
   event.data = data
   event

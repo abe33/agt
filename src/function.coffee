@@ -271,7 +271,6 @@ Function::extend = (mixins...) ->
     if Object.NO_DEFINE_PROPERTY
       warn "Using Function::include in a context where Object.defineProperty is not supported. Falling back to direct prototype decoration."
       @[k] = mixin[k] for k in keys when k not in excl
-      
     else
       for k in keys
         if k not in excl

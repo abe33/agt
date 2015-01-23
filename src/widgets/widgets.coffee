@@ -107,7 +107,11 @@ agt.widgets = (name, selector, options={}, block) ->
       else
         widget.activate()
 
-      document.dispatchEvent agt.domEvent("#{name}:handled", {element, widget})
+      event = agt.domEvent("#{name}:handled", {element, widget})
+      if document.dispatchEvent?
+        document.dispatchEvent(event)
+      else
+        console?.warn? 'HTMLElement::dispatchEvent is not available on this platform. Unable to dispatch custom events on DOM nodes.'
 
       block?.call element, element, widget
 
