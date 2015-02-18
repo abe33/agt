@@ -148,32 +148,33 @@ class agt.geom.TriangularGrid
   triangleAtPosition: (pos) ->
     [a,b,c] = []
     yStep = pos.y % 4
-
+    yStep = 3 + yStep if yStep < 0
+    
     switch yStep
       when 0
         xRef = pos.x * @triangleSize
         yRef = (pos.y / 2) * @rowHeight
-        a = new agt.geom.Point(xRef - @halfSize, yRef)
+        a = new agt.geom.Point(xRef, yRef + @rowHeight)
         b = new agt.geom.Point(xRef + @halfSize, yRef)
-        c = new agt.geom.Point(xRef, yRef + @rowHeight)
+        c = new agt.geom.Point(xRef - @halfSize, yRef)
       when 1
         xRef = pos.x * @triangleSize + @halfSize
         yRef = (pos.y - 1) / 2 * @rowHeight
-        a = new agt.geom.Point(xRef - @halfSize, yRef + @rowHeight)
+        a = new agt.geom.Point(xRef, yRef)
         b = new agt.geom.Point(xRef + @halfSize, yRef + @rowHeight)
-        c = new agt.geom.Point(xRef, yRef)
+        c = new agt.geom.Point(xRef - @halfSize, yRef + @rowHeight)
       when 2
         xRef = pos.x * @triangleSize + @halfSize
         yRef = pos.y / 2 * @rowHeight
-        a = new agt.geom.Point(xRef - @halfSize, yRef)
+        a = new agt.geom.Point(xRef, yRef + @rowHeight)
         b = new agt.geom.Point(xRef + @halfSize, yRef)
-        c = new agt.geom.Point(xRef, yRef + @rowHeight)
+        c = new agt.geom.Point(xRef - @halfSize, yRef)
       when 3
         xRef = pos.x * @triangleSize
         yRef = (pos.y - 1) / 2 * @rowHeight
-        a = new agt.geom.Point(xRef - @halfSize, yRef + @rowHeight)
+        a = new agt.geom.Point(xRef, yRef)
         b = new agt.geom.Point(xRef + @halfSize, yRef + @rowHeight)
-        c = new agt.geom.Point(xRef, yRef)
+        c = new agt.geom.Point(xRef - @halfSize, yRef + @rowHeight)
 
     try
       new agt.geom.Triangle(a,b,c)
