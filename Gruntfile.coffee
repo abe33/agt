@@ -44,6 +44,7 @@ module.exports = (grunt) ->
             'src/inflector/inflector.coffee'
             'src/inflector/*.coffee'
             'src/random/**/*.coffee'
+            'src/colors/**/*.coffee'
             'src/geom/mixins/**/*.coffee'
             'src/geom/point.coffee'
             'src/geom/triangle.coffee'
