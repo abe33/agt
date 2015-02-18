@@ -23,4 +23,6 @@ class agt.geom.Range
 
   inside: (range) -> @max > range.max and @min < range.min
 
+  interpolate: (value) -> @min + (@max - @min) * value
+
   size: -> @max - @min

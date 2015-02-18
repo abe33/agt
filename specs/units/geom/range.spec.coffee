@@ -29,3 +29,12 @@ describe 'agt.geom.Range', ->
 
     it 'returns false when the passed-in range is inside', ->
       expect(range.inside(new agt.geom.Range(0, 20))).toBeFalsy()
+
+  describe '::interpolate', ->
+    it 'returns an intermediate value according to the passed-in position', ->
+      range = new agt.geom.Range(10, 20)
+      expect(range.interpolate(0)).toEqual(10)
+      expect(range.interpolate(0.25)).toEqual(12.5)
+      expect(range.interpolate(0.5)).toEqual(15)
+      expect(range.interpolate(0.75)).toEqual(17.5)
+      expect(range.interpolate(1)).toEqual(20)
