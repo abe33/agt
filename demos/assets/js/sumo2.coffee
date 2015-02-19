@@ -1,4 +1,5 @@
 window.onload = ->
+  [width, height] = []
   {Random, PaulHoule} = agt.random
 
   # GRADIENT = new agt.colors.Gradient([
@@ -24,6 +25,10 @@ window.onload = ->
 
   clearPositions = []
   colorsByPosition = {}
+
+  measureWidthAndHeight = ->
+    width = canvas.width = document.documentElement.clientWidth
+    height = canvas.height = document.documentElement.clientHeight
 
   getKey = (position) -> "#{position.x};#{position.y}"
 
@@ -75,7 +80,7 @@ window.onload = ->
     if lifeRatio <= 0.5
       r = lifeRatio * 2
 
-      drawTriangle context, baseColor, a, b, c, 1
+      drawTriangle context, baseColor, a, b, c
 
       if direction
         drawTriangle context, shadowColor, a, b, d, r
@@ -94,9 +99,9 @@ window.onload = ->
       drawTriangle context, particle.parasite.color, a, b, c
 
       if direction
-        drawTriangle context, shadowColor, a, b, d.add(dc)
         drawTriangle context, lightColor, c, b, d.add(da)
         drawTriangle context, accentColor, c, a, d.add(db)
+        drawTriangle context, shadowColor, a, b, d.add(dc)
       else
         drawTriangle context, lightColor, a, c, d.add(db)
         drawTriangle context, lightColor2, a, b, d.add(dc)
@@ -114,17 +119,16 @@ window.onload = ->
 
   agt.Impulse.instance().stats = stats
 
-  random = new Random(new PaulHoule(1234 + Math.floor(Math.random() * 100000)))
+  seed = 1234 + Math.floor(Math.random() * 100000)
+  random = new Random(new PaulHoule(seed))
   canvas = document.querySelector('canvas')
   context = canvas.getContext('2d')
   offCanvas = document.createElement('canvas')
   offContext = offCanvas.getContext('2d')
   counter = document.querySelector('#counter')
+  grid = new agt.geom.HorizontalTriangleGrid(80)
 
-  width = canvas.width = document.documentElement.clientWidth
-  height = canvas.height = document.documentElement.clientHeight
-
-  grid = new agt.geom.TriangularGrid(100)
+  measureWidthAndHeight()
 
   class TriEmitter
     @consumedCoordinates: {}
@@ -158,23 +162,24 @@ window.onload = ->
       @velocity = @velocity.rotate((0.5 - random.random()) / 4)
 
       repulsion = new agt.geom.Point()
+      repulsionAmount = 10
 
       halfWidth = width / 2
       halfHeight = height / 2
 
       if @circle.x < halfWidth
         t = 1 / (@circle.x / halfWidth)
-        repulsion.x = (t*t) * 10
+        repulsion.x = (t*t) * repulsionAmount
       else
         t = 1 / ((width - @circle.x) / halfWidth)
-        repulsion.x = (t*t) * -10
+        repulsion.x = (t*t) * -repulsionAmount
 
       if @circle.y < halfHeight
         t = 1 / (@circle.y / halfHeight)
-        repulsion.y = (t*t) * 10
+        repulsion.y = (t*t) * repulsionAmount
       else
         t = 1 / ((height - @circle.y) / halfHeight)
-        repulsion.y = (t*t) * -10
+        repulsion.y = (t*t) * -repulsionAmount
 
       @velocity = @velocity.add(repulsion).normalize(@velocity.length())
 
@@ -232,8 +237,7 @@ window.onload = ->
 
     offContext.drawImage(canvas, 0, 0, width, height, 0, 0, width, height)
 
-    width = canvas.width = document.documentElement.clientWidth
-    height = canvas.height = document.documentElement.clientHeight
+    measureWidthAndHeight()
 
     context.drawImage(offCanvas, 0, 0, offCanvas.width, offCanvas.height, 0, 0, offCanvas.width, offCanvas.height)
 
@@ -248,7 +252,11 @@ window.onload = ->
 
 
     particles = system.particles
-    counter.innerHTML = "#{particles.length}<br/>#{system.emissions.length}"
+    counter.innerHTML = """
+      #{particles.length}<br/>
+      #{system.emissions.length}<br/>
+      #{seed}
+    """
 
     for particle in particles
       renderParticle(context, grid, particle)

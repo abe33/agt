@@ -1,6 +1,6 @@
 namespace('agt.geom')
 
-class agt.geom.TriangularGrid
+class agt.geom.HorizontalTriangleGrid
   constructor: (@triangleSize=10) ->
     @halfSize = @triangleSize / 2
     @rowHeight = Math.sqrt(3) / 2 * @triangleSize
