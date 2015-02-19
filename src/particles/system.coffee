@@ -49,6 +49,7 @@ class agt.particles.System
     @created = []
 
     @processParticles bias, biasInSeconds, time
+    @particlesDied.dispatch this, @died if @died.length > 0
     @processEmissions bias, biasInSeconds, time if @emitting()
 
     @particlesCreated.dispatch this, @created if @created.length > 0
