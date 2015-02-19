@@ -4,6 +4,7 @@ class agt.geom.TriangularGrid
   constructor: (@triangleSize=10) ->
     @halfSize = @triangleSize / 2
     @rowHeight = Math.sqrt(3) / 2 * @triangleSize
+    @trianglesCache = {}
 
   gridSizeForScreen: (width, height) ->
     width: Math.ceil(width / @triangleSize)
@@ -146,10 +147,13 @@ class agt.geom.TriangularGrid
   compareCoordinates: (a,b) -> a.x is b.x and a.y is b.y
 
   triangleAtPosition: (pos) ->
+    key = "#{pos.x};#{pos.y}"
+    return @trianglesCache[key] if @trianglesCache[key]?
+
     [a,b,c] = []
     yStep = pos.y % 4
     yStep = 3 + yStep if yStep < 0
-    
+
     switch yStep
       when 0
         xRef = pos.x * @triangleSize
@@ -176,8 +180,4 @@ class agt.geom.TriangularGrid
         b = new agt.geom.Point(xRef + @halfSize, yRef + @rowHeight)
         c = new agt.geom.Point(xRef - @halfSize, yRef + @rowHeight)
 
-    try
-      new agt.geom.Triangle(a,b,c)
-    catch e
-      console.log pos
-      throw e
+    @trianglesCache[key] = new agt.geom.Triangle(a,b,c)
