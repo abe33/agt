@@ -85,7 +85,9 @@ class agt.Impulse extends agt.Signal
   initRun:->
     @time = @getTime()
     requestAnimFrame =>
+      @stats.begin() if @stats?
       @run()
+      @stats.end() if @stats?
 
   # A running `Impulse` will dispatch various informations
   # to its listeners each time the `run` method is called.
