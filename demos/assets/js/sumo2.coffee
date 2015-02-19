@@ -45,6 +45,48 @@ window.onload = ->
     context.closePath()
     context.fill()
 
+  drawOpeningTriangle = (context, tri, lifeRatio, a, b, c, color, direction) ->
+    r = lifeRatio / 2
+    d = tri.center()
+    da = d.subtract(a).scale(r)
+    db = d.subtract(b).scale(r)
+    dc = d.subtract(c).scale(r)
+
+    shadowColor = color.blend(SHADOW_COLOR, agt.colors.BLEND_MODES.MULTIPLY)
+    lightColor = color.blend(LIGHT_COLOR, agt.colors.BLEND_MODES.SCREEN)
+    lightColor2 = color.blend(LIGHT_COLOR_2, agt.colors.BLEND_MODES.SOFT_LIGHT)
+    accentColor = color.blend(ACCENT_COLOR, agt.colors.BLEND_MODES.SOFT_LIGHT)
+
+    drawTriangle context, color, a, b, c
+
+    if direction
+      drawTriangle context, lightColor, c, b, d.add(da)
+      drawTriangle context, accentColor, c, a, d.add(db)
+      drawTriangle context, shadowColor, a, b, d.add(dc)
+    else
+      drawTriangle context, lightColor, a, c, d.add(db)
+      drawTriangle context, lightColor2, a, b, d.add(dc)
+      drawTriangle context, shadowColor, b, c, d.add(da)
+
+  drawRisingTriangle = (context, tri, lifeRatio, a, b, c, color, direction) ->
+    r = lifeRatio
+    d = tri.center()
+    shadowColor = color.blend(SHADOW_COLOR, agt.colors.BLEND_MODES.MULTIPLY)
+    lightColor = color.blend(LIGHT_COLOR, agt.colors.BLEND_MODES.SCREEN)
+    lightColor2 = color.blend(LIGHT_COLOR_2, agt.colors.BLEND_MODES.SOFT_LIGHT)
+    accentColor = color.blend(ACCENT_COLOR, agt.colors.BLEND_MODES.SOFT_LIGHT)
+
+    drawTriangle context, color, a, b, c
+
+    if direction
+      drawTriangle context, shadowColor, a, b, d, r
+      drawTriangle context, lightColor, c, b, d, r
+      drawTriangle context, accentColor, c, a, d, r
+    else
+      drawTriangle context, lightColor, a, c, d, r
+      drawTriangle context, lightColor2, a, b, d, r
+      drawTriangle context, shadowColor, b, c, d, r
+
   clearTriangles = (context, grid) ->
     for [pos, color] in clearPositions
       colorsByPosition[getKey(pos)] = color
@@ -68,44 +110,15 @@ window.onload = ->
     tri = grid.triangleAtPosition(particle.position)
     {a,b,c} = tri
     direction = particle.position.y % 2 is 0
-    d = tri.center()
 
     lifeRatio = particle.life / particle.maxLife
     baseColor = getColor(particle.position)
-    shadowColor = baseColor.blend(SHADOW_COLOR, agt.colors.BLEND_MODES.MULTIPLY)
-    lightColor = baseColor.blend(LIGHT_COLOR, agt.colors.BLEND_MODES.SCREEN)
-    lightColor2 = baseColor.blend(LIGHT_COLOR_2, agt.colors.BLEND_MODES.SOFT_LIGHT)
-    accentColor = baseColor.blend(ACCENT_COLOR, agt.colors.BLEND_MODES.SOFT_LIGHT)
 
     if lifeRatio <= 0.5
-      r = lifeRatio * 2
-
-      drawTriangle context, baseColor, a, b, c
-
-      if direction
-        drawTriangle context, shadowColor, a, b, d, r
-        drawTriangle context, lightColor, c, b, d, r
-        drawTriangle context, accentColor, c, a, d, r
-      else
-        drawTriangle context, lightColor, a, c, d, r
-        drawTriangle context, lightColor2, a, b, d, r
-        drawTriangle context, shadowColor, b, c, d, r
+      drawRisingTriangle(context, tri, lifeRatio * 2, a, b, c, baseColor, direction)
     else
-      r = lifeRatio - 0.5
-      da = d.subtract(a).scale(r)
-      db = d.subtract(b).scale(r)
-      dc = d.subtract(c).scale(r)
-
-      drawTriangle context, particle.parasite.color, a, b, c
-
-      if direction
-        drawTriangle context, lightColor, c, b, d.add(da)
-        drawTriangle context, accentColor, c, a, d.add(db)
-        drawTriangle context, shadowColor, a, b, d.add(dc)
-      else
-        drawTriangle context, lightColor, a, c, d.add(db)
-        drawTriangle context, lightColor2, a, b, d.add(dc)
-        drawTriangle context, shadowColor, b, c, d.add(da)
+      ratio = (lifeRatio - 0.5) * 2
+      drawOpeningTriangle(context, tri, ratio, a, b, c, particle.parasite.color, direction)
 
   stats = new Stats
   stats.setMode 0
