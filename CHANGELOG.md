@@ -1,3 +1,20 @@
+<a name="v0.0.6"></a>
+# v0.0.6 (2015-02-20)
+
+## :sparkles: Features
+
+- Add a vertical version of the triangle grid ([6aeeb11e](https://github.com/abe33/agt.git/commit/6aeeb11e12d52e96c2b17379bd1f2d91a524535b))
+- Add cache to store grid's triangles ([6da1a4c2](https://github.com/abe33/agt.git/commit/6da1a4c2f7ef22a076d694944f179f85fb5ad391))
+- Add a colors module with Color and Gradient class ([c373ba96](https://github.com/abe33/agt.git/commit/c373ba9654646e34138990b555ccc6f0cbf2cbba))
+- Add a triangular grid helper class ([19202125](https://github.com/abe33/agt.git/commit/19202125a9b100823a965c2b1376cbbc2f6966b9))
+- Add an ::interpolate method on Range ([3c5f1b3d](https://github.com/abe33/agt.git/commit/3c5f1b3dbfccf9c833b7646613c4e94411e41a88))
+- Add stylus grunt tasks ([8b57ce6c](https://github.com/abe33/agt.git/commit/8b57ce6cca070642c221697617c98ae1840443e5))
+
+## :bug: Bug Fixes
+
+- Dispatch particle death event before reuse ([46ccc0a3](https://github.com/abe33/agt.git/commit/46ccc0a3f61ee35678df829b4eeb859e102411e1))
+- Fix typo in forms widget ([87a0dce7](https://github.com/abe33/agt.git/commit/87a0dce7b4777fc66901a5b31794bae923c43db0))
+
 a name="v0.0.5"></a>
 # v0.0.5 (2015-01-23)
 
