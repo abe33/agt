@@ -10,14 +10,16 @@ window.onload = ->
 
   canvas = document.querySelector('canvas')
   context = canvas.getContext('2d')
-  p = agt.particles
+  p = require('agt/particles')
+  Point = require('agt/geom/point')
+  Impulse = require('agt/impulse')
 
   particleSubSystem = new p.initializers.ParticleSubSystem(
     new p.initializers.Life(800,1200),
     new p.actions.MacroAction([
       new p.actions.Live,
       new p.actions.Move,
-      new p.actions.Force(new agt.geom.Point(5, 20))
+      new p.actions.Force(new Point(5, 20))
       new p.actions.Friction(0.2)
     ]),
     (particle) ->
@@ -38,7 +40,7 @@ window.onload = ->
     new p.actions.MacroAction([
       new p.actions.Live,
       new p.actions.Move,
-      new p.actions.Force(new agt.geom.Point(5, 20))
+      new p.actions.Force(new Point(5, 20))
       new p.actions.Friction(0.2)
     ]),
     new p.SubSystem(
@@ -46,7 +48,7 @@ window.onload = ->
       new p.actions.MacroAction([
         new p.actions.Live,
         new p.actions.Move,
-        new p.actions.Force(new agt.geom.Point(5, 20))
+        new p.actions.Force(new Point(5, 20))
         new p.actions.Friction(0.2)
       ]),
       (particle) ->
@@ -68,11 +70,11 @@ window.onload = ->
   # system.emissionStarted.add (o,p) -> console.log 'emissionStarted'
   # system.emissionFinished.add (o,p) -> console.log 'emissionFinished'
 
-  agt.Impulse.instance().stats = stats
+  Impulse.instance().stats = stats
 
   canvas.addEventListener 'click', ({clientX, clientY}) ->
-    unless agt.Impulse.instance().running
-      agt.Impulse.instance().add ->
+    unless Impulse.instance().running
+      Impulse.instance().add ->
 
         context.fillStyle = '#ffffff'
         context.fillRect(0,0,canvas.width,canvas.height)
@@ -89,11 +91,11 @@ window.onload = ->
     y = clientY
     system.emit new p.Emission(
       p.Particle,
-      new p.emitters.Ponctual(new agt.geom.Point(x, y)),
+      new p.emitters.Ponctual(new Point(x, y)),
       new p.timers.Unlimited,
       new p.counters.ByRate(1),
       new p.initializers.MacroInitializer([
-        new p.initializers.Stream(new agt.geom.Point(1,-3),40,50,0.2),
+        new p.initializers.Stream(new Point(1,-3),40,50,0.2),
         initialize: (particle) -> particle.parasite.color = '#000000'
       ])
     )

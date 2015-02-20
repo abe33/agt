@@ -2,6 +2,7 @@
 npm = require './tasks/npm'
 biscotto = require './tasks/biscotto'
 gemify = require './tasks/gemify'
+remapify = require 'remapify'
 
 module.exports = (grunt) ->
   grunt.initConfig
@@ -20,55 +21,6 @@ module.exports = (grunt) ->
         src: ['**/*.coffee']
         dest: 'lib/'
         ext: '.js'
-
-      build:
-        options:
-          join: true
-
-        files:
-          'build/agt.js': [
-            'src/index.coffee'
-            'src/config.coffee'
-            'src/object.coffee'
-            'src/function.coffee'
-            'src/inheritance.coffee'
-            'src/math.coffee'
-            'src/signal.coffee'
-            'src/impulse.coffee'
-            'src/promise.coffee'
-            'src/dom.coffee'
-            'src/mixins/delegation.coffee'
-            'src/mixins/*.coffee'
-            'src/net/*.coffee'
-            'src/i18n/*.coffee'
-            'src/inflector/inflector.coffee'
-            'src/inflector/*.coffee'
-            'src/random/**/*.coffee'
-            'src/colors/**/*.coffee'
-            'src/geom/mixins/**/*.coffee'
-            'src/geom/point.coffee'
-            'src/geom/triangle.coffee'
-            'src/geom/rectangle.coffee'
-            'src/geom/circle.coffee'
-            'src/geom/**/*.coffee'
-            'src/particles/particle.coffee'
-            'src/particles/emission.coffee'
-            'src/particles/system.coffee'
-            'src/particles/sub_system.coffee'
-            'src/particles/mixins/*.coffee'
-            'src/particles/**/*.coffee'
-            'src/scenes/**/*.coffee'
-            'src/sprites/**/*.coffee'
-            'src/widgets/widgets.coffee'
-            'src/widgets/hash.coffee'
-            'src/widgets/widgets/*.coffee'
-          ]
-
-          'build/agt.spec.js': [
-            'specs/support/spec_helper.coffee'
-            'specs/support/**/*.coffee'
-            'specs/units/**/*.coffee'
-          ]
 
       docs:
         options:
@@ -92,6 +44,47 @@ module.exports = (grunt) ->
       all:
         files:
           'build/agt.min.js': ['build/agt.js']
+
+    browserify:
+      lib:
+        options:
+          transform: ['coffeeify']
+          browserifyOptions:
+            extensions: ['.coffee']
+        files:
+          'build/agt.js': [
+            'src/**/*.coffee'
+          ]
+          'build/agt.spec.js': [
+            'specs/support/spec_helper.coffee'
+            'specs/support/**/*.coffee'
+            'specs/units/**/*.coffee'
+          ]
+
+      demos:
+        options:
+          transform: ['coffeeify']
+          browserifyOptions:
+            extensions: ['.coffee']
+          preBundleCB: (b) ->
+            b.plugin(remapify, [
+              {
+                cwd: __dirname
+                src: './lib/**/*.js'
+                expose: 'agt'
+                filter: (alias, dirname, basename) ->
+                  alias = alias
+                  .replace(/\/lib\//, '/')
+                  .replace(/\/index\.js$/, '')
+                  .replace(/\.js$/, '')
+                  alias
+              }
+            ])
+
+        files:
+          'demos/build/assets/js/camera.js': ['demos/assets/js/camera.coffee']
+          'demos/build/assets/js/particles.js': ['demos/assets/js/particles.coffee']
+          'demos/build/assets/js/forms.js': ['demos/assets/js/forms.coffee']
 
     ####     ######  ######## ##    ## ##       ##     ##  ######
     ####    ##    ##    ##     ##  ##  ##       ##     ## ##    ##
@@ -134,7 +127,7 @@ module.exports = (grunt) ->
 
       demos:
         files: ['demos/**/*.coffee']
-        tasks: ['biscotto', 'coffee:docs', 'coffee:demos', 'extend:biscotto']
+        tasks: ['biscotto', 'coffee:docs', 'browserify:demos', 'extend:biscotto']
 
       config:
         files: ['Gruntfile.coffee', 'tasks/*.coffee']
@@ -176,6 +169,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-contrib-stylus')
+  grunt.loadNpmTasks('grunt-browserify')
   grunt.loadNpmTasks('grunt-growl')
 
   npm(grunt)
@@ -184,12 +178,12 @@ module.exports = (grunt) ->
 
   grunt.registerTask('all', [
     'coffee:lib'
-    'coffee:build'
+    'browserify:lib'
     'uglify'
     'stylus'
     'npm:test'
     'biscotto'
-    'coffee:demos'
+    'browserify:demos'
     'coffee:docs'
     'extend:biscotto'
     'gemify:prepare'

@@ -1,5 +1,5 @@
 
-{widgets} = agt
+widgets = require 'agt/widgets'
 
 widgets 'form', 'form[data-action]', {
   on: 'load'

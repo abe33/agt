@@ -1,6 +1,7 @@
 NullInitializer = require './initializers/null_initializer'
 NullAction = require './actions/null_action'
 Signal = require '../signal'
+Impulse = require '../impulse'
 
 # Public:
 module.exports =
@@ -39,12 +40,12 @@ class System
 
   start: ->
     unless @running
-      agt.Impulse.instance().add @tick, this
+      Impulse.instance().add @tick, this
       @running = true
 
   stop: ->
     if @running
-      agt.Impulse.instance().remove @tick, this
+      Impulse.instance().remove @tick, this
       @running = false
 
   tick: (bias, biasInSeconds, time) ->
