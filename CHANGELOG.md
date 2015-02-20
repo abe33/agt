@@ -1,3 +1,10 @@
+<a name="v0.0.7"></a>
+# v0.0.7 (2015-02-20)
+
+## :bug: Bug Fixes
+
+- Fix dom event export ([7ba635ec](https://github.com/abe33/agt.git/commit/7ba635ec8fa575783483437998792546a4a7db72))
+
 <a name="v0.0.6"></a>
 # v0.0.6 (2015-02-20)
 
