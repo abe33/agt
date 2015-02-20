@@ -1,6 +1,6 @@
 language: node_js
 before_script:
   - npm install -g grunt-cli
-  - grunt coffee:build
+  - grunt coffee:lib
 node_js:
   - 0.10
