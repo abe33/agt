@@ -1,4 +1,6 @@
 build
+tasks
+src
 demos
 doc
 gem

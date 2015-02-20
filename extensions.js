@@ -1,1 +1,1 @@
-require('./lib/extensions')
+module.exports = require('./lib/extensions')
