@@ -1,4 +1,5 @@
-namespace('agt.mixins')
+
+{SNAKE_CASE, CAMEL_CASE} = require '../config'
 # Public: The `Delegation` mixin allow to define properties on an object that
 # proxy another property of an object stored in one of its property.
 #
@@ -15,7 +16,8 @@ namespace('agt.mixins')
 # instance.someProperty
 # # 'some value'
 # ```
-class agt.mixins.Delegation
+module.exports =
+class Delegation
 
   # Public: The `delegate` class method generates a property on the current
   # prototype that proxy the property of the given object.
@@ -70,7 +72,7 @@ class agt.mixins.Delegation
     delegated = toMethod ? toProperty
 
     prefixed = options.prefix
-    _case = options.case or agt.CAMEL_CASE
+    _case = options.case or CAMEL_CASE
 
     properties.forEach (property) =>
       localAlias = property
@@ -78,9 +80,9 @@ class agt.mixins.Delegation
       # Currently, only `camel`, and `snake` cases are supported.
       if prefixed
         switch _case
-          when agt.SNAKE_CASE
+          when SNAKE_CASE
             localAlias = delegated + '_' + property
-          when agt.CAMEL_CASE
+          when CAMEL_CASE
             localAlias = delegated + property.replace /^./, (m) ->
               m.toUpperCase()
 

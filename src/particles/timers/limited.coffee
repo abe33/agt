@@ -1,6 +1,6 @@
-namespace('agt.particles.timers')
 # Public:
-class agt.particles.timers.Limited
+module.exports = 
+class Limited
 
   ### Public ###
 

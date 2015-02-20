@@ -1,14 +1,16 @@
-
-namespace('agt.geom')
+{Formattable, Sourcable} = require '../mixins'
+{Geometry, Path, Intersections, Spline} = require './mixins'
+Point = require './point'
 
 # Public:
-class agt.geom.QuintBezier
-  @include agt.mixins.Formattable('QuintBezier')
-  @include agt.mixins.Sourcable('agt.geom.QuintBezier', 'vertices', 'bias')
-  @include agt.geom.Geometry
-  @include agt.geom.Path
-  @include agt.geom.Intersections
-  @include agt.geom.Spline(4)
+module.exports =
+class QuintBezier
+  @include Formattable('QuintBezier')
+  @include Sourcable('agt.geom.QuintBezier', 'vertices', 'bias')
+  @include Geometry
+  @include Path
+  @include Intersections
+  @include Spline(4)
 
   ### Public ###
 
@@ -16,7 +18,7 @@ class agt.geom.QuintBezier
     @initSpline vertices, bias
 
   pointInSegment: (t, seg) ->
-    pt = new agt.geom.Point()
+    pt = new Point()
     pt.x = (seg[0].x * @b1 (t)) +
            (seg[1].x * @b2 (t)) +
            (seg[2].x * @b3 (t)) +

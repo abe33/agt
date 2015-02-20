@@ -1,9 +1,9 @@
-namespace('agt.particles')
-
-DEFAULT_RANDOM = new agt.random.Random new agt.random.MathRandom
+{Random, MathRandom} = require '../../random'
+DEFAULT_RANDOM = new Random new MathRandom
 
 # Public:
-class agt.particles.Randomizable
+module.exports = 
+class Randomizable
 
   ### Public ###
 

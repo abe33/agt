@@ -1,13 +1,17 @@
-
-namespace('agt.geom')
+{Equatable, Formattable, Parameterizable, Sourcable, Cloneable, Memoizable} = require '../mixins'
+{Geometry, Path, Intersections} = require './mixins'
+{Random, MathRandom} = require '../random'
+Point = require './point'
+Ellipsis = require './ellipsis'
 
 # Public:
-class agt.geom.Spiral
+module.exports =
+class Spiral
   properties = ['radius1', 'radius2', 'twirl', 'x', 'y', 'rotation','segments']
 
-  @include agt.mixins.Equatable.apply(null, properties)
-  @include agt.mixins.Formattable.apply(null, ['Spiral'].concat properties)
-  @include agt.mixins.Parameterizable('spiralFrom', {
+  @include Equatable(properties...)
+  @include Formattable(['Spiral'].concat(properties)...)
+  @include Parameterizable('spiralFrom', {
     radius1: 1
     radius2: 1
     twirl: 1
@@ -16,12 +20,12 @@ class agt.geom.Spiral
     rotation: 0
     segments: 36
   })
-  @include agt.mixins.Sourcable.apply(null, ['agt.geom.Spiral'].concat properties)
-  @include agt.mixins.Cloneable()
-  @include agt.mixins.Memoizable
-  @include agt.geom.Geometry
-  @include agt.geom.Path
-  @include agt.geom.Intersections
+  @include Sourcable(['agt.geom.Spiral'].concat(properties)...)
+  @include Cloneable()
+  @include Memoizable
+  @include Geometry
+  @include Path
+  @include Intersections
 
   ### Public ###
 
@@ -36,14 +40,14 @@ class agt.geom.Spiral
       @segments
     } = @spiralFrom r1, r2, twirl, x, y, rot, segments
 
-  center: -> new agt.geom.Point @x, @y
+  center: -> new Point @x, @y
 
   ellipsis: ->
     return @memoFor 'ellipsis' if @memoized 'ellipsis'
-    @memoize 'ellipsis', new agt.geom.Ellipsis this
+    @memoize 'ellipsis', new Ellipsis this
 
   translate: (x,y) ->
-    {x,y} = agt.geom.Point.pointFrom x, y
+    {x,y} = Point.pointFrom x, y
     @x += x
     @y += y
     this

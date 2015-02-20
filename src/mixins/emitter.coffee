@@ -1,6 +1,6 @@
-namespace('agt.mixins')
 
-class agt.mixins.Emitter
+module.exports =
+class Emitter
 
   dispatch: (event, data) ->
     @listeners?[event]?.forEach (listener) -> listener(data)

@@ -1,6 +1,6 @@
-namespace('agt.i18n')
 # Public
-class agt.i18n.I18n
+module.exports = 
+class I18n
   @attachToWindow: ->
     instance = new I18n locales, $('html').attr('lang') or 'en'
     window.t = instance.getHelper()

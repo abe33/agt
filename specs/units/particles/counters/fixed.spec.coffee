@@ -1,4 +1,4 @@
-Fixed = agt.particles.counters.Fixed
+{Fixed} = agt.particles.counters
 
 describe 'Fixed', ->
   describe 'when instanciated with a value', ->

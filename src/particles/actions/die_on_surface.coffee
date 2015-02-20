@@ -1,6 +1,7 @@
-namespace('agt.particles.actions')
+
 # Public:
-class agt.particles.actions.DieOnSurface
+module.exports =
+class DieOnSurface
 
   ### Public ###
 

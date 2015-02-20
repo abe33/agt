@@ -1,7 +1,7 @@
-namespace('agt.sprites')
 
 # Public:
-class agt.sprites.Animation
+module.exports = 
+class Animation
   constructor: (@image,
                 @width, @height,
                 @rowStart=0, @rowEnd=0,

@@ -1,4 +1,74 @@
-namespace('agt.mixins')
+Delegation = require './delegation'
+
+# Public:
+module.exports =
+class Collectionable
+  @extend Delegation
+
+  @delegatesCollectionMethods: (methods...) ->
+    methods.forEach (method) => @[method] = -> @instances[method](arguments...)
+
+  @delegatesCollectionMethods 'first', 'last', 'where', 'distinct', 'sum', 'group'
+
+  ### Public ###
+
+  # Initializes the instances collection on the model's class.
+  @initializeCollection: ->
+    return if @initialized
+
+    @Collection = buildCollectionClass(this)
+
+    @instances = @Collection.create()
+    @nextId = 1
+
+    @initialized = true
+
+  @create_collection: (content=[]) ->
+    @initializeCollection()
+
+    @Collection.create(content)
+
+  @register: (instance) ->
+    @initializeCollection()
+
+    instance.id = @nextId++
+    @instances.push(instance)
+
+  @unregister: (instance) ->
+    @instances.splice(@instances.indexOf(instance), 1) if instance in @instances
+
+  @unregisterAll: ->
+    @instances = @Collection.create()
+
+  ### Scopes ###
+
+  @all: ->
+    @initializeCollection()
+
+    @instances.concat()
+
+  @scope: (name, block) ->
+    @initializeCollection()
+
+    @Collection::[name] = (args...) ->
+      @filter (instance, index) -> block([instance].concat(args)...)
+
+    @delegatesCollectionMethods name
+
+  ### Queries ###
+
+  @find: (id) ->
+    @initializeCollection()
+
+    @where({id}).first()
+
+  @find_or_create: (conditions={}) ->
+    @initializeCollection()
+
+    instance = @where(conditions).first()
+    return instance if instance?
+
+    new @(conditions)
 
 # Internal: Creates a collection class for the given model. This class
 # will be decorated with the scopes defined on the model class
@@ -9,7 +79,7 @@ buildCollectionClass = (model) ->
   # every methods that should return an array return a collection
   # instead.
   class Collection
-    @extend agt.mixins.Delegation
+    @extend Delegation
 
     @model: model
 
@@ -98,72 +168,3 @@ buildCollectionClass = (model) ->
         else
           res &&= model[k] is v
       res
-
-# Public:
-class agt.mixins.Collectionable
-  @extend agt.mixins.Delegation
-
-  @delegatesCollectionMethods: (methods...) ->
-    methods.forEach (method) => @[method] = -> @instances[method](arguments...)
-
-  @delegatesCollectionMethods 'first', 'last', 'where', 'distinct', 'sum', 'group'
-
-  ### Public ###
-
-  # Initializes the instances collection on the model's class.
-  @initializeCollection: ->
-    return if @initialized
-
-    @Collection = buildCollectionClass(this)
-
-    @instances = @Collection.create()
-    @nextId = 1
-
-    @initialized = true
-
-  @create_collection: (content=[]) ->
-    @initializeCollection()
-
-    @Collection.create(content)
-
-  @register: (instance) ->
-    @initializeCollection()
-
-    instance.id = @nextId++
-    @instances.push(instance)
-
-  @unregister: (instance) ->
-    @instances.splice(@instances.indexOf(instance), 1) if instance in @instances
-
-  @unregisterAll: ->
-    @instances = @Collection.create()
-
-  ### Scopes ###
-
-  @all: ->
-    @initializeCollection()
-
-    @instances.concat()
-
-  @scope: (name, block) ->
-    @initializeCollection()
-
-    @Collection::[name] = (args...) ->
-      @filter (instance, index) -> block([instance].concat(args)...)
-
-    @delegatesCollectionMethods name
-
-  ### Queries ###
-
-  @find: (id) ->
-    @initializeCollection()
-
-    @where({id}).first()
-
-  @find_or_create: (conditions={}) ->
-    @initializeCollection()
-
-    instance = @where(conditions).first()
-    return instance if instance?
-
-    new @(conditions)

@@ -1,12 +1,11 @@
-namespace('agt.particles.initializers')
+SubSystem = require '../sub_system'
 # Public:
-class agt.particles.initializers.ParticleSubSystem
+module.exports =
+class ParticleSubSystem
 
   ### Public ###
 
   constructor: (initializer, action, emissionFactory, subSystem) ->
-    @subSystem = new agt.particles.SubSystem(
-      initializer, action, emissionFactory, subSystem
-    )
+    @subSystem = new SubSystem(initializer, action, emissionFactory, subSystem)
 
   initialize: (particle) -> @subSystem.emitFor particle

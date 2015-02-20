@@ -1,6 +1,5 @@
-namespace('agt.colors')
 
-agt.colors.BLEND_MODES =
+module.exports =
   MULTIPLY: (v1, v2) ->
     v1 * v2 / 255
 

@@ -1,4 +1,4 @@
-namespace('agt.geom')
+Point = require '../point'
 # Public: The `Intersections` mixin provides methods to geometries that
 # allow to compute intersections with other geometries.
 #
@@ -10,7 +10,8 @@ namespace('agt.geom')
 # intersections between a [Circle]{agt.geom.Circle} and another geometry
 # the {agt.geom.Circle::eachIntersections} method wil be used instead.
 # <script>window.exampleKey = 'geometry'</script>
-class agt.geom.Intersections
+module.exports =
+class Intersections
   @iterators: {}
 
   ### Public ###
@@ -124,11 +125,11 @@ class agt.geom.Intersections
 
           if providesDataInCallback
             context =
-              segment1: new agt.geom.Point dif1x, dif1y
+              segment1: new Point dif1x, dif1y
               segmentIndex1: i
               segmentStart1: sv1
               segmentEnd1: ev1
-              segment2: new agt.geom.Point dif2x, dif2y
+              segment2: new Point dif2x, dif2y
               segmentIndex2: j
               segmentStart2: sv2
               segmentEnd2: ev2
@@ -147,4 +148,4 @@ class agt.geom.Intersections
     cx = start1.x + dir1.x*t
     cy = start1.y + dir1.y*t
 
-    new agt.geom.Point cx, cy
+    new Point cx, cy

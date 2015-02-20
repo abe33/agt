@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 
 # Internal: The list of properties that are unglobalizable by default.
 DEFAULT_UNGLOBALIZABLE = [
@@ -54,12 +53,12 @@ DEFAULT_UNGLOBALIZABLE = [
 # keepContext - A {Boolean} defining whether the initial context
 #               of the methods are preserved or not.
 #
-# Returns a {ConcreteGlobalizable} mixin to decorate a class with.
-agt.mixins.Globalizable = (global, keepContext=true) ->
+# Returns a {Globalizable} mixin to decorate a class with.
+module.exports = (global, keepContext=true) ->
 
   # Public: The concrete globalizable mixin as returned by the
   # [Globalizable](../files/mixins/globalizable.coffee.html) generator.
-  class ConcreteGlobalizable
+  class Globalizable
 
     # Public: An {Array} storing the {String} name of the properties that
     # can't be globalized. This takes precedence over the `globalizable`
@@ -84,7 +83,7 @@ agt.mixins.Globalizable = (global, keepContext=true) ->
       # Then for each properties set for globalization the
       # `globalizeMember` method is called.
       @globalizable.forEach (k) =>
-        unless k in (@constructor.unglobalizable or ConcreteGlobalizable.unglobalizable)
+        unless k in (@constructor.unglobalizable or Globalizable.unglobalizable)
           @globalizeMember k
 
       # And the object is marked as `globalized`.
@@ -97,7 +96,7 @@ agt.mixins.Globalizable = (global, keepContext=true) ->
       # For each properties set for globalization the
       # `unglobalizeMember` method is called.
       @globalizable.forEach (k) =>
-        unless k in (@constructor.unglobalizable or ConcreteGlobalizable.unglobalizable)
+        unless k in (@constructor.unglobalizable or Globalizable.unglobalizable)
           @unglobalizeMember k
 
       # And then the object is cleaned of the globalization artifacts

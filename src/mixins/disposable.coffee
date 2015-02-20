@@ -1,5 +1,5 @@
-namespace('agt.mixins')
-class agt.mixins.Disposable
+module.exports =
+class Disposable
   init: ->
     @initialized?()
 

@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Internal: Contains all the function that will instanciate a class
 # with a specific number of arguments. These functions are all generated
 # at runtime with the `Function` constructor.
@@ -52,11 +51,11 @@ build = (klass, args) ->
 # properties - A list of {String} of the properties to pass in the constructor.
 #
 # Returns a {ConcreteCloneable} mixin configured with the passed-in arguments.
-agt.mixins.Cloneable = (properties...) ->
+module.exports = (properties...) ->
 
   # Public: The concrete cloneable mixin as created by the
   # [Cloneable](../files/mixins/cloneable.coffee.html) generator.
-  class ConcreteCloneable
+  class Cloneable
 
     # Public: Returns a copy of this instance.
     #
@@ -68,4 +67,4 @@ agt.mixins.Cloneable = (properties...) ->
     clone: -> new @constructor this
 
     if properties.length > 0
-      ConcreteCloneable::clone = -> build @constructor, properties.map (p) => @[ p ]
+      Cloneable::clone = -> build @constructor, properties.map (p) => @[ p ]

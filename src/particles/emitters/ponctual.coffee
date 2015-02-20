@@ -1,9 +1,11 @@
-namespace('agt.particles.emitters')
+Point = require '../../geom/point'
+
 # Public:
-class agt.particles.emitters.Ponctual
+module.exports =
+class Ponctual
 
   ### Public ###
 
-  constructor: (@point=new agt.geom.Point) ->
+  constructor: (@point=new Point) ->
 
   get: -> @point.clone()

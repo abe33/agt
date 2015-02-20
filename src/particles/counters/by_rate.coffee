@@ -1,6 +1,6 @@
-namespace('agt.particles.counters')
 # Public:
-class agt.particles.counters.ByRate
+module.exports =
+class ByRate
 
   ### Public ###
 

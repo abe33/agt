@@ -7,7 +7,8 @@
 # ```coffeescript
 # myObject.somethingChanged = new Signal
 # ```
-class agt.Signal
+module.exports =
+class Signal
 
   ### Public ###
 

@@ -1,7 +1,9 @@
+{Aliasable, Equatable, Formattable, Sourcable, Cloneable, Memoizable} = require '../mixins'
+{Geometry, Surface, Path, Intersections} = require './mixins'
+{Random, MathRandom} = require '../random'
+Point = require './point'
 
-namespace('agt.geom')
-
-# Public: A `Triangle` is only defined using three [Points]{agt.geom.Point}.
+# Public: A `Triangle` is only defined using three [Points]{Point}.
 # It is the simplest geometry you can find in the `geom` package, every other
 # surface geometries can be reduced to a set of triangles.
 #
@@ -20,49 +22,50 @@ namespace('agt.geom')
 # - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
 # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
-class agt.geom.Triangle
-  @extend agt.mixins.Aliasable
+module.exports =
+class Triangle
+  @extend Aliasable
 
-  @include agt.mixins.Equatable('a','b','c')
-  @include agt.mixins.Formattable('Triangle','a','b','c')
-  @include agt.mixins.Sourcable('agt.geom.Triangle','a','b','c')
-  @include agt.mixins.Cloneable()
-  @include agt.mixins.Memoizable
-  @include agt.geom.Geometry
-  @include agt.geom.Surface
-  @include agt.geom.Path
-  @include agt.geom.Intersections
+  @include Equatable('a','b','c')
+  @include Formattable('Triangle','a','b','c')
+  @include Sourcable('agt.geom.Triangle','a','b','c')
+  @include Cloneable()
+  @include Memoizable
+  @include Geometry
+  @include Surface
+  @include Path
+  @include Intersections
 
   ### Public ###
 
   # Returns a triangle-like {Object} using the given arguments.
   #
-  # a - Either a [Point]{agt.geom.Point} or a triangle-like {Object}.
-  # b - A [Point]{agt.geom.Point} when the first parameter is also a point.
-  # c - A [Point]{agt.geom.Point} when the first parameter is also a point.
+  # a - Either a [Point]{Point} or a triangle-like {Object}.
+  # b - A [Point]{Point} when the first parameter is also a point.
+  # c - A [Point]{Point} when the first parameter is also a point.
   #
   # Returns an {Object} with the following properties:
-  #   :a - A [Point]{agt.geom.Point} for the first vertex of the triangle.
-  #   :b - A [Point]{agt.geom.Point} for the second vertex of the triangle.
-  #   :c - A [Point]{agt.geom.Point} for the mast vertex of the triangle.
+  #   :a - A [Point]{Point} for the first vertex of the triangle.
+  #   :b - A [Point]{Point} for the second vertex of the triangle.
+  #   :c - A [Point]{Point} for the mast vertex of the triangle.
   @triangleFrom: (a, b, c) ->
-    {a,b,c} = a if a? and typeof a is 'object' and not agt.geom.Point.isPoint a
+    {a,b,c} = a if a? and typeof a is 'object' and not Point.isPoint a
 
-    @invalidPoint 'a', a unless agt.geom.Point.isPoint a
-    @invalidPoint 'b', b unless agt.geom.Point.isPoint b
-    @invalidPoint 'c', c unless agt.geom.Point.isPoint c
+    @invalidPoint 'a', a unless Point.isPoint a
+    @invalidPoint 'b', b unless Point.isPoint b
+    @invalidPoint 'c', c unless Point.isPoint c
 
     {
-      a: new agt.geom.Point(a)
-      b: new agt.geom.Point(b)
-      c: new agt.geom.Point(c)
+      a: new Point(a)
+      b: new Point(b)
+      c: new Point(c)
     }
 
   # Creates a new `Triangle` instance.
   #
-  # a - Either a [Point]{agt.geom.Point} or a triangle-like {Object}.
-  # b - A [Point]{agt.geom.Point} when the first parameter is also a point.
-  # c - A [Point]{agt.geom.Point} when the first parameter is also a point.
+  # a - Either a [Point]{Point} or a triangle-like {Object}.
+  # b - A [Point]{Point} when the first parameter is also a point.
+  # c - A [Point]{Point} when the first parameter is also a point.
   constructor: (a, b, c) ->
     {@a,@b,@c} = @triangleFrom a, b, c
 
@@ -70,29 +73,29 @@ class agt.geom.Triangle
   #
   # <script>drawGeometry(exampleKey, {center: true})</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
-  center: -> new agt.geom.Point (@a.x + @b.x + @c.x) / 3,
+  # Returns a [Point]{Point}.
+  center: -> new Point (@a.x + @b.x + @c.x) / 3,
                        (@a.y + @b.y + @c.y) / 3
 
   # Returns the center of the `ab` edge of the triangle.
   #
   # <script>drawGeometryPoints(exampleKey, 'abCenter')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   abCenter: -> @a.add @ab().scale(0.5)
 
   # Returns the center of the `ac` edge of the triangle.
   #
   # <script>drawGeometryPoints(exampleKey, 'acCenter')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   acCenter: -> @a.add @ac().scale(0.5)
 
   # Returns the center of the `bc` edge of the triangle.
   #
   # <script>drawGeometryPoints(exampleKey, 'bcCenter')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   bcCenter: -> @b.add @bc().scale(0.5)
 
   # Returns an {Array} with the triangle's edges vectors.
@@ -104,42 +107,42 @@ class agt.geom.Triangle
   #
   # <script>drawGeometryEdge(exampleKey, 'a', 'ab')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   ab: -> @b.subtract @a
 
   # Returns the triangle's `ab` edge vector.
   #
   # <script>drawGeometryEdge(exampleKey, 'a', 'ac')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   ac: -> @c.subtract @a
 
   # Returns the triangle's `ba` edge vector.
   #
   # <script>drawGeometryEdge(exampleKey, 'b', 'ba')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   ba: -> @a.subtract @b
 
   # Returns the triangle's `bc` edge vector.
   #
   # <script>drawGeometryEdge(exampleKey, 'b', 'bc')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   bc: -> @c.subtract @b
 
   # Returns the triangle's `ca` edge vector.
   #
   # <script>drawGeometryEdge(exampleKey, 'c', 'ca')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   ca: -> @a.subtract @c
 
   # Returns the triangle's `cb` edge vector.
   #
   # <script>drawGeometryEdge(exampleKey, 'c', 'cb')</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   cb: -> @b.subtract @c
 
   # Returns the angle formed by the {::ba} and {::bc} vectors.
@@ -210,7 +213,7 @@ class agt.geom.Triangle
     Math.deltaBelowRatio(Math.abs(@bac()), sqr) or
     Math.deltaBelowRatio(Math.abs(@acb()), sqr)
 
-  # Adds the passed-in [Point]{agt.geom.Point} to the position
+  # Adds the passed-in [Point]{Point} to the position
   # of this triangle.
   #
   # <script>drawTransform(exampleKey, {type: 'translate', args: [50, 0], width: 150})</script>
@@ -221,7 +224,7 @@ class agt.geom.Triangle
   #
   # Returns this [Triangle]{agt.geom.Triangle}.
   translate: (x,y) ->
-    pt = agt.geom.Point.pointFrom x,y
+    pt = Point.pointFrom x,y
     @a.x += pt.x; @a.y += pt.y
     @b.x += pt.x; @b.y += pt.y
     @c.x += pt.x; @c.y += pt.y
@@ -271,14 +274,14 @@ class agt.geom.Triangle
   # Returns an {Array}.
   points: -> [@a.clone(), @b.clone(), @c.clone(), @a.clone()]
 
-  # Returns the [Point]{agt.geom.Point} on the perimeter of the triangle
+  # Returns the [Point]{Point} on the perimeter of the triangle
   # at the given `angle`.
   #
   # angle - The angle {Number}.
   #
   # <script>drawGeometry(exampleKey, {angle: true})</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   pointAtAngle: (angle) ->
     center = @center()
     vec = center.add Math.cos(angle)*10000,
@@ -307,7 +310,7 @@ class agt.geom.Triangle
   #
   # Returns a {Boolean}.
   contains: (x, y) ->
-    p = new agt.geom.Point x, y
+    p = new Point x, y
 
     v0 = @ac()
     v1 = @ab()
@@ -332,7 +335,7 @@ class agt.geom.Triangle
   # random - An optional [Random]{agt.random.Random} instance to use instead
   #          of the default `Math` random method.
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   randomPointInSurface: (random) ->
     unless random?
       random = new agt.random.Random new agt.random.MathRandom
@@ -352,7 +355,7 @@ class agt.geom.Triangle
   # Returns a {Number}.
   length: -> @ab().length() + @bc().length() + @ca().length()
 
-  # Returns a [Point]{agt.geom.Point} on the triangle perimeter using
+  # Returns a [Point]{Point} on the triangle perimeter using
   # a {Number} between `0` and `1`.
   #
   # <script>drawGeometry(exampleKey, {paths: [0, 1/3, 2/3]})</script>
@@ -366,7 +369,7 @@ class agt.geom.Triangle
   #                     resulting in a difference in speed when animating
   #                     an object along a path.
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   pathPointAt: (n, pathBasedOnLength=true) ->
     [l1, l2] = @pathSteps pathBasedOnLength
 
@@ -390,7 +393,7 @@ class agt.geom.Triangle
   #                     resulting in a difference in speed when animating
   #                     an object along a path.
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   pathOrientationAt: (n, pathBasedOnLength=true) ->
     [l1, l2] = @pathSteps pathBasedOnLength
 

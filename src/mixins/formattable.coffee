@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: A `Formattable` object provides a `toString` that return
 # a string representation of the current instance.
 #
@@ -26,10 +25,10 @@ namespace('agt.mixins')
 #              in the formatted output.
 #
 # Returns a {ConcreteFormattable} mixin.
-agt.mixins.Formattable = (classname, properties...) ->
+module.exports = (classname, properties...) ->
   # Public: The concrete class as returned by the
   # [Formattable](../files/mixins/formattable.coffee.html) generator.
-  class ConcreteFormattable
+  class Formattable
     ### Public ###
 
     # Returns the object representation as a {String}.

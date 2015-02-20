@@ -1,8 +1,7 @@
-namespace('agt.particles')
-
+System = require './system'
 # Public:
-class agt.particles.SubSystem extends agt.particles.System
-
+module.exports =
+class SubSystem extends System
   ### Public ###
 
   constructor: (initializer, action, @emissionFactory, subSystem) ->

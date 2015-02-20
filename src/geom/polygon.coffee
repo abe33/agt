@@ -1,17 +1,21 @@
-namespace('agt.geom')
+{Aliasable, Formattable, Sourcable, Cloneable} = require '../mixins'
+{Geometry, Intersections, Triangulable, Surface, Path} = require './mixins'
+{Random, MathRandom} = require '../random'
+Point = require './point'
 
 # Public:
-class agt.geom.Polygon
-  @extend agt.mixins.Aliasable
+module.exports =
+class Polygon
+  @extend Aliasable
 
-  @include agt.mixins.Formattable('Polygon', 'vertices')
-  @include agt.mixins.Sourcable('agt.geom.Polygon', 'vertices')
-  @include agt.mixins.Cloneable()
-  @include agt.geom.Geometry
-  @include agt.geom.Intersections
-  @include agt.geom.Triangulable
-  @include agt.geom.Surface
-  @include agt.geom.Path
+  @include Formattable('Polygon', 'vertices')
+  @include Sourcable('agt.geom.Polygon', 'vertices')
+  @include Cloneable()
+  @include Geometry
+  @include Intersections
+  @include Triangulable
+  @include Surface
+  @include Path
 
   ### Public ###
 
@@ -40,10 +44,10 @@ class agt.geom.Polygon
     x = x / @vertices.length
     y = y / @vertices.length
 
-    new agt.geom.Point x, y
+    new Point x, y
 
   translate: (x,y) ->
-    {x,y} = agt.geom.Point.pointFrom x,y
+    {x,y} = Point.pointFrom x,y
     for vertex in @vertices
       vertex.x += x
       vertex.y += y
@@ -89,7 +93,7 @@ class agt.geom.Polygon
 
   randomPointInSurface: (random) ->
     unless random?
-      random = new agt.random.Random new agt.random.MathRandom
+      random = new Random new MathRandom
 
     acreage = @acreage()
     triangles = @triangles()

@@ -1,4 +1,5 @@
-namespace('agt.geom')
+Rectangle = null
+
 # Public: The `Geometry` mixin describes the most basic interface a geometry
 # should implements.
 #
@@ -46,7 +47,8 @@ namespace('agt.geom')
 # Behind the hood, these two methods relies on the {::drawPath} method that
 # actually draw the shape in the canvas context. You can just override this
 # method when you need to draw the shape in a specific way.
-class agt.geom.Geometry
+module.exports =
+class Geometry
 
   ### Public ###
 
@@ -123,7 +125,8 @@ class agt.geom.Geometry
   #
   # Returns a [Rectangle]{agt.geom.Rectangle}.
   boundingBox: ->
-    new agt.geom.Rectangle(
+    Rectangle ||= require '../rectangle'
+    new Rectangle(
       @left(),
       @top(),
       @right() - @left(),

@@ -1,6 +1,7 @@
-namespace('agt.particles.actions')
+BaseAction = require './base_action'
 # Public:
-class agt.particles.actions.Friction extends agt.particles.actions.BaseAction
+module.exports = 
+class Friction extends BaseAction
 
   ### Public ###
 

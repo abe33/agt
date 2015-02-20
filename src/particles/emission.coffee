@@ -1,14 +1,18 @@
-namespace('agt.particles')
+Particle = require './particle'
+NullTimer = require './timers/null_timer'
+NullEmitter = require './emitters/null_emitter'
+NullCounter = require './counters/null_counter'
 
 # Public:
-class agt.particles.Emission
+module.exports =
+class Emission
 
   ### Public ###
 
-  constructor: (@particleType=agt.particles.Particle,
-                @emitter=new agt.particles.timers.NullEmitter(),
-                @timer=new agt.particles.counters.NullTimer(),
-                @counter=new agt.particles.emitters.NullCounter(),
+  constructor: (@particleType=Particle,
+                @emitter=new NullEmitter(),
+                @timer=new NullTimer(),
+                @counter=new NullCounter(),
                 @initializer=null) ->
 
   prepare: (bias, biasInSeconds, time) ->

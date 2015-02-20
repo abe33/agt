@@ -1,4 +1,5 @@
-namespace('agt.inflector')
+Inflection = require './inflection'
+
 # Public: The `Inflector` transform words from singular to plural
 # and verbs from present to past. The `agt.inflector` package is an instance
 # of the `Inflector` class with default inflections for english words and verbs.
@@ -25,9 +26,12 @@ namespace('agt.inflector')
 # agt.inflector.singularize('fr', 'hiboux') # 'hibou'
 # agt.inflector.singularize('fr', 'coups') # 'coup'
 # ```
-class agt.inflector.Inflector
+module.exports =
+class Inflector
 
   ### Public ###
+  constructor: (lang, block) ->
+    @config(lang, block) if lang? and block?
 
   # Extends or defines the inflections for a given language.
   #
@@ -79,7 +83,7 @@ class agt.inflector.Inflector
   plural: (lang, match, replace) ->
     @default(lang, 'plural')
 
-    inflection = new agt.inflector.Inflection(match, replace)
+    inflection = new Inflection(match, replace)
     @inflections[lang].plural.push(inflection)
 
 
@@ -102,7 +106,7 @@ class agt.inflector.Inflector
   singular: (lang, match, replace) ->
     @default(lang, 'singular')
 
-    inflection = new agt.inflector.Inflection(match, replace)
+    inflection = new Inflection(match, replace)
     @inflections[lang].singular.push(inflection)
 
   # Defines an inflection for an irregular word which pluralization doesn't
@@ -121,8 +125,8 @@ class agt.inflector.Inflector
     @default(lang, 'plural')
     @default(lang, 'singular')
 
-    pluralInflection = new agt.inflector.Inflection(singular, plural)
-    singularInflection = new agt.inflector.Inflection(plural, singular)
+    pluralInflection = new Inflection(singular, plural)
+    singularInflection = new Inflection(plural, singular)
     @inflections[lang].singular.push(singularInflection)
     @inflections[lang].plural.push(pluralInflection)
 
@@ -164,7 +168,7 @@ class agt.inflector.Inflector
   pastTense: (lang, match, replace) ->
     @default(lang, 'past')
 
-    inflection = new agt.inflector.Inflection(match, replace)
+    inflection = new Inflection(match, replace)
     @inflections[lang].past.push(inflection)
 
   # Conversion Methods
@@ -230,6 +234,3 @@ class agt.inflector.Inflector
     @inflections ||= {}
     @inflections[lang] ||= {}
     @inflections[lang][collection] ||= []
-
-agt.inflector = new agt.inflector.Inflector
-agt.inflector.Inflector = agt.inflector.constructor

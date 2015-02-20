@@ -1,6 +1,8 @@
-namespace('agt.geom')
+Point = require './point'
+Triangle = require './triangle'
 
-class agt.geom.VerticalTriangleGrid
+module.exports =
+class VerticalTriangleGrid
   constructor: (@triangleSize=10) ->
     @halfSize = @triangleSize / 2
     @columnWidth = Math.sqrt(3) / 2 * @triangleSize
@@ -25,7 +27,7 @@ class agt.geom.VerticalTriangleGrid
     if inQuadrantY <= @halfSize
       if inQuadrantX <= @columnWidth
         # upper left quadrant
-        tri = new agt.geom.Triangle(
+        tri = new Triangle(
           {y: 0, x: 0},
           {y: @halfSize, x: 0}
           {y: 0, x: @columnWidth}
@@ -37,7 +39,7 @@ class agt.geom.VerticalTriangleGrid
           {y: quadrantY, x: quadrantX * 4 + 1}
       else
         # lower left quadrant
-        tri = new agt.geom.Triangle(
+        tri = new Triangle(
           {y: 0, x: @columnWidth},
           {y: 0, x: quandrantWidth}
           {y: @halfSize, x: quandrantWidth}
@@ -50,7 +52,7 @@ class agt.geom.VerticalTriangleGrid
     else
       if inQuadrantX <= @columnWidth
         # upper right quadrant
-        tri = new agt.geom.Triangle(
+        tri = new Triangle(
           {y: @halfSize, x: 0},
           {y: quadrantHeight, x: 0}
           {y: quadrantHeight, x: @columnWidth}
@@ -62,7 +64,7 @@ class agt.geom.VerticalTriangleGrid
           {y: quadrantY, x: quadrantX * 4 + 1}
       else
         # lower right quadrant
-        tri = new agt.geom.Triangle(
+        tri = new Triangle(
           {y: quadrantHeight, x: @columnWidth},
           {y: quadrantHeight, x: quandrantWidth}
           {y: @halfSize, x: quandrantWidth}
@@ -158,26 +160,26 @@ class agt.geom.VerticalTriangleGrid
       when 0
         xRef = (pos.x / 2) * @columnWidth
         yRef = pos.y * @triangleSize
-        a = new agt.geom.Point(xRef + @columnWidth, yRef)
-        b = new agt.geom.Point(xRef, yRef + @halfSize)
-        c = new agt.geom.Point(xRef, yRef - @halfSize)
+        a = new Point(xRef + @columnWidth, yRef)
+        b = new Point(xRef, yRef + @halfSize)
+        c = new Point(xRef, yRef - @halfSize)
       when 1
         yRef = pos.y * @triangleSize + @halfSize
         xRef = (pos.x - 1) / 2 * @columnWidth
-        a = new agt.geom.Point(xRef, yRef)
-        b = new agt.geom.Point(xRef + @columnWidth, yRef + @halfSize)
-        c = new agt.geom.Point(xRef + @columnWidth, yRef - @halfSize)
+        a = new Point(xRef, yRef)
+        b = new Point(xRef + @columnWidth, yRef + @halfSize)
+        c = new Point(xRef + @columnWidth, yRef - @halfSize)
       when 2
         yRef = pos.y * @triangleSize + @halfSize
         xRef = pos.x / 2 * @columnWidth
-        a = new agt.geom.Point(xRef + @columnWidth, yRef)
-        b = new agt.geom.Point(xRef, yRef + @halfSize)
-        c = new agt.geom.Point(xRef, yRef - @halfSize)
+        a = new Point(xRef + @columnWidth, yRef)
+        b = new Point(xRef, yRef + @halfSize)
+        c = new Point(xRef, yRef - @halfSize)
       when 3
         yRef = pos.y * @triangleSize
         xRef = (pos.x - 1) / 2 * @columnWidth
-        a = new agt.geom.Point(xRef, yRef)
-        b = new agt.geom.Point(xRef + @columnWidth, yRef + @halfSize)
-        c = new agt.geom.Point(xRef + @columnWidth, yRef - @halfSize)
+        a = new Point(xRef, yRef)
+        b = new Point(xRef + @columnWidth, yRef + @halfSize)
+        c = new Point(xRef + @columnWidth, yRef - @halfSize)
 
-    @trianglesCache[key] = new agt.geom.Triangle(a,b,c)
+    @trianglesCache[key] = new Triangle(a,b,c)

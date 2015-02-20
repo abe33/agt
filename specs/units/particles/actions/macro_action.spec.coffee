@@ -1,6 +1,4 @@
-MacroAction = agt.particles.actions.MacroAction
-Move = agt.particles.actions.Move
-Live = agt.particles.actions.Live
+{MacroAction, Move, Live} = agt.particles.actions
 Particle = agt.particles.Particle
 
 describe 'MacroAction', ->

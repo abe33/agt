@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: A `Memoizable` object can store data resulting of heavy methods
 # in order to speed up further call to that method.
 #
@@ -22,7 +21,8 @@ namespace('agt.mixins')
 #
 #   memoizationKey: -> "#{p1};#{p2}"
 # ```
-class agt.mixins.Memoizable
+module.exports =
+class Memoizable
   # Public: Returns `true` if data are available for the given `prop`.
   #
   # When the current state of the object don't match the stored

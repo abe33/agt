@@ -1,6 +1,6 @@
-namespace('agt.particles.actions')
 # Public:
-class agt.particles.actions.BaseAction
+module.exports =
+class BaseAction
 
   ### Public ###
 

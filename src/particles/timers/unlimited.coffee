@@ -1,6 +1,7 @@
-namespace('agt.particles.timers')
+Limited = require './limited'
 # Public:
-class agt.particles.timers.Unlimited extends agt.particles.timers.Limited
+module.exports =
+class Unlimited extends Limited
 
   ### Public ###
 

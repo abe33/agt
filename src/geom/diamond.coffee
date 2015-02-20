@@ -1,11 +1,15 @@
-namespace('agt.geom')
+{Formattable, Parameterizable, Sourcable, Equatable, Cloneable, Memoizable} = require '../mixins'
+{Geometry, Surface, Path, Intersections} = require './mixins'
+Point = require './point'
+Triangle = require './triangle'
 
 # Public:
-class agt.geom.Diamond
+module.exports =
+class Diamond
   properties = ['topLength', 'rightLength', 'bottomLength', 'leftLength', 'x', 'y', 'rotation']
 
-  @include agt.mixins.Formattable(['Diamond'].concat(properties)...)
-  @include agt.mixins.Parameterizable('diamondFrom', {
+  @include Formattable(['Diamond'].concat(properties)...)
+  @include Parameterizable('diamondFrom', {
     topLength: 1
     rightLength: 1
     bottomLength: 1
@@ -14,14 +18,14 @@ class agt.geom.Diamond
     y: 0
     rotation: 0
   })
-  @include agt.mixins.Sourcable(['agt.geom.Diamond'].concat properties)
-  @include agt.mixins.Equatable(properties...)
-  @include agt.mixins.Cloneable()
-  @include agt.mixins.Memoizable
-  @include agt.geom.Geometry
-  @include agt.geom.Surface
-  @include agt.geom.Path
-  @include agt.geom.Intersections
+  @include Sourcable(['agt.geom.Diamond'].concat properties)
+  @include Equatable(properties...)
+  @include Cloneable()
+  @include Memoizable
+  @include Geometry
+  @include Surface
+  @include Path
+  @include Intersections
 
   ### Public ###
 
@@ -29,15 +33,15 @@ class agt.geom.Diamond
     args = @diamondFrom topLength, rightLength, bottomLength, leftLength, x, y, rotation
     {@topLength, @rightLength, @bottomLength, @leftLength, @x, @y, @rotation} = args
 
-  center: -> new agt.geom.Point(@x, @y)
+  center: -> new Point(@x, @y)
 
-  topAxis: -> new agt.geom.Point(0,-@topLength).rotate(@rotation)
+  topAxis: -> new Point(0,-@topLength).rotate(@rotation)
 
-  bottomAxis: -> new agt.geom.Point(0,@bottomLength).rotate(@rotation)
+  bottomAxis: -> new Point(0,@bottomLength).rotate(@rotation)
 
-  leftAxis: -> new agt.geom.Point(-@leftLength,0).rotate(@rotation)
+  leftAxis: -> new Point(-@leftLength,0).rotate(@rotation)
 
-  rightAxis: -> new agt.geom.Point(@rightLength,0).rotate(@rotation)
+  rightAxis: -> new Point(@rightLength,0).rotate(@rotation)
 
   corners: ->
     [
@@ -82,22 +86,22 @@ class agt.geom.Diamond
   topLeftQuadrant: ->
     k = 'topLeftQuadrant'
     return @memoFor k if @memoized k
-    @memoize k, new agt.geom.Triangle(@center(), @topCorner(), @leftCorner())
+    @memoize k, new Triangle(@center(), @topCorner(), @leftCorner())
 
   topRightQuadrant: ->
     k = 'topRightQuadrant'
     return @memoFor k if @memoized k
-    @memoize k, new agt.geom.Triangle(@center(), @topCorner(), @rightCorner())
+    @memoize k, new Triangle(@center(), @topCorner(), @rightCorner())
 
   bottomLeftQuadrant: ->
     k = 'bottomLeftQuadrant'
     return @memoFor k if @memoized k
-    @memoize k, new agt.geom.Triangle(@center(), @bottomCorner(), @leftCorner())
+    @memoize k, new Triangle(@center(), @bottomCorner(), @leftCorner())
 
   bottomRightQuadrant: ->
     k = 'bottomRightQuadrant'
     return @memoFor k if @memoized k
-    @memoize k, new agt.geom.Triangle(@center(), @bottomCorner(), @rightCorner())
+    @memoize k, new Triangle(@center(), @bottomCorner(), @rightCorner())
 
   top: -> Math.min @topCorner().y,
                    @bottomCorner().y,
@@ -120,7 +124,7 @@ class agt.geom.Diamond
                      @rightCorner().x,
 
   translate: (xOrPt, y) ->
-    {x,y} = agt.geom.Point.pointFrom xOrPt, y
+    {x,y} = Point.pointFrom xOrPt, y
 
     @x += x
     @y += y

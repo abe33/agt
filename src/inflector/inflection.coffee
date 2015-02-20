@@ -1,8 +1,7 @@
-namespace('agt.inflector')
-
 # Public: The `Inflection` class represent a single inflection for the general
 # case of pluralization, singularization and conversion to the past tense.
-class agt.inflector.Inflection
+module.exports = 
+class Inflection
   ### Public ###
 
   # Creates a new instance.

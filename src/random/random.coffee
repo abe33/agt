@@ -1,5 +1,5 @@
-namespace('agt.random')
 {floor, round} = Math
+{Cloneable, Sourcable, Formattable} = require '../mixins'
 
 # Public: Create a `Random` object whenever you need randomized values
 # of various kind. The `Random` class doesn't provides the random generation
@@ -9,10 +9,11 @@ namespace('agt.random')
 # ```coffeescript
 # random = new agt.random.Random(new agt.random.MathRandom)
 # ```
-class agt.random.Random
-  @include agt.mixins.Cloneable('generator')
-  @include agt.mixins.Sourcable('agt.random.Random','generator')
-  @include agt.mixins.Formattable('Random','generator')
+module.exports =
+class Random
+  @include Cloneable('generator')
+  @include Sourcable('agt.random.Random','generator')
+  @include Formattable('Random','generator')
 
   ### Public ###
 

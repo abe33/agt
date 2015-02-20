@@ -1,4 +1,3 @@
-namespace('agt.geom')
 # Public: Every closed geometry should have the properties of a surface.
 #
 # These properties are:
@@ -15,7 +14,8 @@ namespace('agt.geom')
 #   # Your surface implementation
 # ```
 # <script>window.exampleKey = 'geometry'</script>
-class agt.geom.Surface
+module.exports =
+class Surface
 
   ### Public ###
 

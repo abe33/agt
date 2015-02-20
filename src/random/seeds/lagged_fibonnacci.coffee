@@ -1,9 +1,11 @@
-namespace('agt.random')
+{Cloneable, Sourcable, Formattable} = require '../../mixins'
+
 # Public:
-class agt.random.LaggedFibonnacci
-  @include agt.mixins.Cloneable('seed')
-  @include agt.mixins.Sourcable('chancejs.LaggedFibonnacci','seed')
-  @include agt.mixins.Formattable('LaggedFibonnacci','seed')
+module.exports =
+class LaggedFibonnacci
+  @include Cloneable('seed')
+  @include Sourcable('chancejs.LaggedFibonnacci','seed')
+  @include Formattable('LaggedFibonnacci','seed')
 
   ### Public ###
 

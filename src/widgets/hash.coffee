@@ -1,7 +1,6 @@
-namespace('agt.widgets')
-
 # Public:
-class agt.widgets.Hash
+module.exports = 
+class Hash
   constructor: ->
     @clear()
 

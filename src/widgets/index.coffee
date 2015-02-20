@@ -1,4 +1,6 @@
-namespace('agt.widgets')
+Hash = require './hash'
+Activable = require '../mixins/activable'
+Disposable = require '../mixins/disposable'
 
 #
 __widgets__ = {}
@@ -13,7 +15,7 @@ __subscriptions__ = {}
 
 # The `widgets` function is both the main module and the function
 # used to register the widgets to apply on a page.
-agt.widgets = (name, selector, options={}, block) ->
+module.exports = (name, selector, options={}, block) ->
   unless __widgets__[name]?
     throw new Error "Unable to find widget '#{name}'"
 
@@ -34,7 +36,7 @@ agt.widgets = (name, selector, options={}, block) ->
 
   # The widgets instances are stored in a Hash with the DOM element they
   # target as key. The instances hashes are stored per widget type.
-  instances = __instances__[name] ||= new agt.widgets.Hash
+  instances = __instances__[name] ||= new Hash
 
   # This method execute a test condition for the given element. The condition
   # can be either a function or a value converted to boolean.
@@ -95,7 +97,7 @@ agt.widgets = (name, selector, options={}, block) ->
     Array::forEach.call elements, (element) ->
       return unless canBeHandled element
 
-      widget = new agt.widgets.Widget(element)
+      widget = new module.exports.Widget(element)
       args = [widget, element, Object.create(options), elements]
       __widgets__[name].call(args...)
       element.classList.add handledClass
@@ -122,9 +124,9 @@ agt.widgets = (name, selector, options={}, block) ->
     switch event
       when 'init' then handler()
       when 'load', 'resize'
-        agt.widgets.subscribe name, window, event, handler
+        module.exports.subscribe name, window, event, handler
       else
-        agt.widgets.subscribe name, document, event, handler
+        module.exports.subscribe name, document, event, handler
 
 # The `widgets.define` is used to create a new widget usable through the
 # `widgets` method. Basically, a widget is defined using a `name`, and a
@@ -137,10 +139,10 @@ agt.widgets = (name, selector, options={}, block) ->
 #
 # The `options` object will contains all the options passed to the `widgets`
 # method except the `on`, `if`, `unless` and `media` ones.
-agt.widgets.define = (name, block) -> __widgets__[name] = block
+module.exports.define = (name, block) -> __widgets__[name] = block
 
 # A shorthand method to register a jQuery widget.
-agt.widgets.$define = (name, baseOptions={}, block) ->
+module.exports.$define = (name, baseOptions={}, block) ->
   [baseOptions, block] = [{}, baseOptions] if typeof baseOptions is 'function'
   throw new Error "#{name} jquery widget isn't defined" unless $.fn[name]
   __widgets__[name] = (element, options={}) ->
@@ -148,22 +150,22 @@ agt.widgets.$define = (name, baseOptions={}, block) ->
     res = $(element)[name](options)
     block?(res, options)
 
-agt.widgets.delete = (name) ->
+module.exports.delete = (name) ->
   __subscriptions__[name]?.forEach (subscription) -> subscription.off()
-  agt.widgets.release(name)
+  module.exports.release(name)
   delete __widgets__[name]
 
-agt.widgets.reset = (names...) ->
+module.exports.reset = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
-  agt.widgets.delete(name) for name in names
+  module.exports.delete(name) for name in names
 
-agt.widgets.widgetsFor = (element, widget) ->
+module.exports.widgetsFor = (element, widget) ->
   if widget?
     __instances__[widget].get(element)
   else
     instances.get(element) for instances in __instances__ when instances.hasKey(element)
 
-agt.widgets.subscribe = (name, to, evt, handler) ->
+module.exports.subscribe = (name, to, evt, handler) ->
   __subscriptions__[name] ||= []
   to.addEventListener(evt, handler)
   subscription = off: -> to.removeEventListener(evt, handler)
@@ -174,25 +176,29 @@ agt.widgets.subscribe = (name, to, evt, handler) ->
 # of the given `name` from the page.
 # It's the widget responsibility to clean up its dependencies during
 # the `dispose` call.
-agt.widgets.release = (names...) ->
+module.exports.release = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
     __instances__[name].each (value) -> value.dispose()
 
 # Activates all the widgets instances of type `name`.
-agt.widgets.activate = (names...) ->
+module.exports.activate = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
     __instances__[name].each (value) -> value.activate()
 
 # Deactivates all the widgets instances of type `name`.
-agt.widgets.deactivate = (names...) ->
+module.exports.deactivate = (names...) ->
   names = Object.keys(__instances__) if names.length is 0
   for name in names
     __instances__[name].each (value) -> value.deactivate()
 
-class agt.widgets.Widget
-  @include agt.mixins.Activable
-  @include agt.mixins.Disposable
+class module.exports.Widget
+  @include Activable
+  @include Disposable
 
   constructor: (@element) ->
+
+module.exports.Hash = Hash
+
+require('./widgets')(module.exports)

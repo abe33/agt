@@ -1,7 +1,8 @@
-namespace('agt.particles.initializers')
+{Randomizable} = require '../mixins'
 # Public:
-class agt.particles.initializers.Life
-  @include agt.particles.Randomizable
+module.exports = 
+class Life
+  @include Randomizable
 
   ### Public ###
 

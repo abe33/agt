@@ -1,6 +1,6 @@
-namespace('agt.particles.counters')
 # Public:
-class agt.particles.counters.NullCounter
+module.exports =
+class NullCounter
 
   ### Public ###
 

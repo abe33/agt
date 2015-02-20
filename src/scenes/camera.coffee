@@ -1,12 +1,12 @@
-namespace('agt.scenes')
 
-{Rectangle, Range} = agt.geom
+Rectangle = require '../geom/rectangle'
+Range = require '../geom/range'
+Emitter = require '../mixins/emitter' 
+module.exports =
+class Camera
+  @include Emitter
 
-class agt.scenes.Camera
-  @include agt.mixins.Emitter
-
-  constructor: (@screen=new Rectangle(0, 0,
-                                      window.innerWidth, window.innerHeight),
+  constructor: (@screen=new Rectangle(0, 0, window.innerWidth, window.innerHeight),
                 @_zoom=1,
                 @zoomRange=new Range(-Infinity, Infinity),
                 @silent=false) ->

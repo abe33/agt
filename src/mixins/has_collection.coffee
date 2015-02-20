@@ -1,5 +1,3 @@
-namespace('agt.mixins')
-
 # Public: The `HasCollection` mixin provides methods to expose a collection
 # in a class. The mixin is created using two strings.
 #
@@ -33,17 +31,18 @@ namespace('agt.mixins')
 # singular - The singularized {String} name.
 #
 # Returns a {ConcreteHasCollection} mixin.
-agt.mixins.HasCollection = (plural, singular) ->
+Aliasable = require './aliasable'
+module.exports = (plural, singular) ->
 
   pluralPostfix = plural.replace /^./, (s) -> s.toUpperCase()
   singularPostfix = singular.replace /^./, (s) -> s.toUpperCase()
 
   # Public: The concrete mixin as returned by the
   # [HasCollection](../files/mixins/has_collection.coffee.html) generator.
-  class ConcreteHasCollection
+  class HasCollection
     # The mixin integrates `Aliasable` to create various alias to the
     # collection methods.
-    @extend agt.mixins.Aliasable
+    @extend Aliasable
 
     # Public: Creates a `name` scope on instances that filter
     # the collection using the passed-in `block`.

@@ -1,10 +1,12 @@
-namespace('agt.particles.actions')
+BaseAction = require './base_action'
+Point = require '../../geom/point'
 # Public:
-class agt.particles.actions.Force extends agt.particles.actions.BaseAction
+module.exports =
+class Force extends BaseAction
 
   ### Public ###
 
-  constructor: (@vector=new agt.geom.Point) ->
+  constructor: (@vector=new Point) ->
 
   process: (particle) ->
     particle.velocity.x += @vector.x * @biasInSeconds

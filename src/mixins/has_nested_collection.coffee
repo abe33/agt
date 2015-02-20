@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: The `HasNestedCollection` adds a property with named `name`
 # that collects and concatenates all the descendants collections
 # into a single array.
@@ -22,7 +21,7 @@ namespace('agt.mixins')
 #                      collections.
 #
 # Returns a {ConcreteHasNestedCollection} mixin.
-agt.mixins.HasNestedCollection = (name, options={}) ->
+module.exports = (name, options={}) ->
 
   # The collection is accessed with the named passed in the `through`option.
   through = options.through
@@ -31,7 +30,7 @@ agt.mixins.HasNestedCollection = (name, options={}) ->
   # Public: The concrete mixin as returned by the
   # [HasNestedCollection](../files/mixins/has_nested_collection.coffee.html)
   # generator.
-  class ConcreteHasNestedCollection
+  class HasNestedCollection
 
     # Public: Creates a property on instances that filters the nested
     # collections items using the passed-in `block`.

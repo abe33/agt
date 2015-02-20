@@ -1,5 +1,5 @@
-namespace('agt.mixins')
-class agt.mixins.StateMachine
+module.exports =
+class StateMachine
   @initial: (state) -> @initialState = state
 
   @event: (name, block) ->

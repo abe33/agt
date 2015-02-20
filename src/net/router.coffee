@@ -1,4 +1,4 @@
-namespace('agt.net')
+{Aliasable} = require '../mixins'
 # Public: The router class allow to trigger view changes on url changes.
 # Typically the url changes may be handled by the history API or a url hash
 # handler.
@@ -13,8 +13,9 @@ namespace('agt.net')
 #   @match '/posts/:id', ({id}) ->
 #     # render a single post identified with an :id
 # ```
-class agt.net.Router
-  @extend agt.mixins.Aliasable
+module.exports =
+class Router
+  @extend Aliasable
 
   ### Public ###
 

@@ -1,6 +1,6 @@
-namespace('agt.particles.actions')
 # Public:
-class agt.particles.actions.NullAction
+module.exports =
+class NullAction
 
   ### Public ###
 

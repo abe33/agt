@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: The `Activable` mixin provides the basic interface for an activable
 # widget. You can hook your own activation/deactivation routines by overriding
 # the `activated` and `deactivated` methods.
@@ -15,7 +14,8 @@ namespace('agt.mixins')
 # ```
 #
 # `Activable` instances are deactivated at creation.
-class agt.mixins.Activable
+module.exports =
+class Activable
   active: false
 
   # Public: Activates the instance.

@@ -1,5 +1,5 @@
-
-agt.inflector.config 'en', ->
+Inflector = require './inflector'
+module.exports = new Inflector 'en', ->
   @plural(/$/, 's')
   @plural(/s$/i, 's')
   @plural(/^(ax|test)is$/i, '$1es')
@@ -73,3 +73,6 @@ agt.inflector.config 'en', ->
   @pastTense "feel",'felt'
   @pastTense "light",'lit'
   @pastTense "find",'found'
+
+module.exports.Inflector = Inflector
+module.exports.Inflection = require './inflection'

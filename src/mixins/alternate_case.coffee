@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: The `AlternateCase` mixin add methods to convert the properties
 # of a class instance to camelCase or snake_case.
 #
@@ -23,7 +22,8 @@ namespace('agt.mixins')
 # The alternative is also possible. Given a class that uses snake_case
 # to declare its member, the `camelize` method will provides the camelCase
 # alternative to the class.
-class agt.mixins.AlternateCase
+module.exports =
+class AlternateCase
 
   # Public: Converts all the prototype properties to snake_case.
   @snakify: -> @convert 'toSnakeCase'

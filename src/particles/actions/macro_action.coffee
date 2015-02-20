@@ -1,6 +1,8 @@
-namespace('agt.particles.actions')
+BaseAction = require './base_action'
+
 # Public:
-class agt.particles.actions.MacroAction extends agt.particles.actions.BaseAction
+module.exports =
+class MacroAction extends BaseAction
 
   ### Public ###
 

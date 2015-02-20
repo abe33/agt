@@ -9,6 +9,8 @@ requestAnimFrame = g.requestAnimationFrame       or
                    g.msRequestAnimationFrame     or
                    -> g.setTimeout callback, 1000 / 60
 
+Signal = require './signal'
+
 # Public: Impulse is a custom signal whose purpose is to handle
 # animations within an application.
 #
@@ -16,7 +18,8 @@ requestAnimFrame = g.requestAnimationFrame       or
 #
 # Impulse dispatch its messages on a regular basis, based
 # on the `requestAnimationFrame` function.
-class agt.Impulse extends agt.Signal
+module.exports = 
+class Impulse extends Signal
   ### Public ###
 
   # Returns a global unique instance to use as reference

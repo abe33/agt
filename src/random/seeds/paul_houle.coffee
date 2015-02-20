@@ -1,14 +1,15 @@
-namespace('agt.random')
+{Cloneable, Sourcable, Formattable} = require '../../mixins'
 # Original Implementation License:
 #
 # The Central Randomizer 1.3 (C) 1997 by Paul Houle (paul@honeylocust.com)
 # See:  http://www.honeylocust.com/javascript/randomizer.html
 
 # Public:
-class agt.random.PaulHoule
-  @include agt.mixins.Cloneable('seed')
-  @include agt.mixins.Sourcable('chancejs.PaulHoule','seed')
-  @include agt.mixins.Formattable('PaulHoule','seed')
+module.exports =
+class PaulHoule
+  @include Cloneable('seed')
+  @include Sourcable('chancejs.PaulHoule','seed')
+  @include Formattable('PaulHoule','seed')
 
   ### Public ###
 

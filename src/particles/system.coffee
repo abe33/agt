@@ -1,16 +1,19 @@
-namespace('agt.particles')
+NullInitializer = require './initializers/null_initializer'
+NullAction = require './actions/null_action'
+Signal = require '../signal'
 
 # Public:
-class agt.particles.System
+module.exports =
+class System
 
   ### Public ###
 
-  constructor: (@initializer=new agt.particles.initializers.NullInitializer,
-                @action= new agt.particles.actions.NullAction, @subSystem) ->
-    @particlesCreated = new agt.Signal
-    @particlesDied = new agt.Signal
-    @emissionStarted = new agt.Signal
-    @emissionFinished = new agt.Signal
+  constructor: (@initializer=new NullInitializer,
+                @action= new NullAction, @subSystem) ->
+    @particlesCreated = new Signal
+    @particlesDied = new Signal
+    @emissionStarted = new Signal
+    @emissionFinished = new Signal
     @particles = []
     @emissions = []
 

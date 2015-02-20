@@ -1,4 +1,3 @@
-namespace('agt.geom')
 # Public: Every geometry should have the properties of a path. For closed
 # geometries, the path starts and ends at the same point of the geometry
 # shape. This point can vary from one geometry to another.
@@ -29,7 +28,8 @@ namespace('agt.geom')
 #
 # <script>window.exampleKey = 'geometry'</script>
 #
-class agt.geom.Path
+module.exports = 
+class Path
 
   ### Public ###
 

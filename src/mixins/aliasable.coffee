@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: Provides class methods to deal with aliased methods and properties.
 #
 # ```coffeescript
@@ -8,7 +7,8 @@ namespace('agt.mixins')
 #   someMethod: ->
 #   @alias 'someMethod', 'someMethodAlias'
 # ```
-class agt.mixins.Aliasable
+module.exports =
+class Aliasable
 
   # Public: Creates aliases for the given `source` property of tthe current
   # class prototype. Any number of alias can be passed at once.

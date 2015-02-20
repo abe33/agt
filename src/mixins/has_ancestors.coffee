@@ -1,5 +1,3 @@
-namespace('agt.mixins')
-
 # Public: The `HasAncestors` mixin adds several methods to instance to deal
 # with parents and ancestors.
 #
@@ -15,12 +13,12 @@ namespace('agt.mixins')
 #           to the instance parent.
 #
 # Returns a {ConcreteHasAncestors} mixin.
-agt.mixins.HasAncestors = (options={}) ->
+module.exports = (options={}) ->
   through = options.through or 'parent'
 
   # Public: The concrete mixin as returned by the
   # [HasAncestors](../files/mixins/has_ancestors.coffee.html) generator.
-  class ConcreteHasAncestors
+  class HasAncestors
 
     # Public: Returns an array of all the ancestors of the current object.
     # The ancestors are ordered such as the first element is the direct

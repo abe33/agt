@@ -1,11 +1,13 @@
-namespace('agt.geom')
+Memoizable = require '../../mixins/memoizable'
+Triangle = null
 # Public: The `Triangulable` mixin provides the {::triangles} method, allowing
-# closed geometries to returns the [Triangles]{agt.geom.Triangle} that compose
+# closed geometries to returns the [Triangles]{Triangle} that compose
 # it.
 #
 # <script>window.exampleKey = 'geometry'</script>
-class agt.geom.Triangulable
-  @include agt.mixins.Memoizable
+module.exports =
+class Triangulable
+  @include Memoizable
 
   ### Public ###
 
@@ -13,8 +15,9 @@ class agt.geom.Triangulable
   #
   # <script>drawGeometry(exampleKey, {triangles: true})</script>
   #
-  # Returns an {Array} of [Triangles]{agt.geom.Triangle}.
+  # Returns an {Array} of [Triangles]{Triangle}.
   triangles: ->
+    Triangle ||= require '../triangle'
     return @memoFor 'triangles' if @memoized 'triangles'
 
     vertices = @points()
@@ -26,7 +29,7 @@ class agt.geom.Triangulable
       a = vertices[indices[index]]
       b = vertices[indices[index+1]]
       c = vertices[indices[index+2]]
-      triangles.push new agt.geom.Triangle a, b, c
+      triangles.push new Triangle a, b, c
 
     @memoize 'triangles', triangles
 

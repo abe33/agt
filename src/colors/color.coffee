@@ -1,9 +1,8 @@
-namespace('agt.colors')
-
 clamp = (val) ->
   Math.min 1, Math.max(0, val)
 
-class agt.colors.Color
+module.exports =
+class Color
 
   # A two dimensional {Array} storing the name of a component with its index.
   @colorComponents: [
@@ -164,7 +163,7 @@ class agt.colors.Color
       Math.floor(if preserveAlpha then @alpha else @alpha * iratio + col.alpha * ratio))
 
   transparentize: (alpha) ->
-    new agt.colors.Color(@red, @green, @blue, alpha)
+    new Color(@red, @green, @blue, alpha)
 
   close: -> new Color(@red, @green, @blue, @alpha)
 

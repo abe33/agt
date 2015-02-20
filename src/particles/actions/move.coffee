@@ -1,6 +1,8 @@
-namespace('agt.particles.actions')
+BaseAction = require './base_action'
+
 # Public:
-class agt.particles.actions.Move extends agt.particles.actions.BaseAction
+module.exports = 
+class Move extends BaseAction
 
   ### Public ###
 

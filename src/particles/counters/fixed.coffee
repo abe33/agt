@@ -1,7 +1,6 @@
-namespace('agt.particles.counters')
 # Public:
-class agt.particles.counters.Fixed
-
+module.exports =
+class Fixed
   ### Public ###
 
   constructor: (@count=1) ->

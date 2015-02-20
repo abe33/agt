@@ -1,7 +1,9 @@
-namespace('agt.particles.emitters')
+Point = require '../../geom/point'
+
 # Public:
-class agt.particles.emitters.NullEmitter
+module.exports =
+class NullEmitter
 
   ### Public ###
 
-  get: -> new agt.geom.Point
+  get: -> new Point

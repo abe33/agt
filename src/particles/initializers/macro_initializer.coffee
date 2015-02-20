@@ -1,6 +1,7 @@
-namespace('agt.particles.initializers')
+
 # Public:
-class agt.particles.initializers.MacroInitializer
+module.exports =
+class MacroInitializer
 
   ### Public ###
 

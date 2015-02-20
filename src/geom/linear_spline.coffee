@@ -1,4 +1,5 @@
-namespace('agt.geom')
+{Formattable, Sourcable} = require '../mixins'
+{Geometry, Path, Intersections, Spline} = require './mixins'
 
 # Public: The `LinearSpline` is the simplest spline you can find.
 #
@@ -14,13 +15,14 @@ namespace('agt.geom')
 # - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
 # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
-class agt.geom.LinearSpline
-  @include agt.mixins.Formattable('LinearSpline')
-  @include agt.mixins.Sourcable('agt.geom.LinearSpline', 'vertices', 'bias')
-  @include agt.geom.Geometry
-  @include agt.geom.Path
-  @include agt.geom.Intersections
-  @include agt.geom.Spline(1)
+module.exports =
+class LinearSpline
+  @include Formattable('LinearSpline')
+  @include Sourcable('agt.geom.LinearSpline', 'vertices', 'bias')
+  @include Geometry
+  @include Path
+  @include Intersections
+  @include Spline(1)
 
   ### Public ###
 

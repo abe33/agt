@@ -1,4 +1,8 @@
-namespace('agt.geom')
+{Equatable, Formattable, Parameterizable, Sourcable, Cloneable, Memoizable} = require '../mixins'
+{Geometry, Surface, Path, Intersections} = require './mixins'
+{Random, MathRandom} = require '../random'
+Point = require './point'
+Triangle = require './triangle'
 
 # Public: A `Circle` object is defined by a radius, a position
 # and a rotation.
@@ -27,17 +31,18 @@ namespace('agt.geom')
 # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
 # - [agt.mixins.Parameterizable](../../../files/mixins/parameterizable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
-class agt.geom.Circle
-  @include agt.mixins.Equatable('x','y','radius','rotation')
-  @include agt.mixins.Formattable('Circle','x','y','radius','rotation')
-  @include agt.mixins.Parameterizable('circleFrom', radius: 1, x: 0, y: 0, rotation: 0, segments: 36)
-  @include agt.mixins.Sourcable('agt.geom.Circle', 'radius', 'x', 'y', 'rotation', 'segments')
-  @include agt.mixins.Cloneable()
-  @include agt.mixins.Memoizable
-  @include agt.geom.Geometry
-  @include agt.geom.Surface
-  @include agt.geom.Path
-  @include agt.geom.Intersections
+module.exports =
+class Circle
+  @include Equatable('x','y','radius','rotation')
+  @include Formattable('Circle','x','y','radius','rotation')
+  @include Parameterizable('circleFrom', radius: 1, x: 0, y: 0, rotation: 0, segments: 36)
+  @include Sourcable('agt.geom.Circle', 'radius', 'x', 'y', 'rotation', 'segments')
+  @include Cloneable()
+  @include Memoizable
+  @include Geometry
+  @include Surface
+  @include Path
+  @include Intersections
 
   ### Public ###
 
@@ -86,7 +91,7 @@ class agt.geom.Circle
 
       a = (r1*r1 - r2*r2 + d*d) / (2*d)
       h = Math.sqrt(r1*r1 - a*a)
-      hv = new agt.geom.Point h * (p2.y - p1.y) / d,
+      hv = new Point h * (p2.y - p1.y) / d,
                               -h * (p2.x - p1.x) / d
 
       p = p1.add(dv.normalize(a)).add(hv)
@@ -96,7 +101,7 @@ class agt.geom.Circle
       block.call this, p
 
   # Registers the fast intersections iterators for the Circle class
-  iterators = agt.geom.Intersections.iterators
+  iterators = Intersections.iterators
   iterators['Circle'] = Circle.eachIntersections
   iterators['CircleCircle'] = Circle.eachCircleCircleIntersections
 
@@ -114,8 +119,8 @@ class agt.geom.Circle
   #
   # <script>drawGeometry(exampleKey, {center: true})</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
-  center: -> new agt.geom.Point @x, @y
+  # Returns a [Point]{Point}.
+  center: -> new Point @x, @y
 
   # Returns the top-most coordinate of the circle shape.
   #
@@ -145,7 +150,7 @@ class agt.geom.Circle
   # Returns a {Number}.
   right: -> @x + @radius
 
-  # Adds the passed-in [Point]{agt.geom.Point} to the position
+  # Adds the passed-in [Point]{Point} to the position
   # of this circle.
   #
   # <script>drawTransform(exampleKey, {type: 'translate', args: [50, 0], width: 150})</script>
@@ -156,7 +161,7 @@ class agt.geom.Circle
   #
   # Returns this [Circle]{agt.geomCircle}.
   translate: (x, y) ->
-    {x,y} = agt.geom.Point.pointFrom x, y
+    {x,y} = Point.pointFrom x, y
 
     @x += x
     @y += y
@@ -203,7 +208,7 @@ class agt.geom.Circle
   #
   # <script>drawGeometry(exampleKey, {triangles: true})</script>
   #
-  # Returns an {Array} of [Triangles]{agt.geom.Triangle}.
+  # Returns an {Array} of [Triangles]{Triangle}.
   triangles: ->
     return @memoFor 'triangles' if @memoized 'triangles'
 
@@ -211,7 +216,7 @@ class agt.geom.Circle
     points = @points()
     center = @center()
     for i in [1..points.length-1]
-      triangles.push new agt.geom.Triangle center, points[i-1], points[i]
+      triangles.push new Triangle center, points[i-1], points[i]
 
     @memoize 'triangles', triangles
 
@@ -221,12 +226,12 @@ class agt.geom.Circle
   closedGeometry: -> true
 
   # Iterates over all intersections between the vector formed by the `a` and `b`
-  # [Points]{agt.geom.Point} and the current circle.
+  # [Points]{Point} and the current circle.
   #
   # <script>drawLineIntersections(exampleKey)</script>
   #
-  # a - The starting [Points]{agt.geom.Point} of the vector.
-  # b - The ending [Points]{agt.geom.Point} of the vector.
+  # a - The starting [Points]{Point} of the vector.
+  # b - The ending [Points]{Point} of the vector.
   # block - The iterator {Function} to call with the found intersections.
   eachLineIntersections: (a, b, block) ->
     c = @center()
@@ -248,21 +253,21 @@ class agt.geom.Circle
       u2 = ( - _b - e ) / (2 * _a )
       unless ((u1 < 0 || u1 > 1) && (u2 < 0 || u2 > 1))
         if 0 <= u2 and u2 <= 1
-          return if block.call this, agt.geom.Point.interpolate a, b, u2
+          return if block.call this, Point.interpolate a, b, u2
 
         if 0 <= u1 and u1 <= 1
-          return if block.call this, agt.geom.Point.interpolate a, b, u1
+          return if block.call this, Point.interpolate a, b, u1
 
-  # Returns the [Point]{agt.geom.Point} on the perimeter of the circle
+  # Returns the [Point]{Point} on the perimeter of the circle
   # at the given `angle`.
   #
   # angle - The angle {Number}.
   #
   # <script>drawGeometry(exampleKey, {angle: true})</script>
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   pointAtAngle: (angle) ->
-    new agt.geom.Point @x + Math.cos(@rotation + angle) * @radius,
+    new Point @x + Math.cos(@rotation + angle) * @radius,
                        @y + Math.sin(@rotation + angle) * @radius
 
   # Returns the surface {Number} of this circle.
@@ -283,7 +288,7 @@ class agt.geom.Circle
   #
   # Returns a {Boolean}.
   contains: (x, y) ->
-    pt = agt.geom.Point.pointFrom x, y, true
+    pt = Point.pointFrom x, y, true
 
     @center().subtract(pt).length() <= @radius
 
@@ -294,10 +299,10 @@ class agt.geom.Circle
   # random - An optional [Random]{agt.random.Random} instance to use instead
   #          of the default `Math` random method.
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   randomPointInSurface: (random) ->
     unless random?
-      random = new agt.random.Random new agt.random.MathRandom
+      random = new Random new MathRandom
 
     pt = @pointAtAngle random.random(Math.PI * 2)
     center = @center()
@@ -309,14 +314,14 @@ class agt.geom.Circle
   # Returns a {Number}.
   length: -> @radius * Math.PI * 2
 
-  # Returns a [Point]{agt.geom.Point} on the circle perimeter using
+  # Returns a [Point]{Point} on the circle perimeter using
   # a {Number} between `0` and `1`.
   #
   # <script>drawGeometry(exampleKey, {paths: [0, 1/3, 2/3]})</script>
   #
   # n - A {Number} between `0` and `1`a {Number} between `0` and `1`.
   #
-  # Returns a [Point]{agt.geom.Point}.
+  # Returns a [Point]{Point}.
   pathPointAt: (n) -> @pointAtAngle n * Math.PI * 2
 
   # {Delegates to: agt.geom.Geometry.drawPath}

@@ -1,11 +1,13 @@
-namespace('agt.particles.initializers')
+{Randomizable} = require '../mixins'
+Point = require '../../geom/point'
 # Public:
-class agt.particles.initializers.Stream
-  @include agt.particles.Randomizable
+module.exports =
+class Stream
+  @include Randomizable
 
   ### Public ###
 
-  constructor: (@direction=new agt.geom.Point(1,1),
+  constructor: (@direction=new Point(1,1),
                 @velocityMin=0,
                 @velocityMax=1,
                 @angleRandom=0,

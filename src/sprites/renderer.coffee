@@ -1,6 +1,5 @@
-namespace('agt.sprites')
-
-class agt.sprites.Renderer
+module.exports =
+class Renderer
   constructor: (@context) ->
     @sprites = []
 

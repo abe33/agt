@@ -1,7 +1,6 @@
-namespace('agt.geom')
 # Public:
-class agt.geom.Proxyable
-
+module.exports =
+class Proxyable
   @included: (klass) ->
     klass.proxy = (targets..., options={}) ->
       type = options.as

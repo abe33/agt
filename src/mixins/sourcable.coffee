@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: A `Sourcable` object is an object that can return the source code
 # to re-create it by code.
 #
@@ -14,11 +13,11 @@ namespace('agt.mixins')
 #
 # name - The {String} path to the current class.
 # signature - A list of {String} name of properties
-agt.mixins.Sourcable = (name, signature...) ->
+module.exports = (name, signature...) ->
 
   # Public: A concrete class is generated and returned by
   # [Sourcable](../files/mixins/sourcable.coffee.html).
-  class ConcreteSourcable
+  class Sourcable
 
     # Internal: Generates the source for a property's value.
     sourceFor = (value) ->

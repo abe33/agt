@@ -1,6 +1,6 @@
-namespace('agt.colors')
 
-class agt.colors.Gradient
+module.exports =
+class Gradient
   constructor: (@colors, @positions, @name="Unnamed gradient") ->
     if @colors.length isnt @positions.length
       throw new Error "Can't have two arrays with different length"

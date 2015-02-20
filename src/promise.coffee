@@ -1,5 +1,6 @@
 # Public: A lightweight implementation of promises.
-class agt.Promise
+module.exports =
+class Promise
 
   ### Public ###
 
@@ -7,9 +8,9 @@ class agt.Promise
   #
   # value - The promise's value.
   #
-  # Returns a [Promise]{agt.Promise}.
+  # Returns a [Promise]{Promise}.
   @unit: (value=0) ->
-    new agt.Promise -> value
+    new Promise -> value
 
   # Returns a promise that is fulfilled when all the passed-in have been
   # fulfilled. The value of all the promised are provided in the returned
@@ -18,9 +19,9 @@ class agt.Promise
   #
   # promises - An {Array} of promises
   #
-  # Returns a [Promise]{agt.Promise}.
+  # Returns a [Promise]{Promise}.
   @all: (promises) ->
-    promise = new agt.Promise
+    promise = new Promise
     solved = 0
     results = []
 
@@ -82,10 +83,10 @@ class agt.Promise
   #                   Note that not all the promise provides informations
   #                   about their progress.
   #
-  # Returns a [Promise]{agt.Promise}
+  # Returns a [Promise]{Promise}
   then: (fulfilledHandler, errorHandler, progressHandler) ->
     @start() unless @started
-    promise = new agt.Promise
+    promise = new Promise
     f = (value)->
       try
         res = fulfilledHandler? value
@@ -128,16 +129,16 @@ class agt.Promise
   # errorHandler - The {Function} to call when the current promise has been
   #                rejected.
   #
-  # Returns a [Promise]{agt.Promise}.
+  # Returns a [Promise]{Promise}.
   fail: (errorHandler) -> @then (->), errorHandler
 
   # Binds the passed-in promise to this one so that the promise
   # is resolved when this promise resolved and hold the same value
   # or reason of the rejection.
   #
-  # promise - The [Promise]{agt.Promise} to bind to this promise resolution.
+  # promise - The [Promise]{Promise} to bind to this promise resolution.
   #
-  # Returns a [Promise]{agt.Promise}.
+  # Returns a [Promise]{Promise}.
   bind: (promise) ->
     @then ((res) -> promise.resolve(res)), ((reason) -> promise.reject(reason))
 

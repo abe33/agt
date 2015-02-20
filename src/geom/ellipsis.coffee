@@ -1,12 +1,17 @@
-namespace('agt.geom')
+{Equatable, Formattable, Parameterizable, Sourcable, Cloneable, Memoizable} = require '../mixins'
+{Geometry, Surface, Path, Intersections} = require './mixins'
+{Random, MathRandom} = require '../random'
+Point = require './point'
+Triangle = require './triangle'
 
 # Public:
-class agt.geom.Ellipsis
+module.exports =
+class Ellipsis
   properties = ['radius1', 'radius2', 'x', 'y', 'rotation', 'segments']
 
-  @include agt.mixins.Equatable(properties...)
-  @include agt.mixins.Formattable(['Ellipsis'].concat(properties)...)
-  @include agt.mixins.Parameterizable('ellipsisFrom', {
+  @include Equatable(properties...)
+  @include Formattable(['Ellipsis'].concat(properties)...)
+  @include Parameterizable('ellipsisFrom', {
     radius1: 1
     radius2: 1
     x: 0
@@ -14,13 +19,13 @@ class agt.geom.Ellipsis
     rotation: 0
     segments: 36
   })
-  @include agt.mixins.Sourcable(['agt.geom.Ellipsis'].concat(properties)...)
-  @include agt.mixins.Cloneable()
-  @include agt.mixins.Memoizable
-  @include agt.geom.Geometry
-  @include agt.geom.Surface
-  @include agt.geom.Path
-  @include agt.geom.Intersections
+  @include Sourcable(['agt.geom.Ellipsis'].concat(properties)...)
+  @include Cloneable()
+  @include Memoizable
+  @include Geometry
+  @include Surface
+  @include Path
+  @include Intersections
 
   ### Public ###
 
@@ -29,7 +34,7 @@ class agt.geom.Ellipsis
                                                                   x, y, rot,
                                                                   segments
 
-  center: -> new agt.geom.Point @x, @y
+  center: -> new Point @x, @y
 
   left: -> Math.min.apply Math, @xBounds()
 
@@ -56,7 +61,7 @@ class agt.geom.Ellipsis
            @radius2*Math.sin(t)*Math.cos(phi)
 
   translate: (xOrPt, y) ->
-    {x,y} = agt.geom.Point.pointFrom xOrPt, y
+    {x,y} = Point.pointFrom xOrPt, y
 
     @x += x
     @y += y
@@ -82,7 +87,7 @@ class agt.geom.Ellipsis
     points = @points()
     center = @center()
     for i in [1..points.length-1]
-      triangles.push new agt.geom.Triangle center, points[i-1], points[i]
+      triangles.push new Triangle center, points[i-1], points[i]
 
     @memoize 'triangles', triangles
 
@@ -91,11 +96,11 @@ class agt.geom.Ellipsis
   pointAtAngle: (angle) ->
     a = angle - @rotation
     ratio = @radius1 / @radius2
-    vec = new agt.geom.Point Math.cos(a) * @radius1, Math.sin(a) * @radius1
+    vec = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius1
     vec.x = vec.x / ratio if @radius1 < @radius2
     vec.y = vec.y * ratio if @radius1 > @radius2
     a = vec.angle()
-    p = new agt.geom.Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
+    p = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
 
     @center().add p.rotate(@rotation)
 
@@ -103,7 +108,7 @@ class agt.geom.Ellipsis
 
   randomPointInSurface: (random) ->
     unless random?
-      random = new agt.random.Random new agt.random.MathRandom
+      random = new Random new MathRandom
 
     pt = @pathPointAt random.get()
     center = @center()
@@ -111,7 +116,7 @@ class agt.geom.Ellipsis
     center.add dif.scale Math.sqrt random.random()
 
   contains: (xOrPt, y) ->
-    p = new agt.geom.Point xOrPt, y
+    p = new Point xOrPt, y
     c = @center()
     d = p.subtract c
     a = d.angle()
@@ -123,7 +128,7 @@ class agt.geom.Ellipsis
 
   pathPointAt: (n) ->
     a = n * Math.PI * 2
-    p = new agt.geom.Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
+    p = new Point Math.cos(a) * @radius1, Math.sin(a) * @radius2
 
     @center().add p.rotate(@rotation)
 

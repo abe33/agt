@@ -1,6 +1,7 @@
-namespace('agt.particles.timers')
+
 # Public:
-class agt.particles.timers.UntilDeath
+module.exports =
+class UntilDeath
 
   ### Public ###
 

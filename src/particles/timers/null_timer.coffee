@@ -1,6 +1,6 @@
-namespace('agt.particles.timers')
 # Public:
-class agt.particles.timers.NullTimer
+module.exports =
+class NullTimer
 
   ### Public ###
 

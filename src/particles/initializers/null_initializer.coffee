@@ -1,6 +1,6 @@
-namespace('agt.particles.initializers')
 # Public:
-class agt.particles.initializers.NullInitializer
+module.exports =
+class NullInitializer
 
   ### Public ###
 

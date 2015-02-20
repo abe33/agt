@@ -1,8 +1,10 @@
-namespace('agt.particles')
+{Poolable} = require '../mixins'
+Point = require '../geom/point'
 
 # Public:
-class agt.particles.Particle
-  @concern agt.mixins.Poolable
+module.exports =
+class Particle
+  @concern Poolable
 
   ### Public ###
 
@@ -10,9 +12,9 @@ class agt.particles.Particle
     @dead = false
     @life = 0
     @maxLife = 0
-    @position = new agt.geom.Point
-    @lastPosition = new agt.geom.Point
-    @velocity = new agt.geom.Point
+    @position = new Point
+    @lastPosition = new Point
+    @velocity = new Point
     @parasite = {}
 
     @[ k ] = v for k,v of options

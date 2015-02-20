@@ -1,6 +1,6 @@
-namespace('agt.particles.timers')
 # Public:
-class agt.particles.timers.Instant
+module.exports = 
+class Instant
 
   ### Public ###
 

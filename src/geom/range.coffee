@@ -1,13 +1,14 @@
-namespace('agt.geom')
+{Cloneable, Equatable, Formattable, Sourcable, Parameterizable} = require '../mixins'
 
-class agt.geom.Range
+module.exports =
+class Range
   properties = ['min','max']
 
-  @include agt.mixins.Cloneable()
-  @include agt.mixins.Equatable(properties...)
-  @include agt.mixins.Formattable(['Range'].concat(properties)...)
-  @include agt.mixins.Sourcable(['agt.geom.Range'].concat(properties)...)
-  @include agt.mixins.Parameterizable('rangeFrom', {
+  @include Cloneable()
+  @include Equatable(properties...)
+  @include Formattable(['Range'].concat(properties)...)
+  @include Sourcable(['agt.geom.Range'].concat(properties)...)
+  @include Parameterizable('rangeFrom', {
     min: -Infinity
     max: Infinity
   })

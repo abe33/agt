@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: An `Equatable` object can be compared in equality with another object.
 # Objects are considered as equal if all the listed properties are equal.
 #
@@ -21,11 +20,11 @@ namespace('agt.mixins')
 # properties - A list of {String} of the properties to compare to set equality.
 #
 # Returns a {ConcreteEquatable} mixin.
-agt.mixins.Equatable = (properties...) ->
+module.exports = (properties...) ->
 
   # Public: A concrete mixin is generated and returned by the
   # [Equatable](../files/mixins/equatable.coffee.html) generator.
-  class ConcreteEquatable
+  class Equatable
 
     # Public: Compares the `properties` of the passed-in object with the current
     # object and return `true` if all the values are equal.

@@ -1,4 +1,3 @@
-namespace('agt.mixins')
 # Public: A `Parameterizable` object provides a class and an instance
 # method to convert an arbitrary {Object} or a series of values into
 # an instance of the class receiving the mixin.
@@ -46,11 +45,11 @@ namespace('agt.mixins')
 # method - The {String} name of the method to create.
 # parameters - An {Object} describing the arguments name, type and order.
 # allowPartial - A {Boolean} of
-agt.mixins.Parameterizable = (method, parameters, allowPartial=false) ->
+module.exports = (method, parameters, allowPartial=false) ->
 
   # Public: The concrete mixin as returned by the
   # [Parameterizable](../files/mixins/parameterizable.coffee.html) generator.
-  class ConcreteParameterizable
+  class Parameterizable
 
     # Internal:
     @included: (klass) ->

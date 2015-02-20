@@ -1,8 +1,8 @@
-namespace('agt.mixins')
 # Public: A `Poolable` class has the ability to manage a pool of instances
 # and prevent the further creation of instances as long as unused ones
 # are still present.
-class agt.mixins.Poolable
+module.exports =
+class Poolable
 
   # Internal: The two objects stores are created in the extended hook to avoid
   # that all the class extending `Poolable` shares the same instances.

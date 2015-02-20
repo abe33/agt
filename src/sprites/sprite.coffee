@@ -1,10 +1,10 @@
-namespace('agt.sprites')
-
+Point = require '../geom/point'
 # Public:
-class agt.sprites.Sprite
+module.exports =
+class Sprite
   constructor: (@animation) ->
-    @position = new agt.geom.Point
-    @center = new agt.geom.Point
+    @position = new Point
+    @center = new Point
     @frame = 0
     @time = 0
 

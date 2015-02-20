@@ -1,6 +1,5 @@
-namespace('agt.mixins')
-
-class agt.mixins.Subscriber
+module.exports =
+class Subscriber
   subscribe: (emitter, event, options={}, listener) ->
     [listener, options] = [options, {}] if typeof options is 'function'
 

@@ -1,9 +1,10 @@
-namespace('agt.random')
+{Cloneable, Sourcable, Formattable} = require '../../mixins'
 # Public:
-class agt.random.Linear
-  @include agt.mixins.Cloneable('step')
-  @include agt.mixins.Sourcable('chancejs.Linear','step')
-  @include agt.mixins.Formattable('Linear','step')
+module.exports =
+class Linear
+  @include Cloneable('step')
+  @include Sourcable('chancejs.Linear','step')
+  @include Formattable('Linear','step')
 
   ### Public ###
 

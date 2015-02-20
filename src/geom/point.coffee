@@ -1,4 +1,4 @@
-namespace('agt.geom')
+{Equatable, Formattable, Sourcable, Cloneable} = require '../mixins'
 
 # Public: A `Point` represent a location in a two-dimensional space.
 #
@@ -21,11 +21,12 @@ namespace('agt.geom')
 # - [agt.mixins.Equatable](../../../files/mixins/equatable.coffee.html)
 # - [agt.mixins.Formattable](../../../files/mixins/formattable.coffee.html)
 # - [agt.mixins.Sourcable](../../../files/mixins/sourcable.coffee.html)
-class agt.geom.Point
-  @include agt.mixins.Equatable('x', 'y')
-  @include agt.mixins.Formattable('Point','x', 'y')
-  @include agt.mixins.Sourcable('agt.geom.Point', 'x', 'y')
-  @include agt.mixins.Cloneable()
+module.exports =
+class Point
+  @include Equatable('x', 'y')
+  @include Formattable('Point','x', 'y')
+  @include Sourcable('agt.geom.Point', 'x', 'y')
+  @include Cloneable()
 
   ### Public: Static methods ###
 

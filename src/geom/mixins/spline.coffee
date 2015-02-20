@@ -1,5 +1,7 @@
-namespace('agt.geom')
-# Public: A spline is a curve made of [vertices]{agt.geom.Point} that
+Memoizable = require '../../mixins/memoizable'
+Point = require '../point'
+{COLORS} = require '../../config'
+# Public: A spline is a curve made of [vertices]{Point} that
 # controls the resulting geometry.
 #
 # The `Spline` mixin set the ground for all other curves classes such as
@@ -23,7 +25,7 @@ namespace('agt.geom')
 #               `[a, b, c, d]` it will have 3 segments `ab`, `bc` and `cd`.
 #
 # Returns a {ConcreteSpline} mixin.
-agt.geom.Spline = (segmentSize) ->
+module.exports = (segmentSize) ->
 
   # Public: The concrete mixin as returned by the
   # [Spline](../files/geom/mixins/spline.coffee.html) method.
@@ -40,8 +42,8 @@ agt.geom.Spline = (segmentSize) ->
   # - [agt.mixins.Memoizable](../../../files/mixins/memoizable.coffee.html)
   #
   # <script>window.exampleKey = 'cubic_spline'</script>
-  class ConcreteSpline
-    @include agt.mixins.Memoizable
+  class Spline
+    @include Memoizable
 
     ### Public ###
 
@@ -61,7 +63,7 @@ agt.geom.Spline = (segmentSize) ->
     # to `x * segmentSize + 1` where `x` is any integer greater
     # or equal to `1`.
     #
-    # vertices - The {Array} of [Points]{agt.geom.Point} that forms the
+    # vertices - The {Array} of [Points]{Point} that forms the
     #            spline shape.
     # bias - The {Number} of steps per segments when generating the points
     #        of the final geometry.
@@ -73,7 +75,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # <script>drawGeometry(exampleKey, {center: true})</script>
     #
-    # Returns a [Point]{agt.geom.Point}.
+    # Returns a [Point]{Point}.
     center: ->
       x = y = 0
 
@@ -84,9 +86,9 @@ agt.geom.Spline = (segmentSize) ->
       x = x / @vertices.length
       y = y / @vertices.length
 
-      new agt.geom.Point x, y
+      new Point x, y
 
-    # Applies a translation represented by the passed-in [point]{agt.geom.Point}
+    # Applies a translation represented by the passed-in [point]{Point}
     # to every vertices of the spline.
     #
     # <script>drawTransform(exampleKey, {type: 'translate', args: [50, 0], width: 150})</script>
@@ -96,7 +98,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # Returns this {ConcreteSpline}.
     translate: (x,y) ->
-      {x,y} = agt.geom.Point.pointFrom x,y
+      {x,y} = Point.pointFrom x,y
       for vertex,i in @vertices
         @vertices[i] = vertex.add x, y
       this
@@ -138,7 +140,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # <script>drawGeometryPoints(exampleKey, 'points')</script>
     #
-    # Returns an {Array} of [Points]{agt.geom.Point}.
+    # Returns an {Array} of [Points]{Point}.
     points: ->
       return @memoFor('points').concat() if @memoized 'points'
       segments = @segments() * @bias
@@ -169,11 +171,11 @@ agt.geom.Spline = (segmentSize) ->
     segmentSize: -> segmentSize
 
     # Returns the segment at `index`. A segment is a pair of
-    # [Points]{agt.geom.Point} of each extremity of the segment.
+    # [Points]{Point} of each extremity of the segment.
     #
     # index - The index {Number} of the segment.
     #
-    # Returns an {Array} of [Points]{agt.geom.Point}.
+    # Returns an {Array} of [Points]{Point}.
     segment: (index) ->
       if index < @segments()
         k = "segment#{index}"
@@ -244,7 +246,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # pos - The position {Number} between `0` and `1`.
     #
-    # Returns a [Point]{agt.geom.Point}.
+    # Returns a [Point]{Point}.
     walkPathBasedOnLength: (pos) ->
       walked = 0
       length = @length()
@@ -268,7 +270,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # pos - The position {Number} between `0` and `1`.
     #
-    # Returns a [Point]{agt.geom.Point}.
+    # Returns a [Point]{Point}.
     walkPathBasedOnSegments: (pos) ->
       segments = @segments()
       pos = pos * segments
@@ -294,7 +296,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # context - The canvas context to draw in.
     # color - The color {String} to use for the vertices.
-    drawVertices: (context, color=agt.COLORS.VERTICES) ->
+    drawVertices: (context, color=COLORS.VERTICES) ->
       context.fillStyle = color
       for vertex in @vertices
         context.beginPath()
@@ -308,7 +310,7 @@ agt.geom.Spline = (segmentSize) ->
     #
     # context - The canvas context to draw in.
     # color - The color {String} to use for the vertices connections.
-    drawVerticesConnections: (context, color=agt.COLORS.VERTICES_CONNECTIONS) ->
+    drawVerticesConnections: (context, color=COLORS.VERTICES_CONNECTIONS) ->
       context.strokeStyle = color
       for i in [1..@vertices.length-1]
         vertexStart = @vertices[i-1]
