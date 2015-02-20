@@ -91,7 +91,9 @@ buildCollectionClass = (model) ->
       new Proxy collection, {
         get: (target, name) ->
           # Methods are simply bound to the target and returned.
-          if typeof target[name] is 'function'
+          if name in ['model', 'constructor']
+            target[name]
+          else if typeof target[name] is 'function'
             target[name].bind(target)
           else
             if /-?\d+/.test(name)
