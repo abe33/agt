@@ -1,5 +1,5 @@
 # Public:
-module.exports = 
+module.exports =
 class Instant
 
   ### Public ###
@@ -8,4 +8,4 @@ class Instant
 
   finished: -> true
 
-  nextTime: -> 0
+  nextTime: 0
