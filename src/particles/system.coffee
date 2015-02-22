@@ -58,6 +58,7 @@ class System
 
     @particlesCreated.dispatch this, @created if @created.length > 0
     @particlesDied.dispatch this, @died if @died.length > 0
+    particle.constructor.release particle for particle in @died
 
     @died = null
     @created = null
@@ -103,6 +104,5 @@ class System
     @died.push particle
     @subSystem?.emitFor particle
     @particles.splice @particles.indexOf(particle), 1
-    particle.constructor.release particle
 
   getTime: -> new Date().valueOf()
