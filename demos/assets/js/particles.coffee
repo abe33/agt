@@ -14,56 +14,57 @@ window.onload = ->
   Point = require('agt/geom/point')
   Impulse = require('agt/impulse')
 
-  particleSubSystem = new p.initializers.ParticleSubSystem(
-    new p.initializers.Life(800,1200),
-    new p.actions.MacroAction([
+  particleSubSystem = new p.initializers.ParticleSubSystem({
+    initializer: new p.initializers.Life(800,1200)
+    action: new p.actions.MacroAction([
       new p.actions.Live,
       new p.actions.Move,
       new p.actions.Force(new Point(5, 20))
       new p.actions.Friction(0.2)
-    ]),
-    (particle) ->
-      new p.Emission(
-        p.Particle,
-        new p.emitters.Ponctual(particle.position),
-        new p.timers.UntilDeath(particle),
-        new p.counters.ByRate(10),
-        initialize: (particle) -> particle.parasite.color = '#00ff00'
-      )
-  )
+    ])
+    emissionFactory: (particle) ->
+      new p.Emission({
+        class: p.Particle
+        emitter: new p.emitters.Ponctual(particle.position)
+        timer: new p.timers.UntilDeath(particle)
+        counter: new p.counters.ByRate(10)
+        initializer:
+          initialize: (particle) -> particle.parasite.color = '#00ff00'
+      })
+  })
 
-  system = new p.System(
-    new p.initializers.MacroInitializer([
+  system = new p.System({
+    initializer: new p.initializers.MacroInitializer([
       new p.initializers.Life(3000,4000),
       particleSubSystem
-    ]),
-    new p.actions.MacroAction([
+    ])
+    action: new p.actions.MacroAction([
       new p.actions.Live,
       new p.actions.Move,
       new p.actions.Force(new Point(5, 20))
       new p.actions.Friction(0.2)
-    ]),
-    new p.SubSystem(
-      new p.initializers.Life(800,1200),
-      new p.actions.MacroAction([
+    ])
+    subSystem: new p.SubSystem({
+      initializer: new p.initializers.Life(800,1200)
+      action: new p.actions.MacroAction([
         new p.actions.Live,
         new p.actions.Move,
         new p.actions.Force(new Point(5, 20))
         new p.actions.Friction(0.2)
-      ]),
-      (particle) ->
-        new p.Emission(
-          p.Particle,
-          new p.emitters.Ponctual(particle.position.clone()),
-          new p.timers.Limited(10),
-          new p.counters.Fixed(20),
-          new p.initializers.MacroInitializer([
+      ])
+      emissionFactory: (particle) ->
+        new p.Emission({
+          class: p.Particle
+          emitter: new p.emitters.Ponctual(particle.position.clone())
+          timer: new p.timers.Limited(10)
+          counter: new p.counters.Fixed(20)
+          initializer: new p.initializers.MacroInitializer([
             new p.initializers.Explosion(10,20),
             initialize: (particle) -> particle.parasite.color = '#ff0000'
           ])
-        )
-    )
-  )
+        })
+    })
+  })
 
   # system.particlesCreated.add (o,p) -> console.log 'particlesCreated'
   # system.particlesDied.add (o,p) -> console.log 'particlesDied'
@@ -75,10 +76,8 @@ window.onload = ->
   canvas.addEventListener 'click', ({clientX, clientY}) ->
     unless Impulse.instance().running
       Impulse.instance().add ->
-
         context.fillStyle = '#ffffff'
         context.fillRect(0,0,canvas.width,canvas.height)
-
 
         particles = system.particles
         particles = particles.concat(system.subSystem.particles)
@@ -89,13 +88,13 @@ window.onload = ->
 
     x = clientX
     y = clientY
-    system.emit new p.Emission(
-      p.Particle,
-      new p.emitters.Ponctual(new Point(x, y)),
-      new p.timers.Unlimited,
-      new p.counters.ByRate(1),
-      new p.initializers.MacroInitializer([
+    system.emit new p.Emission({
+      class: p.Particle,
+      emitter: new p.emitters.Ponctual(new Point(x, y)),
+      timer: new p.timers.Unlimited,
+      counter: new p.counters.ByRate(1),
+      initializer: new p.initializers.MacroInitializer([
         new p.initializers.Stream(new Point(1,-3),40,50,0.2),
         initialize: (particle) -> particle.parasite.color = '#000000'
       ])
-    )
+    })
