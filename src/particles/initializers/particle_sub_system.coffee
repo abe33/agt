@@ -5,7 +5,7 @@ class ParticleSubSystem
 
   ### Public ###
 
-  constructor: (initializer, action, emissionFactory, subSystem) ->
-    @subSystem = new SubSystem(initializer, action, emissionFactory, subSystem)
+  constructor: (options={}) ->
+    @subSystem = new SubSystem(options)
 
   initialize: (particle) -> @subSystem.emitFor particle

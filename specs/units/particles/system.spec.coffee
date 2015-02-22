@@ -19,12 +19,18 @@ describe 'System,', ->
     beforeEach ->
       @initializer = initializer = new Life 1000
       @action = action = new Live
-      @subSystem = subSystem = new SubSystem initializer, action, (p) ->
-        new Emission( Particle,
-                      new Ponctual(p.position),
-                      new Limited(1000,100),
-                      new ByRate(10) )
-      @system = new System(initializer, action, subSystem)
+      @subSystem = subSystem = new SubSystem({
+        initializer
+        action
+        emissionFactory: (p) ->
+          new Emission({
+            class: Particle
+            emitter: new Ponctual(p.position)
+            timer: new Limited(1000,100)
+            counter: new ByRate(10)
+          })
+      })
+      @system = new System({initializer, action, subSystem})
 
     createListener()
 
@@ -44,12 +50,23 @@ describe 'System,', ->
     describe 'when its emit method is called', ->
       describe 'with an emission whose timer have since defined,', ->
         beforeEach ->
-          @emission = new Emission( Particle,
-                                    new Ponctual(new Point),
-                                    new Limited(1000,100),
-                                    new ByRate(10) )
+          @emission = new Emission({
+            class: Particle
+            emitter: new Ponctual(new Point)
+            timer: new Limited(1000,100)
+            counter: new ByRate(10)
+            initializer:
+              initialize: ->
+            action:
+              prepare: ->
+              process: ->
+          })
           @system.emit @emission
           @particle = @system.particles[0]
+
+          spyOn(@emission.action, 'prepare')
+          spyOn(@emission.action, 'process')
+          spyOn(@emission.initializer, 'initialize')
 
         afterEach -> @system.stop()
 
@@ -77,10 +94,19 @@ describe 'System,', ->
           system(subSource).shouldHave(4).particles()
           system(subSource).shouldHave(2).emissions()
 
+          it 'calls the emission initializer', ->
+            expect(@emission.initializer.initialize.calls.count()).toEqual(10)
+
+          it 'calls the action prepare method', ->
+            expect(@emission.action.prepare).toHaveBeenCalled()
+
+          it 'calls the action process method', ->
+            expect(@emission.action.process).toHaveBeenCalled()
+
         describe 'when adding a second emission after some time,', ->
           beforeEach ->
             animate 500
-            @system.emit new Emission(Particle)
+            @system.emit new Emission({class: Particle})
 
             system(source).shouldHave(2).emissions()
 

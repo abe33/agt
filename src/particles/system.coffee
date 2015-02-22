@@ -9,8 +9,12 @@ class System
 
   ### Public ###
 
-  constructor: (@initializer=new NullInitializer,
-                @action= new NullAction, @subSystem) ->
+  constructor: (options={}) ->
+    options.initializer ?= new NullInitializer
+    options.action ?= new NullAction
+
+    {@initializer, @action, @subSystem} = options
+
     @particlesCreated = new Signal
     @particlesDied = new Signal
     @emissionStarted = new Signal
@@ -74,6 +78,7 @@ class System
     while emission.hasNext()
       time = emission.nextTime()
       particle = emission.next()
+      particle.system = this
       @created.push particle
       @registerParticle particle
       @initializeParticle particle, time
@@ -88,6 +93,7 @@ class System
     @action.prepare bias, biasInSeconds, time
     for particle in @particles.concat()
       @action.process particle
+      particle.emission?.action?.process(particle)
       @unregisterParticle particle if particle.dead
 
   initializeParticle: (particle, time) ->

@@ -4,7 +4,8 @@ module.exports =
 class SubSystem extends System
   ### Public ###
 
-  constructor: (initializer, action, @emissionFactory, subSystem) ->
-    super initializer, action, subSystem
+  constructor: (options={}) ->
+    super options
+    {@emissionFactory} = options
 
   emitFor: (particle) -> @emit @emissionFactory particle

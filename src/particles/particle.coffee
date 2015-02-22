@@ -24,6 +24,8 @@ class Particle
     @lastPosition = null
     @velocity = null
     @parasite = null
+    @system = null
+    @emission = null
 
   die: ->
     @dead = true

@@ -9,14 +9,16 @@ class Emission
 
   ### Public ###
 
-  constructor: (@particleType=Particle,
-                @emitter=new NullEmitter(),
-                @timer=new NullTimer(),
-                @counter=new NullCounter(),
-                @initializer=null) ->
+  constructor: (options={}) ->
+    options.emitter ?= new NullEmitter()
+    options.timer ?= new NullTimer()
+    options.counter ?= new NullCounter()
+
+    {@class, @emitter, @timer, @counter, @initializer, @action} = options
 
   prepare: (bias, biasInSeconds, time) ->
     @timer.prepare bias, biasInSeconds, time
+    @action?.prepare bias, biasInSeconds, time
 
     nextTime = @timer.nextTime
     @counter.prepare nextTime, nextTime / 1000, time
@@ -28,7 +30,7 @@ class Emission
   hasNext: -> @iterator < @currentCount
 
   next: ->
-    particle = @particleType.get position: @emitter.get()
+    particle = @class.get position: @emitter.get(), emission: this
     @initializer?.initialize particle
     @iterator++
 

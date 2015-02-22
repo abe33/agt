@@ -13,10 +13,11 @@ describe 'Emission', ->
       @timer = timer = new Limited(1000)
       @counter = counter = new ByRate(10)
       @initializer = initializer = new Life(100)
-      @emission = new Emission(Particle, emitter, timer, counter, initializer)
+      @initializer = initializer = new Life(100)
+      @emission = new Emission({class: Particle, emitter, timer, counter, initializer})
 
     it 'should have stored the passed-in arguments', ->
-      expect(@emission.particleType).toBe(Particle)
+      expect(@emission.class).toBe(Particle)
       expect(@emission.emitter).toBe(@emitter)
       expect(@emission.timer).toBe(@timer)
       expect(@emission.counter).toBe(@counter)

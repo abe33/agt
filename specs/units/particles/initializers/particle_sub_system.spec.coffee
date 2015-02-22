@@ -14,14 +14,17 @@ describe 'ParticleSubSystem', ->
     beforeEach ->
       @initializer = initializer = new Life 1000
       @action = action = new Live
-      @initializer = new ParticleSubSystem(
-        initializer, action,
-        (p) ->
-          new Emission( Particle,
-                        new Ponctual(p.position),
-                        new Limited(1000,100),
-                        new ByRate(10) )
-      )
+      @initializer = new ParticleSubSystem({
+        initializer
+        action
+        emissionFactory: (p) ->
+          new Emission({
+            class: Particle
+            emitter: new Ponctual(p.position)
+            timer: new Limited(1000,100)
+            counter: new ByRate(10)
+          })
+      })
 
     it 'should have created a new sub system', ->
       expect(@initializer.subSystem).toBeDefined()

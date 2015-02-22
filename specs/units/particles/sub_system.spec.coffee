@@ -17,15 +17,17 @@ describe 'SubSystem,', ->
     beforeEach ->
       @initializer = initializer = new Life 1000
       @action = action = new Live
-      @system = new SubSystem(
-        initializer,
-        action,
-        (particle) ->
-          new Emission( Particle,
-                        new Ponctual(particle.position.clone()),
-                        new Limited(1000,100),
-                        new ByRate(10) )
-      )
+      @system = new SubSystem({
+        initializer
+        action
+        emissionFactory: (particle) ->
+          new Emission({
+            class: Particle
+            emitter: new Ponctual(particle.position.clone())
+            timer: new Limited(1000,100)
+            counter: new ByRate(10)
+          })
+      })
 
     createListener()
 
