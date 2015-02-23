@@ -19,23 +19,23 @@ global.createListener = ->
 global.system = (source) ->
   should:
     emitting: ->
-      it "#{source} should emitting", ->
+      it "#{source} is emitting", ->
         expect(this[source].emitting()).toBeTruthy()
     not:
       emitting: ->
-        it "#{source} should not emitting", ->
+        it "#{source} is not emitting", ->
           expect(this[source].emitting()).toBeFalsy()
 
   shouldHave: (value) ->
     particles: ->
-      it "#{source} should have #{value} particles", ->
+      it "#{source} has #{value} particles", ->
         expect(this[source].particles.length).toBe(value)
     emissions: ->
-      it "#{source} should have #{value} emissions", ->
+      it "#{source} has #{value} emissions", ->
         expect(this[source].emissions.length).toBe(value)
 
     signal: (signal) ->
-      it "#{source} should have a #{signal} signal", ->
+      it "#{source} has a #{signal} signal", ->
         target = this[source]
         targetSignal = target[signal]
         signalCalled = false
@@ -52,10 +52,9 @@ global.system = (source) ->
         expect(targetSignal.listeners.length).toBe(listenersCount)
 
     dispatched: (signal) ->
-      it "#{source} should have dispatched signal #{signal}", ->
+      it "#{source} has dispatched signal #{signal}", ->
         expect(global.currentResults[signal]).toBeDefined()
 
     started: ->
-      it "#{source} should have started", ->
+      it "#{source} has started", ->
         expect(this[source].running).toBeTruthy()
-
