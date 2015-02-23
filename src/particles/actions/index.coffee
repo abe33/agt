@@ -2,6 +2,7 @@ module.exports =
   BaseAction: require './base_action'
   ConditionalForce: require './conditional_force'
   DieOnSurface: require './die_on_surface'
+  DieOutsideSurface: require './die_outside_surface'
   Force: require './force'
   Friction: require './friction'
   Live: require './live'
