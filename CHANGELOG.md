@@ -1,3 +1,11 @@
+<a name="v0.0.11"></a>
+# v0.0.11 (2015-02-23)
+
+## :sparkles: Features
+
+- Implement a maxBias property on impulse ([95ab5840](https://github.com/abe33/agt.git/commit/95ab58404eedd53b6ba399ddc1d38e828912451e))
+- Add method to remove all emissions from a system ([21803bd0](https://github.com/abe33/agt.git/commit/21803bd09038f27dc80a7a9cc631f1e4d84cd2d3))
+
 <a name="v0.0.9"></a>
 # v0.0.9 (2015-02-23)
 
