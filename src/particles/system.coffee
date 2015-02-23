@@ -22,25 +22,12 @@ class System
     @particles = []
     @emissions = []
 
+  emitting: -> @emissions.length > 0
+
   emit: (emission) ->
     @emissions.push emission
     emission.system = this
     @startEmission emission
-
-  startEmission: (emission) ->
-    emission.prepare 0, 0, @getTime()
-    @created = []
-    @died = []
-
-    @start() unless @running
-    @processEmission emission
-
-    @emissionStarted.dispatch this, emission
-    @particlesCreated.dispatch this, @created if @created.length > 0
-    @particlesDied.dispatch this, @died if @died.length > 0
-
-    @died = null
-    @created = null
 
   start: ->
     unless @running
@@ -67,7 +54,33 @@ class System
     @died = null
     @created = null
 
-  emitting: -> @emissions.length > 0
+  ##    ######## ##     ## ####  ######   ######  ####  #######  ##    ##
+  ##    ##       ###   ###  ##  ##    ## ##    ##  ##  ##     ## ###   ##
+  ##    ##       #### ####  ##  ##       ##        ##  ##     ## ####  ##
+  ##    ######   ## ### ##  ##   ######   ######   ##  ##     ## ## ## ##
+  ##    ##       ##     ##  ##        ##       ##  ##  ##     ## ##  ####
+  ##    ##       ##     ##  ##  ##    ## ##    ##  ##  ##     ## ##   ###
+  ##    ######## ##     ## ####  ######   ######  ####  #######  ##    ##
+
+  startEmission: (emission) ->
+    emission.prepare 0, 0, @getTime()
+    @created = []
+    @died = []
+
+    @start() unless @running
+    @processEmission emission
+
+    @emissionStarted.dispatch this, emission
+    @particlesCreated.dispatch this, @created if @created.length > 0
+    @particlesDied.dispatch this, @died if @died.length > 0
+
+    @died = null
+    @created = null
+
+  removeEmission: (emission) ->
+    if emission in @emissions
+      @emissions.splice @emissions.indexOf(emission), 1
+
   removeAllEmissions: ->
     @emissions = []
 
@@ -88,8 +101,13 @@ class System
         @removeEmission emission
         @emissionFinished.dispatch this, emission
 
-  removeEmission: (emission) ->
-    @emissions.splice @emissions.indexOf(emission), 1
+  ##    ########     ###    ########  ######## ####  ######  ##       ########
+  ##    ##     ##   ## ##   ##     ##    ##     ##  ##    ## ##       ##
+  ##    ##     ##  ##   ##  ##     ##    ##     ##  ##       ##       ##
+  ##    ########  ##     ## ########     ##     ##  ##       ##       ######
+  ##    ##        ######### ##   ##      ##     ##  ##       ##       ##
+  ##    ##        ##     ## ##    ##     ##     ##  ##    ## ##       ##
+  ##    ##        ##     ## ##     ##    ##    ####  ######  ######## ########
 
   processParticles: (bias, biasInSeconds, time) ->
     @action.prepare bias, biasInSeconds, time

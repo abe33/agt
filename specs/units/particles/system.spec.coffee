@@ -34,7 +34,7 @@ describe 'System,', ->
 
     createListener()
 
-    it 'should exist', ->
+    it 'exists', ->
       expect(@system).toBeDefined()
       expect(@system.initializer).toBe(@initializer)
       expect(@system.action).toBe(@action)
@@ -114,6 +114,13 @@ describe 'System,', ->
               beforeEach -> animate 600
 
               system(source).shouldHave(1).emissions()
+
+        describe '::removeEmission', ->
+          beforeEach ->
+            @system.removeEmission(@emission)
+
+          system(source).shouldHave(0).emissions()
+
         describe '::removeAllEmissions', ->
           beforeEach ->
             @system.emit new Emission({class: Particle})
