@@ -68,6 +68,8 @@ class System
     @created = null
 
   emitting: -> @emissions.length > 0
+  removeAllEmissions: ->
+    @emissions = []
 
   processEmissions: (bias, biasInSeconds, time) ->
     for emission in @emissions.concat()

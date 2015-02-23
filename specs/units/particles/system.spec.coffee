@@ -114,3 +114,9 @@ describe 'System,', ->
               beforeEach -> animate 600
 
               system(source).shouldHave(1).emissions()
+        describe '::removeAllEmissions', ->
+          beforeEach ->
+            @system.emit new Emission({class: Particle})
+            @system.removeAllEmissions()
+
+          system(source).shouldHave(0).emissions()
