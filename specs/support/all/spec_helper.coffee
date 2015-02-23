@@ -23,8 +23,6 @@ global.withLoop = (times=20, block) ->
   [ times, block ] = [ 20, times ] if typeof times is 'function'
   block.call this, n for n in [ 0..times ]
 
-agt.Impulse::start = -> @running = true
-
 time = 0
 global.animate = (t) -> agt.Impulse.instance().dispatch(t, t / 1000, time += t)
 
@@ -64,8 +62,22 @@ global.withWindow = (block) ->
       global.window =
         innerWidth: 640
         innerHeight: 480
+        requestAnimationFrame: ->
 
     afterEach ->
       delete global.window
+
+    block.call(this)
+
+global.withMockRequestAnimationFrame = (block) ->
+  withWindow ->
+    beforeEach ->
+      @noAnimationFrame = -> throw new Error('No animation frame requested')
+      @nextAnimationFrame = @noAnimationFrame
+
+      spyOn(window, 'requestAnimationFrame').and.callFake (fn) =>
+        @nextAnimationFrame = =>
+          @nextAnimationFrame = @noAnimationFrame
+          fn()
 
     block.call(this)

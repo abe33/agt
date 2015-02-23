@@ -1,13 +1,6 @@
 
 # Defines a local `requestAnimationFrame` function using the snippets
 # from [Paul Irish](http://paulirish.com/2011/requestanimationframe-for-smart-animating/).
-g = global ? window
-requestAnimFrame = g.requestAnimationFrame       or
-                   g.webkitRequestAnimationFrame or
-                   g.mozRequestAnimationFrame    or
-                   g.oRequestAnimationFrame      or
-                   g.msRequestAnimationFrame     or
-                   -> g.setTimeout callback, 1000 / 60
 
 Signal = require './signal'
 
@@ -18,7 +11,7 @@ Signal = require './signal'
 #
 # Impulse dispatch its messages on a regular basis, based
 # on the `requestAnimationFrame` function.
-module.exports = 
+module.exports =
 class Impulse extends Signal
   ### Public ###
 
@@ -87,7 +80,7 @@ class Impulse extends Signal
   # call the `run` method each time.
   initRun:->
     @time = @getTime()
-    requestAnimFrame =>
+    window.requestAnimationFrame =>
       @stats.begin() if @stats?
       @run()
       @stats.end() if @stats?
@@ -100,7 +93,9 @@ class Impulse extends Signal
   run:->
     if @running
       t = @getTime()
-      s = ( t - @time ) * @timeScale
+      s = (t - @time) * @timeScale
+
+      s = @maxBias if @maxBias? and s > @maxBias
 
       @dispatch s, s / 1000, t
       @initRun()
