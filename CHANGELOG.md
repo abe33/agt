@@ -1,3 +1,11 @@
+<a name="v0.0.9"></a>
+# v0.0.9 (2015-02-23)
+
+## :bug: Bug Fixes
+
+- Fix Instant timer signature not valid ([fb2625d7](https://github.com/abe33/agt.git/commit/fb2625d7eebffe302ad71b368edb09b6d8790c3f))
+- Fix particles released before having their death notified ([17d1439b](https://github.com/abe33/agt.git/commit/17d1439b3d5924c534e8da7f3c17ab99910f39e7))
+
 <a name="v0.0.7"></a>
 # v0.0.7 (2015-02-20)
 
