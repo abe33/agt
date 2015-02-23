@@ -5,6 +5,7 @@ Limited = agt.particles.timers.Limited
 ByRate = agt.particles.counters.ByRate
 Ponctual = agt.particles.emitters.Ponctual
 Life = agt.particles.initializers.Life
+Live = agt.particles.actions.Live
 
 describe 'Emission', ->
   describe 'when instanciated with all components', ->
@@ -13,8 +14,8 @@ describe 'Emission', ->
       @timer = timer = new Limited(1000)
       @counter = counter = new ByRate(10)
       @initializer = initializer = new Life(100)
-      @initializer = initializer = new Life(100)
-      @emission = new Emission({class: Particle, emitter, timer, counter, initializer})
+      @action = action = new Live()
+      @emission = new Emission({class: Particle, emitter, timer, counter, initializer, action})
 
     it 'should have stored the passed-in arguments', ->
       expect(@emission.class).toBe(Particle)
@@ -22,6 +23,7 @@ describe 'Emission', ->
       expect(@emission.timer).toBe(@timer)
       expect(@emission.counter).toBe(@counter)
       expect(@emission.initializer).toBe(@initializer)
+      expect(@emission.action).toBe(@action)
 
     describe 'when its prepare method is called', ->
       beforeEach -> @emission.prepare 500, 0.5, 500
