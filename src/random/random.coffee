@@ -21,8 +21,20 @@ class Random
 
   get: -> @generator.get()
 
+  sort: -> => @intPad 2
+
+  random: (amount) -> @get() * (amount or 1)
+
+  intRandom: (amount) -> round @random amount
+
+  pad: (amount) -> amount / 2 - @random amount
+
+  intPad: (amount) -> round @pad amount
+
   boolean: (rate=0.5) -> rate = 0.5 unless 0 <= rate <= 1; @get() < rate
+
   bit: (rate=0.5) -> if @boolean rate then 1 else 0
+
   sign: (rate=0.5) -> if @boolean rate then 1 else -1
 
   char: (arg, rangeEnd) ->
@@ -42,6 +54,19 @@ class Random
           n = String.fromCharCode floor @inRange arg, rangeEnd
         else
           String.fromCharCode @intRandom arg
+
+  in: (a, b, c) ->
+    if arguments.length > 3 then @inArray arguments
+    else
+      switch typeof a
+        when 'number' then @inRange a, b
+        when 'string' then @inArray a, b, c
+        when 'object'
+          if Object::toString.call(a) == '[object Array]'
+            @inArray a, b, c
+          else
+            if a.min? and a.max? then @inRange a.min, a.max, a.step
+        else null
 
   inRange: (a, b, c) ->
     res = a + @random b - a
@@ -78,24 +103,3 @@ class Random
         array[@intRandom array.length - 1]
     else
       null
-
-  in: (a, b, c) ->
-    if arguments.length > 3 then @inArray arguments
-    else
-      switch typeof a
-        when 'number' then @inRange a, b
-        when 'string' then @inArray a, b, c
-        when 'object'
-          if Object::toString.call(a) == '[object Array]'
-            @inArray a, b, c
-          else
-            if a.min? and a.max? then @inRange a.min, a.max, a.step
-        else null
-
-  sort: -> => @intPad 2
-
-  random: (amount) -> @get() * (amount or 1)
-  intRandom: (amount) -> round @random amount
-
-  pad: (amount) -> amount / 2 - @random amount
-  intPad: (amount) -> round @pad amount
