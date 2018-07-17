@@ -2,6 +2,7 @@ build
 tasks
 demos
 doc
+src
 gem
 node_modules
 specs
